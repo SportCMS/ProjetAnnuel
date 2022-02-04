@@ -84,7 +84,7 @@
             return [
                 "config"=>[
                     "method"=>"POST",
-                    "action"=>"",
+                    "action"=>"/confirmAcc",
                     "id"=>"formRegister",
                     "class"=>"formRegister",
                     "submit"=>"S'inscrire"
@@ -166,15 +166,13 @@
                 ]
             ];
         }
-        public function getExamForm(): array
-        {
-            return [
-                "config"=>[
-                    "method"=>"POST",
-                    "action"=>"",
-                    "id"=>"formExam",
-                    "class"=>"formExam",
-                    "submit"=>"Valider"
+        public function getForgetPswdForm(){
+            return ["config"=>[
+                "method"=>"POST",
+                "action"=>"",
+                "id"=>"formLogin",
+                "class"=>"formLogin",
+                "submit"=>"Récuperer mot de passe"
                 ],
                 "inputs"=>[
                     "email"=>[
@@ -183,59 +181,9 @@
                         "id"=>"emailRegister",
                         "class"=>"formRegister",
                         "required"=>true,
-                        "error" => "Tu as mal renseigner ton email"
-                    ],/*
-                    "genre"=>[
-                        "type"=>"radio",
-                        "id"=>"radioExam",
-                        "class"=>"formExam",
-                        "value"=> [
-                            "Homme" => "homme",
-                            "Femme" => "femme",
-                            "Neutre" => "neutre",
-                            "Jupiterien" => "jupiterien"
-                        ],
-                        "checked" => "jupiterien"
-                    ],
-                    "avis"=>[
-                        "type"=>"checkbox",
-                        "id"=>"checkboxExam",
-                        "class"=>"formExam",
-                        "value"=> [
-                            "Oui" => "true",
-                            "Non" => "false",
-                            "Peut être" => "null"
-                        ],
-                        "checked" => "null"
-                    ],
-                    "pays"=>[
-                        "type"=>"select",
-                        "id"=>"selectExam",
-                        "class"=>"formExam",
-                        "value"=> [
-                            "France" => "france",
-                            "Algérie" => "algérie",
-                            "Maroc" => "maroc"
-                        ],
-                        "selected" => "algérie"
-                    ],
-                    "msg"=>[
-                        "placeholder"=>"Votre message ...",
-                        "type"=>"textarea",
-                        "id"=>"textareaExam",
-                        "class"=>"formExam"
-                    ],
-                    "image"=>[
-                        "type"=>"file",
-                        "accept"=>["png","jpg","gif"],
-                        "id"=>"fileExam",
-                        "class"=>"formExam",
-                        "multiple"=>true,
-                        "error" => "Mauvais format de fichier (png,jpg,gif)"
-                    ],*/
-                    "g-recaptcha-response"=>[
-                        "type"=>"captcha",
-                        "error" => "Il faut renseigner le captcha"
+                        "error"=>"Email incorrect",
+                        "unicity"=>true,
+                        "errorUnicity"=>"Un compte existe déjà avec cet email"
                     ]
                 ]
             ];

@@ -21,14 +21,19 @@
 
             if(!empty($_POST)) {
                 $result = Verificator::checkForm($user->getExamForm(), $_POST);
-
-                print_r($result);
             }
 
 
             $view = new View("Register");
             $view->assign("user", $user);
         }
-
-
+        public function forgetPswd(){
+            $user = new UserModel();
+            $user = $user->getBy(['email' => 'ayman.bedda@gmail.com', 'id' => 5]);
+            //$user = $user->getOneBy(['email' => 'ayman.bedda@gmail.com']);
+            var_dump($user);
+            die();
+            $view = new View("forgetpswd");
+            $view->assign("user", $user);
+        }
     }
