@@ -7,7 +7,7 @@
 
     class Mail
     {
-        public function main(){
+        public function main($mail){
             $mail = new PHPMailer();
             $mail->isSMTP();
             $mail->Host = MAILHOST;
@@ -18,7 +18,7 @@
             $mail->Password = MAILPSWD;
             $mail->iSHtml(true);
             $mail->setFrom(MAILUSER);
-            $mail->addAddress("ketrazz.amh@gmail.com");
+            $mail->addAddress($mail);
             $mail->Subject = "Test";
             $mail->Body = 'Bonjour ceci est le lien de notre site <a href="www.charenton.fr/">ici</a>';
             if($mail->Send()){

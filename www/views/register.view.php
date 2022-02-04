@@ -1,3 +1,3 @@
 <h1>Inscrit</h1>
 
-<?php $this->includePartial("form", $user->getExamForm());?>
+<?php $this->includePartial("form", $user->getRegisterForm());?>

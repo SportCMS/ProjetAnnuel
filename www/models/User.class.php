@@ -84,12 +84,30 @@
             return [
                 "config"=>[
                     "method"=>"POST",
-                    "action"=>"",
+                    "action"=>"/confirmAccount",
                     "id"=>"formRegister",
                     "class"=>"formRegister",
                     "submit"=>"S'inscrire"
                 ],
                 "inputs"=>[
+                    "firstname"=>[
+                        "placeholder"=>"Votre prénom ...",
+                        "type"=>"text",
+                        "id"=>"firstnameRegister",
+                        "class"=>"formRegister",
+                        "min"=>2,
+                        "max"=>25,
+                        "error"=>" Votre prénom doit faire entre 2 et 25 caractères",
+                    ],
+                    "lastname"=>[
+                        "placeholder"=>"Votre nom ...",
+                        "type"=>"text",
+                        "id"=>"lastnameRegister",
+                        "class"=>"formRegister",
+                        "min"=>2,
+                        "max"=>100,
+                        "error"=>" Votre nom doit faire entre 2 et 100 caractères",
+                    ],
                     "email"=>[
                         "placeholder"=>"Votre email ...",
                         "type"=>"email",
@@ -116,24 +134,6 @@
                         "required"=>true,
                         "error"=>"Votre confirmation de mot de passe ne correspond pas",
                         "confirm"=>"password"
-                    ],
-                    "firstname"=>[
-                        "placeholder"=>"Votre prénom ...",
-                        "type"=>"text",
-                        "id"=>"firstnameRegister",
-                        "class"=>"formRegister",
-                        "min"=>2,
-                        "max"=>25,
-                        "error"=>" Votre prénom doit faire entre 2 et 25 caractères",
-                    ],
-                    "lastname"=>[
-                        "placeholder"=>"Votre nom ...",
-                        "type"=>"text",
-                        "id"=>"lastnameRegister",
-                        "class"=>"formRegister",
-                        "min"=>2,
-                        "max"=>100,
-                        "error"=>" Votre nom doit faire entre 2 et 100 caractères",
                     ]
                 ]
             ];

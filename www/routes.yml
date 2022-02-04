@@ -21,3 +21,7 @@
 /mail:
   controller: mail
   action: main
+
+/confirmAccount:
+  controller: user
+  action: confirmAcc
