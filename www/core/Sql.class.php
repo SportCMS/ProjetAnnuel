@@ -38,4 +38,33 @@
             $queryPrp = $this->pdo->prepare($sql);
             $queryPrp->execute($colums);
         }
+        public function getOneBy($entrie)
+        {
+            $val = [];
+            $sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . array_keys($entrie)[0] . '=:' . array_keys($entrie)[0];
+            $queryPrp = $this->pdo->prepare($sql);
+            $queryPrp->execute($entrie);
+            while($row = $queryPrp->fetchObject()){
+                array_push($val, $row); 
+            }
+            return $val;
+        }
+        public function getBy($entrie)
+        {
+            $val = [];
+            $sql = 'SELECT * FROM ' . $this->table . ' WHERE ';
+            foreach($entrie as $key=>$data){
+                if (end($entrie) != $data){
+                    $sql .= $key . '=:' . $key . ' and ';
+                }else{
+                    $sql .= $key . '=:' . $key;
+                }
+            }
+            $queryPrp = $this->pdo->prepare($sql);
+            $queryPrp->execute($entrie);
+            while($row = $queryPrp->fetchObject()){
+                array_push($val, $row); 
+            }
+            return $val;
+        }
     }
