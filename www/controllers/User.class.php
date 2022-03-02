@@ -10,7 +10,17 @@
 
         public function login()
         {
-            $view = new View("login");
+            $user = new UserModel();
+
+            if(!empty($_POST)) {
+                $result = Verificator::checkForm($user->getLoginForm(), $_POST);
+
+                print_r($result);
+            }
+
+
+            $view = new View("Login");
+            $view->assign("user", $user);
         }
         public function logout()
         {
@@ -28,6 +38,20 @@
 
             $view = new View("Register");
             $view->assign("user", $user);
+        }
+
+
+
+        public function connection(){
+            echo "HAHAHA";
+            $user = new UserModel();
+            $password = $_POST['password'];
+            $email = $_POST['email'];
+            $user->setPassword($password);
+            $user->setEmail($email);
+            print_r($user);
+
+            
         }
 
 
