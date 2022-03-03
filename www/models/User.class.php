@@ -16,7 +16,7 @@
             parent::__construct();
         }
         //id
-        public function getId():?id
+        public function getId():?int
         {
             return $this->id;
         }
@@ -154,6 +154,7 @@
                         "type"=>"email",
                         "id"=>"emailRegister",
                         "class"=>"formRegister",
+                        "error"=>"Email incorrect",
                         "required"=>true,
                     ],
                     "password"=>[
@@ -161,17 +162,19 @@
                         "type"=>"password",
                         "id"=>"pwdRegister",
                         "class"=>"formRegister",
+                        "error"=>"Password incorrect",
                         "required"=>true,
                     ]
                 ]
             ];
         }
+        /* formulaire de d'envoie de l'email pour change mot de passe */
         public function getForgetPswdForm(){
             return ["config"=>[
                 "method"=>"POST",
-                "action"=>"",
-                "id"=>"formLogin",
-                "class"=>"formLogin",
+                "action"=>"sendPasswordReset",
+                "id"=>"formRstPswd",
+                "class"=>"formRstPswd",
                 "submit"=>"Récuperer mot de passe"
                 ],
                 "inputs"=>[
@@ -184,6 +187,34 @@
                         "error"=>"Email incorrect",
                         "unicity"=>true,
                         "errorUnicity"=>"Un compte existe déjà avec cet email"
+                    ]
+                ]
+            ];
+        }
+        public function getChangePswdForm(){
+            return ["config"=>[
+                "method"=>"POST",
+                "action"=>"confirmChange",
+                "id"=>"formChangePswd",
+                "class"=>"formChangePswd",
+                "submit"=>"Changer de mot de passe"
+                ],
+                "inputs"=>[
+                    "password"=>[
+                        "placeholder"=>"Votre mot de passe ...",
+                        "type"=>"password",
+                        "id"=>"changePswd",
+                        "class"=>"changePswd",
+                        "required"=>true,
+                        "error"=>"mot de passe incorrect"
+                    ],
+                    "confirmPassword"=>[
+                        "placeholder"=>"Confirmez votre mot de pase ...",
+                        "type"=>"password",
+                        "id"=>"changePswd",
+                        "class"=>"changePswd",
+                        "required"=>true,
+                        "error"=>"Pas le meme mot de passe"
                     ]
                 ]
             ];

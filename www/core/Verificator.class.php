@@ -7,8 +7,8 @@
         public static function checkForm($config, $data): array
         {
             $errors = [];
-    
-            if( count($config["inputs"]) != count($_POST)){
+
+            if( count($config["inputs"]) != count($_POST) && count($config["inputs"]) != count($_GET) ){//J'ai changé la vérif des nombres de champs pour les methood get
                 die("Tentative de hack");
             }
     
@@ -41,7 +41,6 @@
                 if($input['type']=='captcha' && !self::checkCaptcha($data['g-recaptcha-response'])){
                     $errors[]=$input["error"];
                 }
-    
             }
     
     
