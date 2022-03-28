@@ -8,10 +8,19 @@
     use App\PHPMailer\PHPMailer;
     use App\PHPMailer\SMTP;
     use App\PHPMailer\Exception;
+    use App\core\Session;
 
     class User {
-
-
+        /* session test */
+        public function session(){
+            $session = new Session();
+            $session->set("pseudo", "Gulr0t");
+        }
+        public function sessionGet(){
+            $session = new Session();
+            echo $session->get("pseudo");
+        }
+        /* Session test*/
         public function login()
         {
             $view = new View("login");

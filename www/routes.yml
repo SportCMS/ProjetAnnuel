@@ -33,3 +33,9 @@
 /confirmChange:
   controller: user
   action: confirmChng
+/session:
+  controller: user
+  action: session
+/sessionGet:
+  controller: user
+  action: sessionGet
