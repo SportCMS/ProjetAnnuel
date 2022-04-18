@@ -143,7 +143,7 @@
             return [
                 "config"=>[
                     "method"=>"POST",
-                    "action"=>"/connection",
+                    "action"=>"/login",
                     "id"=>"formLogin",
                     "class"=>"formLogin",
                     "submit"=>"Se connecter"

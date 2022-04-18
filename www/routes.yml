@@ -21,7 +21,3 @@
 /mail:
   controller: mail
   action: main
-
-/connection:
-  controller: user
-  action: connection
