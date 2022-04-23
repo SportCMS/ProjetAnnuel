@@ -119,8 +119,8 @@
         public function changePswd(){
             $pswdRst = new PswdRst();
             $user = new UserModel();
-            $pswdRst = $pswdRst->getOneBy(["token" => $_GET["token"]])[0];
-            if(!empty($pswdRst)){
+            if(!empty($pswdRst->getOneBy(["token" => $_GET["token"]])[0])){
+                $pswdRst = $pswdRst->getOneBy(["token" => $_GET["token"]])[0];
                 if($pswdRst->getTokenExpiry() > time()){
                     $session = new Session();
                     $session->set("token", $pswdRst->getToken());
@@ -142,11 +142,13 @@
             if(!empty($pswdRst) && $pswdRst->getTokenExpiry() > time()){
                 if(!empty($_POST)) {
                     $result = Verificator::checkForm($user->getChangePswdForm(), $_POST);
-                    if(!empty($result)){
-
+                    if(empty($result)){
+                        $user = $user->setId($pswdRst->getUserId());
+                        $user->setPassword($_POST['password']);
+                        $user->save();
+                        echo "Mot de passe changé";
                     }
                 }
             }
-            var_dump($result);
         }
     }
