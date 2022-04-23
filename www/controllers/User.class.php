@@ -11,15 +11,6 @@
     use App\core\Session;
 
     class User {
-        /* session test */
-        public function session(){
-            $session = new Session();
-            $session->set("pseudo", "Gulr0t");
-        }
-        public function sessionGet(){
-            $session = new Session();
-            echo $session->get("pseudo");
-        }
         /* Session test*/
         public function login()
         {
@@ -50,11 +41,20 @@
             $view->assign("user", $user);
         }
 
+        public function redi(){
+            $test = "le test est concluant";
+            $session = new Session();
+            //header('Location: /forgetPassword');
+        }
         /******************************************************/
         /***************PARTIE CHANGER MOT DE PASSE************/
         /******************************************************/
         //Formulaire email user
         public function forgetPswd(){
+            if(isset($test)){
+                echo $test;
+                die();
+            }
             $user = new UserModel();
             $view = new View("forgetpswd");
             $view->assign("user", $user);
@@ -65,8 +65,9 @@
             if(!empty($_POST)) {
                 $result = Verificator::checkForm($user->getForgetPswdForm(), $_POST);
                 if(empty($result)){
-                    $user = $user->getOneBy(["email" => $_POST['email']])[0];
+                    $user = $user->getOneBy(["email" => $_POST['email']]);
                     if(!empty($user)){
+                        $user = $user[0]; 
                         $pswdRst = new PswdRst();
                         $pswdRst->generateToken();
                         $pswdRst->generateTokenExpiry();
@@ -101,7 +102,7 @@
                         $mail->smtpClose();
                         
                     }else{
-                        echo "existe pas";
+                        echo "email existe pas";
                     }
                 }else{
                     $view = new View("forgetpswd");
@@ -121,6 +122,8 @@
             $pswdRst = $pswdRst->getOneBy(["token" => $_GET["token"]])[0];
             if(!empty($pswdRst)){
                 if($pswdRst->getTokenExpiry() > time()){
+                    $session = new Session();
+                    $session->set("token", $pswdRst->getToken());
                     $view = new View("changepswd");
                     $view->assign("user", $user);
                 }else{
@@ -133,8 +136,16 @@
         //confirm changement mot de passe
         public function confirmChng(){
             $user = new UserModel();
-            if(!empty($_POST)) {
-                $result = Verificator::checkForm($user->getChangePswdForm(), $_POST);
+            $pswdRst = new PswdRst();
+            $session = new Session();
+            $pswdRst = $pswdRst->getOneBy(["token" => $session->get('token')])[0];
+            if(!empty($pswdRst) && $pswdRst->getTokenExpiry() > time()){
+                if(!empty($_POST)) {
+                    $result = Verificator::checkForm($user->getChangePswdForm(), $_POST);
+                    if(!empty($result)){
+
+                    }
+                }
             }
             var_dump($result);
         }

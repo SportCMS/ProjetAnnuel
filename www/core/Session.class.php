@@ -25,16 +25,3 @@
             session_unset();
         }
     }
-    /*Session page 1*/
-    /*$session = new Session();
-    $session->set("id", "1");
-    $session->set("pseudo", "Gulr0t");
-    $session->set("nom", "Simon");
-    $session->set("prenom", "Farnault");*/
-    /*Session page 2*/
-    /*echo $session->get("pseudo");
-    echo "<pre>";
-    foreach($session->getAll() as $key => $value){
-        echo $key . ' = ' . $value . '<br>';
-    }
-    echo "</pre>";*/

@@ -21,6 +21,8 @@
 /mail:
   controller: mail
   action: main
+
+
 /forgetPassword:
   controller: user
   action: forgetPswd
@@ -33,9 +35,7 @@
 /confirmChange:
   controller: user
   action: confirmChng
-/session:
+
+/redi:
   controller: user
-  action: session
-/sessionGet:
-  controller: user
-  action: sessionGet
+  action: redi

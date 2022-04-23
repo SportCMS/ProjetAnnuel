@@ -33,8 +33,8 @@
                 if($input["type"]=="password" &&  !self::checkPwd($data[$name]) && empty($input["confirm"])) {
                     $errors[]=$input["error"];
                 }
-    
-                if( !empty($input["confirm"]) && $data[$name]!=$data[$input["confirm"]]  ){
+
+                if( $name == "confirmPassword" && $data[$name]!==$data['password']  ){
                     $errors[]=$input["error"];
                 }
 
