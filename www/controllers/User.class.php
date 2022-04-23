@@ -6,6 +6,10 @@
     use App\models\Password_reset as PswdRst;
     use App\core\Verificator;
     use App\core\Sql;
+    use App\PHPMailer\PHPMailer;
+    use App\PHPMailer\SMTP;
+    use App\PHPMailer\Exception;
+    use App\core\Session;
 
     class User {
         /* Session test*/
