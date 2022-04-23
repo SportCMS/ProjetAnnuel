@@ -22,7 +22,7 @@
         }
         protected function save():void
         {
-            $colums = get_object_vars($this);//récupération des données de l'objet 
+            $colums = get_object_vars($this);//récupération des données de l'objet
             $varToExplode = get_class_vars(get_class());//récupération des noms de variable de la classe sql
             $colums = array_diff_key($colums, $varToExplode);//suppréssion de la variable pdo des donnée de la class principales
             if($colums['id'] === null){
@@ -38,13 +38,16 @@
             $queryPrp = $this->pdo->prepare($sql);
             $queryPrp->execute($colums);
         }
+        ////////////////////////////////////////
+
+
         public function getOneBy($entrie)
         {
             $val = [];
             $sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . array_keys($entrie)[0] . '=:' . array_keys($entrie)[0];
             $queryPrp = $this->pdo->prepare($sql);
             $queryPrp->execute($entrie);
-            while($row = $queryPrp->fetchObject()){
+            while($row = $queryPrp->fetchObject(get_called_class())){
                 array_push($val, $row); 
             }
             return $val;
@@ -62,7 +65,7 @@
             }
             $queryPrp = $this->pdo->prepare($sql);
             $queryPrp->execute($entrie);
-            while($row = $queryPrp->fetchObject()){
+            while($row = $queryPrp->fetchObject(get_called_class())){
                 array_push($val, $row); 
             }
             return $val;
