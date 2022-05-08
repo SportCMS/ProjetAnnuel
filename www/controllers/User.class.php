@@ -5,6 +5,10 @@
     use App\models\User as UserModel;
     use App\models\Password_reset as PswdRst;
     use App\core\Verificator;
+<<<<<<< HEAD
+=======
+    use App\core\Sql;
+>>>>>>> develop
     use App\PHPMailer\PHPMailer;
     use App\PHPMailer\SMTP;
     use App\PHPMailer\Exception;
