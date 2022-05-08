@@ -7,8 +7,8 @@
         public static function checkForm($config, $data): array
         {
             $errors = [];
-    
-            if( count($config["inputs"]) != count($_POST)){
+
+            if( count($config["inputs"]) != count($_POST) && count($config["inputs"]) != count($_GET) ){//J'ai changé la vérif des nombres de champs pour les methood get
                 die("Tentative de hack");
             }
     
@@ -33,15 +33,14 @@
                 if($input["type"]=="password" &&  !self::checkPwd($data[$name]) && empty($input["confirm"])) {
                     $errors[]=$input["error"];
                 }
-    
-                if( !empty($input["confirm"]) && $data[$name]!=$data[$input["confirm"]]  ){
+
+                if( $name == "confirmPassword" && $data[$name]!==$data['password']  ){
                     $errors[]=$input["error"];
                 }
 
                 if($input['type']=='captcha' && !self::checkCaptcha($data['g-recaptcha-response'])){
                     $errors[]=$input["error"];
                 }
-    
             }
     
     
