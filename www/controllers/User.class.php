@@ -15,6 +15,7 @@
             $view = new View("Login");
             $config = UserModel::getLoginForm();
             $user = new UserModel();
+            
             $view->assign("user", $user);
             if($_SERVER["REQUEST_METHOD"] == "POST") {
                 $result = Verificator::checkForm($user->getLoginForm(), $_POST);
@@ -32,11 +33,11 @@
 
                         $token=$object->token;
 
-                        $pwd_user = isset($pwd) ? $pwd : '';
+                        $pwd_user = password_hash(isset($pwd) ? $pwd : '', PASSWORD_DEFAULT);
                         $email_user = isset($email) ? $email : '';
-                        //$pwd_verif = password_verify($_POST['password'],$pwd_user);
+                        $pwd_verif = password_verify($_POST['password'],$pwd_user);
 
-                        if($email_user === $_POST['email'] && $pwd_user === $_POST['password'] && $token == null){
+                        if($email_user === $_POST['email'] && $pwd_verif && $token == null){
                             header("Location: dashboard");
                             var_dump("yeeees");
                         }elseif(!$pwd_verif){
