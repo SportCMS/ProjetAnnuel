@@ -39,14 +39,13 @@
 
                         if($email_user === $_POST['email'] && $pwd_verif && $token == null){
                             header("Location: dashboard");
+                            session_start ();
+                            $_SESSION['email'] = $_POST['email'];
+                            $_SESSION['pwd'] = $_POST['password'];
                             var_dump("yeeees");
                         }elseif(!$pwd_verif){
                             $result[]="Votre mot de passe est incorrect";
                             $view->assign('result',$result);
-                            var_dump("fail mdp");
-                            var_dump($_POST['password']);
-                            var_dump($pwd_user);
-                            var_dump($pwd_verif);
                         }elseif($token !== null){
                             $result[] = "Veuillez activer votre compte";
                             $view->assign('result',$result);
@@ -64,8 +63,17 @@
         }
         public function logout()
         {
-            echo "logout";
+
+            session_start ();
+
+            session_unset ();
+
+            session_destroy ();
+
+            header ('Location: login');
         }
+
+
         public function register(){
             $user = new UserModel();
 
