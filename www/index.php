@@ -24,7 +24,7 @@
 	}else{
 		die("fichier existe pas");
 	}
-	$uri = $_SERVER['REQUEST_URI'];
+	$uri = strtok($_SERVER['REQUEST_URI'], "?");//J'ai ajouté strtok afin de gérer les requêtes get avec des paramètres
 
 	if(empty($routes[$uri]) || empty($routes[$uri]['controller']) || empty($routes[$uri]['action'])){
 		die("Page 404");

@@ -84,7 +84,7 @@
             return [
                 "config"=>[
                     "method"=>"POST",
-                    "action"=>"/confirmAccount",
+                    "action"=>"/register",
                     "id"=>"formRegister",
                     "class"=>"formRegister",
                     "submit"=>"S'inscrire"
