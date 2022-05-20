@@ -1,18 +1,22 @@
 /:
-    controller: main
-    action: home
+  controller: main
+  action: home
 
 /login:
-    controller: user
-    action: login
+  controller: user
+  action: login
 
 /logout:
-    controller: user
-    action: logout
+  controller: user
+  action: logout
     
 /register:
   controller: user
   action: register
+
+/confirmaccount:
+  controller: user
+  action: confirmaccount
 
 /dashboard:
   controller: admin

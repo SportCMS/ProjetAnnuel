@@ -62,4 +62,51 @@
             }
             return $val;
         }
+
+        public function getOneBy($entrie)
+        {
+            $val = [];
+            $sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . array_keys($entrie)[0] . '=:' . array_keys($entrie)[0];
+            $queryPrp = $this->pdo->prepare($sql);
+            $queryPrp->execute($entrie);
+            while($row = $queryPrp->fetchObject()){
+                array_push($val, $row); 
+            }
+            return $val;
+        }
+        public function getBy($entrie)
+        {
+            $val = [];
+            $sql = 'SELECT * FROM ' . $this->table . ' WHERE ';
+            foreach($entrie as $key=>$data){
+                if (end($entrie) != $data){
+                    $sql .= $key . '=:' . $key . ' and ';
+                }else{
+                    $sql .= $key . '=:' . $key;
+                }
+            }
+            $queryPrp = $this->pdo->prepare($sql);
+            $queryPrp->execute($entrie);
+            while($row = $queryPrp->fetchObject()){
+                array_push($val, $row); 
+            }
+            return $val;
+        }
+
+        public function activateAccount(?int $id){
+            $sql = 'UPDATE ' . $this->table . ' SET status=1 WHERE id=:id';
+            $queryPrp = $this->pdo->prepare($sql);
+            $queryPrp->execute(['id' => $id]);
+        }
+
+        public function uniqueMailVerification($email){
+            $sql = 'SELECT count(email) FROM ' . $this->table . " WHERE email=:email";
+            $queryPrp = $this->pdo->prepare($sql);
+
+            if($queryPrp->execute(['email' => $email])){
+                $object = $queryPrp->fetch();
+                return $object;
+            }
+            return false;
+        }
     }
