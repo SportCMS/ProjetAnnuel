@@ -6,11 +6,8 @@
     use App\models\Password_reset as PswdRst;
     use App\core\Verificator;
     use App\core\Sql;
-    use App\PHPMailer\PHPMailer;
-    use App\PHPMailer\SMTP;
-    use App\PHPMailer\Exception;
     use App\core\Session;
-    use App\controllers\Mail;
+    use App\core\Mail;
 
     class User {
         /* Session test*/
@@ -104,30 +101,20 @@
             $pswdRst->generateTokenExpiry();
             $pswdRst->setIdUser($user);
             
-            $mail = new PHPMailer();
-            $mail->isSMTP();
-            $mail->Host = MAILHOST;
-            $mail->SMTPAuth = "true";
-            $mail->SMTPSecure = MAILENCRYPT;
-            $mail->Port = MAILPORT;
-            $mail->Username = MAILUSER;
-            $mail->Password = MAILPSWD;
-            $mail->iSHtml(true);
-            $mail->setFrom(MAILUSER);
-            $mail->addAddress($_POST['email']);
-            $mail->Subject = "Test";
-            $mail->Body = '<h1 style="color:blue">SPORTCMS</h1>
-                <p>
-                    Nous avons bien reçus votre demande de changement de mot de passe.
-                </p>
-                <div>
-                    Changez de mot de passe en cliquant <a href="http://127.0.0.1:81/changePassword?token=' . $pswdRst->getToken() . '">ici</a>
-                </div>
-            ';
-            if(!$mail->Send()){
+            $mail = new Mail();
+            $mail->sendTo($_POST['email']);
+            $mail->subject("Il est l'heure de changer de mot de passe");
+            $mail->message('<h1 style="color:blue">SPORTCMS</h1>
+            <p>
+                Nous avons bien reçus votre demande de changement de mot de passe.
+            </p>
+            <div>
+                Changez de mot de passe en cliquant <a href="http://127.0.0.1:81/changePassword?token=' . $pswdRst->getToken() . '">ici</a>
+            </div>');
+            if(!$mail->send()){
                 die("Vous rencontrer une erreur lors de l'envoie de mail");
             }
-            $mail->smtpClose();
+            
             $pswdRst->save();
             echo "Vous allez recevoir un mail pour modifier votre mail";
         }
@@ -198,30 +185,19 @@
             $user->generateToken();
     
             $user->save();
-    
-            $mail = new PHPMailer();
-            $mail->isSMTP();
-            $mail->Host = MAILHOST;
-            $mail->SMTPAuth = "true";
-            $mail->SMTPSecure = MAILENCRYPT;
-            $mail->Port = MAILPORT;
-            $mail->Username = MAILUSER;
-            $mail->Password = MAILPSWD;
-            $mail->iSHtml(true);
-            $mail->setFrom(MAILUSER);
-            $mail->addAddress($_POST['email']);
-            $mail->Subject = "Confirmation inscription SportCMS";
-            $mail->Body = "
+
+            $mail = new Mail();
+            $mail->sendTo($_POST['email']);
+            $mail->subject("Confirmation inscription SportCMS");
+            $mail->message("
             Bonjour " . $user->getFirstname() .
             " <br><br>Nous avons bien reçu vos informations. <br>
             Afin de valider votre compte merci de cliquer sur le lien suivant <a href='http://localhost:81/confirmaccount?token=".$user->getToken()."'>Ici</a> <br><br>
             Cordialement,<br>
-            <a href=''>L'Equipe de SportCMS</a>
-            ";
-            if(!$mail->Send()){
+            <a href=''>L'Equipe de SportCMS</a>");
+            if(!$mail->send()){
                 die("Vous rencontrer une erreur lors de l'envoie de mail");
             }
-            $mail->smtpClose();
             $view->assign("success", "Un e-mail de confirmation vous a été envoyé pour valider votre compte !");
         }
 
