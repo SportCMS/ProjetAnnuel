@@ -26,7 +26,7 @@
          * @var int
          * 
          */
-        protected $userId;
+        protected $id_user;
 
         public function __construct(){
             parent::__construct();
@@ -56,13 +56,13 @@
             $this->tokenExpiry = time() + (60*15);
         }
         //test
-        public function getUserId():?int
+        public function getIdUser():?int
         {
-            return $this->userId;
+            return $this->id_user;
         }
-        public function setUserId(?user $userId):void
+        public function setIdUser(?user $user):void
         {
-            $this->userId = $userId->getId();
+            $this->id_user = $user->getId();
         }
         public function save(): void
         {
