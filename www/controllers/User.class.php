@@ -10,7 +10,9 @@
     use App\core\Mail;
 
     class User {
-        /* Session test*/
+        /******************************************************/
+        /*********************PARTIE LOGIN*********************/
+        /******************************************************/
         public function login()
         {
             $view = new View("Login");
@@ -56,32 +58,14 @@
 
             header ('Location: login');
         }
-
-        public function redi(){
-            $test = "le test est concluant";
-            $session = new Session();
-            //header('Location: /forgetPassword');
-        }
         /******************************************************/
         /***************PARTIE CHANGER MOT DE PASSE************/
         /******************************************************/
-        //Formulaire email user
         public function forgetPswd(){
-            if(isset($test)){
-                echo $test;
-                die();
-            }
             $user = new UserModel();
             $view = new View("forgetpswd");
-            $view->assign("user", $user);
-        }
-        //envoie mail utilisateur ou redirection vers formulaire 
-        public function sendPswdRst(){
-            $view = new View("forgetpswd");
-            $user = new UserModel();
             $view->assign("user", $user);
             if(empty($_POST)){
-                $view->assign("error", "Aie un champ a disparue. =,(");
                 die();
             }
             $result = Verificator::checkForm($user->getForgetPswdForm(), $_POST);
@@ -121,6 +105,8 @@
         public function changePswd(){
             $pswdRst = new PswdRst();
             $user = new UserModel();
+            $view = new View("changepswd");
+            $view->assign("user", $user);
             if(empty($pswdRst->getOneBy(["token" => $_GET["token"]])[0])){
                 die('<p style="color:red;">Le token n\'existe pas</p>');
             }
@@ -128,22 +114,8 @@
             if($pswdRst->getTokenExpiry() < time()){
                 die('<p style="color:red;">Le token n\'est plus valide</p>');
             }
-            $session = new Session();
-            $session->set("token", $pswdRst->getToken());
-            $view = new View("changepswd");
-            $view->assign("user", $user);
-        }
-        //confirm changement mot de passe
-        public function confirmChng(){
-            $user = new UserModel();
-            $pswdRst = new PswdRst();
-            $session = new Session();
-            $pswdRst = $pswdRst->getOneBy(["token" => $session->get('token')])[0];
-            if(empty($pswdRst) && $pswdRst->getTokenExpiry() < time()){
-                die("Le token n'existe pas ou est expiré");
-            }
             if(empty($_POST)){
-                die("Attention Vous n'avez pas remplie les champs");
+                die();
             }
             $result = Verificator::checkForm($user->getChangePswdForm(), $_POST);
             if(!empty($result)){
@@ -154,7 +126,9 @@
             $user->save();
             echo "Mot de passe changé";
         }
-        /*****REGISTER*****/
+        /******************************************************/
+        /*********************PARTIE REGISTER******************/
+        /******************************************************/
         public function register(){$user = new UserModel();
             $view = new View("register");
             $view->assign("user", $user);

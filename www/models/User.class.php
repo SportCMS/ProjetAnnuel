@@ -154,7 +154,7 @@
                         "type"=>"email",
                         "id"=>"emailRegister",
                         "class"=>"formRegister",
-                        "error"=>"Email incorrect",
+                        "error"=>"Mot de passe ou email incorrect",
                         "required"=>true,
                     ],
                     "password"=>[
@@ -164,7 +164,7 @@
                         "class"=>"formRegister",
                         "error"=>"Password incorrect",
                         "required"=>true,
-                        "error"=>"Mot de passe invalide"
+                        "error"=>"Mot de passe ou email incorrect"
                     ]
                 ]
             ];
@@ -173,7 +173,7 @@
         public function getForgetPswdForm(){
             return ["config"=>[
                 "method"=>"POST",
-                "action"=>"sendPasswordReset",
+                "action"=>"",
                 "id"=>"formRstPswd",
                 "class"=>"formRstPswd",
                 "submit"=>"Récuperer mot de passe"
@@ -206,7 +206,7 @@
         public function getChangePswdForm(){
             return ["config"=>[
                 "method"=>"POST",
-                "action"=>"confirmChange",
+                "action"=>"changePassword?token=" . $_GET["token"],
                 "id"=>"formChangePswd",
                 "class"=>"formChangePswd",
                 "submit"=>"Changer de mot de passe"

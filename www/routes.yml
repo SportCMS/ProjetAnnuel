@@ -26,20 +26,11 @@
   controller: mail
   action: main
 
-
+#modification de mot de passe
 /forgetPassword:
   controller: user
   action: forgetPswd
-/sendPasswordReset:
-  controller: user
-  action: sendPswdRst
+
 /changePassword:
   controller: user
   action: changePswd
-/confirmChange:
-  controller: user
-  action: confirmChng
-
-/redi:
-  controller: user
-  action: redi
