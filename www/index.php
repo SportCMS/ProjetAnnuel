@@ -27,7 +27,8 @@
 
 	$uri = strtok($_SERVER['REQUEST_URI'], "?");//J'ai ajouté strtok afin de gérer les requetes get
 	if(empty($routes[$uri]) || empty($routes[$uri]['controller']) || empty($routes[$uri]['action'])){
-		die("Page 404");
+		http_response_code(404);
+		die("Page introuvable");
 	}
 	if(!Security::checkRoute($uri)){
 		die('Root n\'existe pas');

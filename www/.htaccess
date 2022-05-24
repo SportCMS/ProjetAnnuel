@@ -5,3 +5,11 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 
 RewriteRule . index.php [L]
+
+Redirect 404 /.env
+Redirect 404 /routes.yml
+Redirect 404 /controllers/
+Redirect 404 /core/
+Redirect 404 /models/
+Redirect 404 /PHPMailer/
+Redirect 404 /views/
