@@ -5,8 +5,7 @@
 
     $sql = Migration::create(DBPREFIXE.'password_reset',[
         Table::id(),
-        Table::newColumn('token', 'char')->lenght(128),
-        Table::newColumn('tokenExpiry', 'int')
+        Table::newColumn('token', 'Char')->lenght(128)
     ]);
 
     $drop = Migration::drop(DBPREFIXE.'password_reset');
