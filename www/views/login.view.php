@@ -1,9 +1,9 @@
 <h1>Login</h1>
 
-<?php if(!empty($result)): ?>
+<?php if(!empty($errors)): ?>
 				<div class="">
-					<?php foreach($result as $uneErreur): ?>
-						<p> <?=$uneErreur?> </p>
+					<?php foreach($errors as $error): ?>
+						<p> <?=$error?> </p>
 					<?php endforeach ?>
 				</div>
         <?php endif ?>

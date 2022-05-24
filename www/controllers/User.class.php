@@ -3,63 +3,47 @@
     use App\core\User as Us;
     use App\core\View;
     use App\models\User as UserModel;
+    use App\models\Password_reset as PswdRst;
     use App\core\Verificator;
     use App\core\Sql;
+    use App\core\Session;
+    use App\core\Mail;
 
     class User {
-
-
+        /* Session test*/
         public function login()
         {
-            
             $view = new View("Login");
-            $config = UserModel::getLoginForm();
             $user = new UserModel();
             
             $view->assign("user", $user);
-            if($_SERVER["REQUEST_METHOD"] == "POST") {
-                $result = Verificator::checkForm($user->getLoginForm(), $_POST);
-
-                if(!empty($result)){
-                    $view ->assign('result',$result);
-                }else{
-                    if(!empty($_POST)){
-                        
-                        $user_form = $user->getOneBy(['email' => $_POST['email']]);
-                        $object=$user_form[0];
-
-                        !is_null($user_form) ? $pwd = $object->password : '';
-                        !is_null($user_form) ? $email = $object->email : '';
-
-                        $token=$object->token;
-
-                        $pwd_user = password_hash(isset($pwd) ? $pwd : '', PASSWORD_DEFAULT);
-                        $email_user = isset($email) ? $email : '';
-                        $pwd_verif = password_verify($_POST['password'],$pwd_user);
-
-                        if($email_user === $_POST['email'] && $pwd_verif && $token == null){
-                            header("Location: dashboard");
-                            session_start ();
-                            $_SESSION['email'] = $_POST['email'];
-                            $_SESSION['pwd'] = $_POST['password'];
-                            var_dump("yeeees");
-                        }elseif(!$pwd_verif){
-                            $result[]="Votre mot de passe est incorrect";
-                            $view->assign('result',$result);
-                        }elseif($token !== null){
-                            $result[] = "Veuillez activer votre compte";
-                            $view->assign('result',$result);
-                            var_dump("fail_token");
-                        }
-                    }
-                    else{}
-                }
-
+            if(empty($_POST)){
+                die();
             }
-            $view->assign("config",$config);
+            $errors = Verificator::checkForm($user->getLoginForm(), $_POST);
+            if(!empty($errors)){
+                $view->assign('errors', $errors);
+                die();
+            }
+            if(!isset($user->getOneBy(['email' => $_POST['email']])[0])){
+                $view->assign('errors', ["Votre email ou mot de passe est invalide"]);
+                die();
+            }
+            $user = $user->getOneBy(['email' => $_POST['email']])[0];
 
-
+            if(!password_verify($_POST['password'], $user->getPassword())){
+                $view->assign('errors', ["Votre email ou mot de passe est invalide"]);
+                die();
+            }
+            $status = $user->getStatus();
             
+            if($status == 0){
+                $view->assign('errors', ["Votre compte n'est pas encore actif"]);
+                die();
+            }
+            $session = new Session();
+            $session->set('email', $_POST['email']);
+            header("Location: dashboard");
         }
         public function logout()
         {
@@ -73,31 +57,160 @@
             header ('Location: login');
         }
 
-
-        public function register(){
-            $user = new UserModel();
-
-            if(!empty($_POST)) {
-                $result = Verificator::checkForm($user->getExamForm(), $_POST);
-            }
-
-
-            $view = new View("Register");
-            $view->assign("user", $user);
+        public function redi(){
+            $test = "le test est concluant";
+            $session = new Session();
+            //header('Location: /forgetPassword');
         }
-
-
-
-        
-
-
+        /******************************************************/
+        /***************PARTIE CHANGER MOT DE PASSE************/
+        /******************************************************/
+        //Formulaire email user
         public function forgetPswd(){
+            if(isset($test)){
+                echo $test;
+                die();
+            }
             $user = new UserModel();
-            $user = $user->getBy(['email' => 'ayman.bedda@gmail.com', 'id' => 5]);
-            //$user = $user->getOneBy(['email' => 'ayman.bedda@gmail.com']);
-            var_dump($user);
-            die();
             $view = new View("forgetpswd");
             $view->assign("user", $user);
+        }
+        //envoie mail utilisateur ou redirection vers formulaire 
+        public function sendPswdRst(){
+            $view = new View("forgetpswd");
+            $user = new UserModel();
+            $view->assign("user", $user);
+            if(empty($_POST)){
+                $view->assign("error", "Aie un champ a disparue. =,(");
+                die();
+            }
+            $result = Verificator::checkForm($user->getForgetPswdForm(), $_POST);
+            if(!empty($result)){
+                $view->assign("error", "Aie ton email est mal écrit. =,(");
+                die();
+            }
+            $user = $user->getOneBy(["email" => $_POST['email']]);
+            if(empty($user)){
+                $view->assign("error", "L'email n'existe pas. =,(");
+                die();
+            }
+            $user = $user[0]; 
+            $pswdRst = new PswdRst();
+            $pswdRst->generateToken();
+            $pswdRst->generateTokenExpiry();
+            $pswdRst->setIdUser($user);
+            
+            $mail = new Mail();
+            $mail->sendTo($_POST['email']);
+            $mail->subject("Il est l'heure de changer de mot de passe");
+            $mail->message('<h1 style="color:blue">SPORTCMS</h1>
+            <p>
+                Nous avons bien reçus votre demande de changement de mot de passe.
+            </p>
+            <div>
+                Changez de mot de passe en cliquant <a href="http://127.0.0.1:81/changePassword?token=' . $pswdRst->getToken() . '">ici</a>
+            </div>');
+            if(!$mail->send()){
+                die("Vous rencontrer une erreur lors de l'envoie de mail");
+            }
+            
+            $pswdRst->save();
+            echo "Vous allez recevoir un mail pour modifier votre mail";
+        }
+        //formulaire changement du mot de passeEmail envoyé
+        public function changePswd(){
+            $pswdRst = new PswdRst();
+            $user = new UserModel();
+            if(empty($pswdRst->getOneBy(["token" => $_GET["token"]])[0])){
+                die('<p style="color:red;">Le token n\'existe pas</p>');
+            }
+            $pswdRst = $pswdRst->getOneBy(["token" => $_GET["token"]])[0];
+            if($pswdRst->getTokenExpiry() < time()){
+                die('<p style="color:red;">Le token n\'est plus valide</p>');
+            }
+            $session = new Session();
+            $session->set("token", $pswdRst->getToken());
+            $view = new View("changepswd");
+            $view->assign("user", $user);
+        }
+        //confirm changement mot de passe
+        public function confirmChng(){
+            $user = new UserModel();
+            $pswdRst = new PswdRst();
+            $session = new Session();
+            $pswdRst = $pswdRst->getOneBy(["token" => $session->get('token')])[0];
+            if(empty($pswdRst) && $pswdRst->getTokenExpiry() < time()){
+                die("Le token n'existe pas ou est expiré");
+            }
+            if(empty($_POST)){
+                die("Attention Vous n'avez pas remplie les champs");
+            }
+            $result = Verificator::checkForm($user->getChangePswdForm(), $_POST);
+            if(!empty($result)){
+                die("HOO! des erreurs sont présentent dans le formulaire");
+            }
+            $user = $user->setId($pswdRst->getIdUser());
+            $user->setPassword($_POST['password']);
+            $user->save();
+            echo "Mot de passe changé";
+        }
+        /*****REGISTER*****/
+        public function register(){$user = new UserModel();
+            $view = new View("register");
+            $view->assign("user", $user);
+            /* Si post vide alors on affiche le formulaire */
+            if(empty($_POST)){
+                die();
+            }
+    
+            $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
+            /* si des erreurs sont présentes on renvois sur la vue avec les erreurs */
+            if(!empty($errors)){
+                $view->assign("errors", $errors);
+                die();
+            }
+            $firstname = strip_tags($_POST['firstname']);
+            $lastname = strip_tags($_POST['lastname']);
+            /* si l'email est trouvé en base retour vue avec erreur */
+            if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
+                $view->assign("errors",  ["L'utilisateur existe"]);
+                die();
+            }
+    
+            $user->setFirstname($firstname);
+            $user->setLastname($lastname);
+            $user->setEmail($_POST['email']);
+            $user->setPassword($_POST['password']);
+            $user->generateToken();
+    
+            $user->save();
+
+            $mail = new Mail();
+            $mail->sendTo($_POST['email']);
+            $mail->subject("Confirmation inscription SportCMS");
+            $mail->message("
+            Bonjour " . $user->getFirstname() .
+            " <br><br>Nous avons bien reçu vos informations. <br>
+            Afin de valider votre compte merci de cliquer sur le lien suivant <a href='http://localhost:81/confirmaccount?token=".$user->getToken()."'>Ici</a> <br><br>
+            Cordialement,<br>
+            <a href=''>L'Equipe de SportCMS</a>");
+            if(!$mail->send()){
+                die("Vous rencontrer une erreur lors de l'envoie de mail");
+            }
+            $view->assign("success", "Un e-mail de confirmation vous a été envoyé pour valider votre compte !");
+        }
+
+        public function confirmaccount() {
+            $user = new UserModel();
+            if(!isset($user->getOneBy(['token' => $_GET['token']])[0])){
+                die();
+            }
+            $user = $user->getOneBy(['token' => $_GET['token']])[0];
+
+            if($user->getStatus() == 0){
+                $user->setStatus(1);
+                $user->save();
+            }
+            header('Location: /login');
         }
     }

@@ -16,7 +16,7 @@
             parent::__construct();
         }
         //id
-        public function getId():?id
+        public function getId():?int
         {
             return $this->id;
         }
@@ -84,12 +84,30 @@
             return [
                 "config"=>[
                     "method"=>"POST",
-                    "action"=>"/confirmAcc",
+                    "action"=>"/register",
                     "id"=>"formRegister",
                     "class"=>"formRegister",
                     "submit"=>"S'inscrire"
                 ],
                 "inputs"=>[
+                    "firstname"=>[
+                        "placeholder"=>"Votre prénom ...",
+                        "type"=>"text",
+                        "id"=>"firstnameRegister",
+                        "class"=>"formRegister",
+                        "min"=>2,
+                        "max"=>25,
+                        "error"=>" Votre prénom doit faire entre 2 et 25 caractères",
+                    ],
+                    "lastname"=>[
+                        "placeholder"=>"Votre nom ...",
+                        "type"=>"text",
+                        "id"=>"lastnameRegister",
+                        "class"=>"formRegister",
+                        "min"=>2,
+                        "max"=>100,
+                        "error"=>" Votre nom doit faire entre 2 et 100 caractères",
+                    ],
                     "email"=>[
                         "placeholder"=>"Votre email ...",
                         "type"=>"email",
@@ -116,24 +134,6 @@
                         "required"=>true,
                         "error"=>"Votre confirmation de mot de passe ne correspond pas",
                         "confirm"=>"password"
-                    ],
-                    "firstname"=>[
-                        "placeholder"=>"Votre prénom ...",
-                        "type"=>"text",
-                        "id"=>"firstnameRegister",
-                        "class"=>"formRegister",
-                        "min"=>2,
-                        "max"=>25,
-                        "error"=>" Votre prénom doit faire entre 2 et 25 caractères",
-                    ],
-                    "lastname"=>[
-                        "placeholder"=>"Votre nom ...",
-                        "type"=>"text",
-                        "id"=>"lastnameRegister",
-                        "class"=>"formRegister",
-                        "min"=>2,
-                        "max"=>100,
-                        "error"=>" Votre nom doit faire entre 2 et 100 caractères",
                     ]
                 ]
             ];
@@ -154,6 +154,7 @@
                         "type"=>"email",
                         "id"=>"emailRegister",
                         "class"=>"formRegister",
+                        "error"=>"Email incorrect",
                         "required"=>true,
                     ],
                     "password"=>[
@@ -161,18 +162,20 @@
                         "type"=>"password",
                         "id"=>"pwdRegister",
                         "class"=>"formRegister",
+                        "error"=>"Password incorrect",
                         "required"=>true,
                         "error"=>"Mot de passe invalide"
                     ]
                 ]
             ];
         }
+        /* formulaire de d'envoie de l'email pour change mot de passe */
         public function getForgetPswdForm(){
             return ["config"=>[
                 "method"=>"POST",
-                "action"=>"",
-                "id"=>"formLogin",
-                "class"=>"formLogin",
+                "action"=>"sendPasswordReset",
+                "id"=>"formRstPswd",
+                "class"=>"formRstPswd",
                 "submit"=>"Récuperer mot de passe"
                 ],
                 "inputs"=>[
@@ -198,9 +201,34 @@
                 "id"=>"logou__btn",
                 "class"=>"logout",
                 "submit"=>"Se déconnecter"
+            ]];
+        }
+        public function getChangePswdForm(){
+            return ["config"=>[
+                "method"=>"POST",
+                "action"=>"confirmChange",
+                "id"=>"formChangePswd",
+                "class"=>"formChangePswd",
+                "submit"=>"Changer de mot de passe"
+                ],
+                "inputs"=>[
+                    "password"=>[
+                        "placeholder"=>"Votre mot de passe ...",
+                        "type"=>"password",
+                        "id"=>"changePswd",
+                        "class"=>"changePswd",
+                        "required"=>true,
+                        "error"=>"mot de passe incorrect"
+                    ],
+                    "confirmPassword"=>[
+                        "placeholder"=>"Confirmez votre mot de pase ...",
+                        "type"=>"password",
+                        "id"=>"changePswd",
+                        "class"=>"changePswd",
+                        "required"=>true,
+                        "error"=>"Pas le meme mot de passe"
+                    ]
                 ]
-                
-                
             ];
         }
     }

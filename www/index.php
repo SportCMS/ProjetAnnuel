@@ -2,7 +2,7 @@
 	namespace App;
 	use App\core\Security;
 
-	require "conf.inc.php";
+	require ".env";
 
 	function myAutoloader($class)
 	{
@@ -24,8 +24,8 @@
 	}else{
 		die("fichier existe pas");
 	}
-	$uri = $_SERVER['REQUEST_URI'];
 
+	$uri = strtok($_SERVER['REQUEST_URI'], "?");//J'ai ajouté strtok afin de gérer les requetes get
 	if(empty($routes[$uri]) || empty($routes[$uri]['controller']) || empty($routes[$uri]['action'])){
 		die("Page 404");
 	}
