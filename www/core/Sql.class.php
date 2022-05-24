@@ -62,4 +62,13 @@
             }
             return $val;
         }
+
+        public function getAll()
+        {
+            
+            $sql = 'SELECT * FROM ' . $this->table;
+            $queryPrp = $this->pdo->prp($sql);
+            
+            return $queryPrp->fetchAll(\PDO::FETCH_ASSOC);
+        }
     }
