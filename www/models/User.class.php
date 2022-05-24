@@ -192,6 +192,17 @@
                 ]
             ];
         }
+
+
+        public function getLogoutBtn(){
+            return ["config"=>[
+                "method"=>"POST",
+                "action"=>"/logout",
+                "id"=>"logou__btn",
+                "class"=>"logout",
+                "submit"=>"Se déconnecter"
+            ]];
+        }
         public function getChangePswdForm(){
             return ["config"=>[
                 "method"=>"POST",

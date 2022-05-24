@@ -15,6 +15,7 @@
         {
             $view = new View("Login");
             $user = new UserModel();
+            
             $view->assign("user", $user);
             if(empty($_POST)){
                 die();
@@ -46,16 +47,14 @@
         }
         public function logout()
         {
-            $user = new UserModel();
-            $user = $user->setId(5);
-            $pswdRst = new PswdRst();
-            $pswdRst->generateToken();
-            $pswdRst->generateTokenExpiry();
-            $pswdRst->setIdUser($user);
-            echo "<pre>";
-            var_dump($pswdRst);
-            echo "</pre>";
-            $pswdRst->save();
+
+            session_start ();
+
+            session_unset ();
+
+            session_destroy ();
+
+            header ('Location: login');
         }
 
         public function redi(){
