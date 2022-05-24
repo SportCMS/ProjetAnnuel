@@ -1,8 +1,10 @@
 <?php
     namespace App\controllers;
+    use App\core\View;
+
     class Main {
         public function home()
         {
-            echo "Homi";
+            $view = new View("home");
         }
     }

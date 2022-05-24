@@ -13,7 +13,7 @@
         /* Session test*/
         public function login()
         {
-            $view = new View("Login");
+            $view = new View("Login", "empty");
             $user = new UserModel();
             
             $view->assign("user", $user);
@@ -156,7 +156,7 @@
         }
         /*****REGISTER*****/
         public function register(){$user = new UserModel();
-            $view = new View("register");
+            $view = new View("register", "empty");
             $view->assign("user", $user);
             /* Si post vide alors on affiche le formulaire */
             if(empty($_POST)){
