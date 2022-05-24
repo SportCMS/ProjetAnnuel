@@ -28,7 +28,7 @@
         }
         /* création d'un "timestamps" poour une table */
         public static function timestamps(){
-            return new Table(['name' => 'createAt', 'type' => 'timestamp', 'default' => 'DEFAULT CURRENT_TIMESTAMP' , 'separator' => ',', 'name2' => 'updateAt', 'type2' => 'timestamp', 'update' => 'ON UPDATE CURRENT_TIMESTAMP']);
+            return new Table(['name' => 'createAt', 'type' => 'timestamp', 'default' => 'DEFAULT CURRENT_TIMESTAMP' , 'separator' => ',', 'name2' => 'updateAt', 'type2' => 'timestamp', 'default2' => 'NULL DEFAULT NULL', 'update' => 'ON UPDATE CURRENT_TIMESTAMP']);
         }
         /* valeur par défault de la table */
         public function default($value = 'NOT NULL'){
