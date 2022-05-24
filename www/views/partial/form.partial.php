@@ -7,6 +7,10 @@
 
     <?php foreach ($config["inputs"] as $name=>$input) :
         switch ($input["type"]):
+
+            /**********************************
+             * ********* RADIO ***************
+             **********************************/
             case "radio"://crd
                 foreach($input['value'] as $key=>$value):?>
                 <input name="<?= $name ?>" 
@@ -20,7 +24,12 @@
                 <?php 
                 endforeach;
                 break;//crf?>
+            
+            
         <?php case "checkbox"://ccd
+             /**********************************
+             * ********* CHECKBOX ***************
+             **********************************/
                 foreach($input['value'] as $key=>$value):?>
                     <input name="<?= $name ?>" 
                         type="checkbox" 
@@ -33,28 +42,53 @@
                 <?php 
                 endforeach;
                 break;//ccf?>
+
+
         <?php case "select"://csd?>
-                <select name="<?= $name ?>" id="<?= $input["id"]??"" ?>" class="<?= $input["class"]??"" ?>" >
-                    <?php foreach($input['value'] as $key=>$value):?>
-                        <option value="<?= $value??""?>" <?php if(!empty( $input["selected"])) echo ($value === $input['selected'])? 'selected="selected"': '';?>><?= $key??"Choix"?></option>
-                    <?php  endforeach;?>
+                <!--
+                     /**********************************
+                    * ********* SELECT ***************
+                    **********************************/
+                -->
+                <select name="<?= $name ?>" id="<?= $input["id"] ?? "" ?>" class="<?= $input["class"] ?? "" ?>">
+                    <option value="">Veuillez choisir</option>
+                    <?php foreach ($input['value'] as $value) : ?>
+                        <option value="<?= $value[0] ?>"><?= $value[1]  ?></option>
+
+                    <?php endforeach; ?>
                 </select>
                 <br>
-                <?php break;//csf?>
+                <?php break; ?>
+
+
+
         <?php case "textarea"://ctd?>
+             <!--
+                     /**********************************
+                    * ********* TEXTAREA ***************
+                    **********************************/
+                -->
                 <textarea name="<?= $name ?>" class="<?= $input["class"]??"" ?>" id="<?= $input["id"]??"" ?>" placeholder="<?= $input["placeholder"]??"" ?>"></textarea>
                 <br>
                 <?php break;//ctf?>
+
         <?php case "file"://cfd?>
-            <input 
-                type="file" 
-                name="<?= $name ?>" 
-                class="<?= $input["class"]??"" ?>" 
-                id="<?= $input["id"]??"" ?>"
-                <?= !empty( $input["multiple"])?'multiple':""  ?>>
-            <br>
-            <?php break;//cff?>
+                <input 
+                    type="file" 
+                    name="<?= $name ?>" 
+                    class="<?= $input["class"]??"" ?>" 
+                    id="<?= $input["id"]??"" ?>"
+                    <?= !empty( $input["multiple"])?'multiple':""  ?>>
+                        <br>
+                    <?php break;//cff?>
+
+
         <?php case 'captcha'://ccd?>
+             <!--
+                     /**********************************
+                    * ********* RECAPTCHA ***************
+                    **********************************/
+                -->
 	        <div class="g-recaptcha" data-sitekey="<?= CAPTCHASITEKEY?>"></div>
             <?php break;//ccf?>
         <?php default:?>
@@ -69,4 +103,7 @@
     <?php endforeach;?>
 
     <input type="submit" value="<?= $config["config"]["submit"]??"Envoyer"?>">
+    
+    
 </form>
+   
