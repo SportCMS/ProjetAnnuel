@@ -3,4 +3,4 @@
 
 	require 'autoloader/autoloader.php';
 
-	include 'kernel/core.php';
+	include 'kernel/kernel.php';

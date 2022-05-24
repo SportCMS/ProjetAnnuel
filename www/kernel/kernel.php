@@ -2,6 +2,10 @@
     namespace App\kernel;
     use App\kernel\migration\Migrate;
     use App\kernel\controller\Controller;
+    
+    if(is_null(USER)){
+        die("\e[0;30;41mAttention ! Merci de définir votre nom d'utilisateur dans le fichier .env\e[0m\n");
+    }
     define('EXECB', microtime(true));
     $argv[1] = (isset($argv[1])) ? $argv[1] : null;
     switch($argv[1]){

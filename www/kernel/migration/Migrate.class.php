@@ -21,6 +21,7 @@
     
     \$drop = Migration::drop(DBPREFIXE.'" . $name . "');";
             file_put_contents($file, $content);
+            chown($file, "www-data");
             echo "\e[0;30;42mMigration créée avec succès !\e[0m\n";
             echo "\e[0;30;42mTemps éxecution : " . round((microtime(true) - EXECB), 4) .  "s\e[0m\n";
         }
@@ -40,6 +41,7 @@
         
     \$drop = Migration::dropConstraint(DBPREFIXE.'" . $name . "','forget_password_to_user');";
         file_put_contents($file, $content);
+        chown($file, "www-data");
         echo "\e[0;30;42mReference créée avec succès !\e[0m\n";
         echo "\e[0;30;42mTemps éxecution : " . round((microtime(true) - EXECB), 4) .  "s\e[0m\n";
         }

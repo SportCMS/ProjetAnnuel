@@ -20,6 +20,7 @@
         }
     }";
             file_put_contents($file, $content);
+            chown($file, "www-data");
             echo "\e[0;30;42mController crée avec succès !\e[0m\n\n";
             echo "\e[0;30;42mTemps éxecution : " . round((microtime(true) - EXECB), 4) .  "s\e[0m\n";
         }
