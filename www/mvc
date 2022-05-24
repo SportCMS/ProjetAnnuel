@@ -1,0 +1,6 @@
+<?php
+	require ".env";
+
+	require 'autoloader/autoloader.php';
+
+	include 'kernel/kernel.php';
