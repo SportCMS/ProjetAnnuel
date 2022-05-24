@@ -68,7 +68,6 @@
                         array_push($stmts, $sql);
                     }
                 }
-                var_dump($sql);
             }
             foreach($stmts as $stmt){
                 $conn->prp($stmt);
