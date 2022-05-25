@@ -30,7 +30,7 @@
                     $errors[]=$input["error"];
                 }
     
-                if($input["type"]=="password" &&  !self::checkPwd($data[$name]) && empty($input["confirm"])) {
+                if($input["type"]=="password" &&  !self::checkPwd($data[$name]) && empty($input["confirm"])){
                     $errors[]=$input["error"];
                 }
 

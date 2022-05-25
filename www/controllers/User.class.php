@@ -4,7 +4,7 @@
     use App\core\View;
     use App\models\User as UserModel;
     use App\models\Password_reset as PswdRst;
-    use App\core\Verificator;
+    use App\core\verificator\Verificator;
     use App\core\Sql;
     use App\core\Session;
     use App\core\Mail;
@@ -202,6 +202,9 @@
 
         public function confirmaccount() {
             $user = new UserModel();
+
+            $view = new View("confirmaccount", "empty");
+            
             if(!isset($user->getOneBy(['token' => $_GET['token']])[0])){
                 die();
             }
