@@ -149,7 +149,7 @@
             if(!empty($result)){
                 die("HOO! des erreurs sont présentent dans le formulaire");
             }
-            $user = $user->setId($pswdRst->getIdUser());
+            $user->setId($pswdRst->getIdUser());
             $user->setPassword($_POST['password']);
             $user->save();
             echo "Mot de passe changé";
@@ -174,6 +174,11 @@
             /* si l'email est trouvé en base retour vue avec erreur */
             if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
                 $view->assign("errors",  ["L'utilisateur existe"]);
+                die();
+            }
+
+            if($_POST['password'] !== $_POST['passwordConfirm']) {
+                echo "Vos mots de passe ne correspondent pas !!!";
                 die();
             }
     
