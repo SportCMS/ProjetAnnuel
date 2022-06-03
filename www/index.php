@@ -2,6 +2,12 @@
 	namespace App;
 	use App\core\Security;
 
+	// ouverture session - 
+	//	TODO::
+			// - mettre les données en session dans le contollers user 
+			// -  créer un bouton logout avec le partial dédié pour le menu pour détruire la session et tester les différents roles 
+	session_start();
+
 	require ".env";
 
 	function myAutoloader($class)
@@ -34,6 +40,19 @@
 	}
 	$controller =  'App\\controllers\\' . ucfirst(strtolower($routes[$uri]['controller']));
 	$action = strtolower($routes[$uri]['action']);
+
+	// echo '<pre>';
+	// var_dump($routes);
+	// echo '</pre>';
+
+	//ajout role - routes.yaml - control des roles via index.php
+	$role = $routes[$uri]['role'];
+
+	if(isset($_SESSION['role'])){
+		if(!in_array($_SESSION['role'], $role) && !in_array('public',$role)){
+			throw new \Exception('Vous n\'avez pas le droit d\'accéder à cette page');
+		}
+	}
 
 	$objectController = new $controller();
 	if(!method_exists($objectController, $action)){

@@ -224,56 +224,56 @@
             header('Location: /login');
         }
 
-        /* Gestion des rôles */ 
-        public function isAdmin(){
-            $user = new UserModel();
-            $foundAdmin = isset($_SESSION['email']) ? $user->getOneBy(['email' => $_SESSION['email']])[0] : null;
+        // /* Gestion des rôles */ 
+        // public function isAdmin(){
+        //     $user = new UserModel();
+        //     $foundAdmin = isset($_SESSION['email']) ? $user->getOneBy(['email' => $_SESSION['email']])[0] : null;
 
-            if(!empty($foundAdmin)){
-                die("Admin non trouvé");
-            }
+        //     if(!empty($foundAdmin)){
+        //         die("Admin non trouvé");
+        //     }
 
-            if($foundAdmin->getRole() == "Admin"){
-                return true;
-            }
-        }
+        //     if($foundAdmin->getRole() == "Admin"){
+        //         return true;
+        //     }
+        // }
 
-        public function isCoach(){
-            $user = new UserModel();
-            $foundCoach = isset($_SESSION['email']) ? $user->getOneBy(['email' => $_SESSION['email']])[0] : null;
+        // public function isCoach(){
+        //     $user = new UserModel();
+        //     $foundCoach = isset($_SESSION['email']) ? $user->getOneBy(['email' => $_SESSION['email']])[0] : null;
             
-            if(empty($foundCoach)){
-                die("Coach non trouvé");
-            }
+        //     if(empty($foundCoach)){
+        //         die("Coach non trouvé");
+        //     }
 
-            if($foundCoach->getRole() == "Coach"){
-                return true;
-            }
-        }
+        //     if($foundCoach->getRole() == "Coach"){
+        //         return true;
+        //     }
+        // }
 
-        public function isSubcriber(){
-            $user = new UserModel();
-            $foundSub = isset($_SESSION['email']) ? $user->getOneBy(['email' => $_SESSION['email']])[0] : null;
+        // public function isSubcriber(){
+        //     $user = new UserModel();
+        //     $foundSub = isset($_SESSION['email']) ? $user->getOneBy(['email' => $_SESSION['email']])[0] : null;
 
-            if(empty($foundSub)){
-                die("Subscriber non trouvé");
-            }
+        //     if(empty($foundSub)){
+        //         die("Subscriber non trouvé");
+        //     }
         
-            if($foundSub->getRole() == "Subscriber"){
-                return true;
-            }
-        }
+        //     if($foundSub->getRole() == "Subscriber"){
+        //         return true;
+        //     }
+        // }
 
-        public function isUser(){
-            $user = new UserModel();
-            $foundUser = isset($_SESSION['email']) ? $user->getOneBy(['email' => $_SESSION['email']])[0] : null;
+        // public function isUser(){
+        //     $user = new UserModel();
+        //     $foundUser = isset($_SESSION['email']) ? $user->getOneBy(['email' => $_SESSION['email']])[0] : null;
 
-            if(empty($foundUser)){
-                die("User non trouvé");
-            }
+        //     if(empty($foundUser)){
+        //         die("User non trouvé");
+        //     }
         
-            if($foundUser->getRole() == "User"){
-                return true;
-            }
-        }
+        //     if($foundUser->getRole() == "User"){
+        //         return true;
+        //     }
+        // }
     }
