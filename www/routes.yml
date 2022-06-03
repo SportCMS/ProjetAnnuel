@@ -53,14 +53,22 @@
   action: commentCreate
 
 
-# routes articles
-/article:
+# routes articles - CRUD
+/createArticle:
   controller: article
   action: articleCreate
 
 /detailsArticle:
   controller: article
   action: detailsArticle
+
+/updateArticle:
+  controller: article
+  action: updateArticle
+
+/deleteArticle:
+  controller: article
+  action: deleteArticle
   
 /articles:
   controller: article
