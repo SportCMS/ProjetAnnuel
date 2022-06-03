@@ -74,6 +74,27 @@ class Article extends sql
 	    return $this->position;
     }
 
+    // ajout 
+    public function getCreatedAt(): ?string
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt($created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+
+    public function getUpdatedAt(): ?string
+    {
+        return $this->updateddAt;
+    }
+
+    public function setUpdatedAt($created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+
     public function getArticleForm($params = null):array
     {
         
@@ -84,11 +105,11 @@ class Article extends sql
         for ($i = 0; $i < count($categories); $i++) {
             $datas[] = [$categories[$i]->getId(),$categories[$i]->getName()];
         }
-
+        //ajout
         return [
             "config" => [
                 "method" => "POST",
-                "action" => "/article",
+                "action" => "",
                 "class" => "formArticle",
                 "id" => "formArticle",
                 "submit" => "Enregistrer",
@@ -96,7 +117,7 @@ class Article extends sql
 
             "inputs" => [
                 "title" => [
-                    "value" => $params != null ? $params['value'] : "", // permet de préremplir le formulaire lors de la modification du formulaire
+                    "value" =>  $params != null ? $params['title'] : "",
                     "type" => "text",
                     "id" => "title",
                     "class" => "title",
@@ -106,6 +127,7 @@ class Article extends sql
                 ],
 
                 "content" => [
+                    "value" => $params != null ? $params['content'] : "",
                     "type" => "textarea",
                     "id" => "content",
                     "class" => "content",
@@ -121,9 +143,9 @@ class Article extends sql
                     "class" => "categories",
                     //"required" => "required",
                     "value" => $datas,
+                    "selectedValue" => $params != null ? $params['selectedValue'] : "",
                 ],
             ]
         ];
     }
-
 }

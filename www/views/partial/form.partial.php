@@ -53,8 +53,11 @@
                 <select name="<?= $name ?>" id="<?= $input["id"] ?? "" ?>" class="<?= $input["class"] ?? "" ?>">
                     <option value="">Veuillez choisir</option>
                     <?php foreach ($input['value'] as $value) : ?>
-                        <option value="<?= $value[0] ?>"><?= $value[1]  ?></option>
-
+                        <?php if ($input["selectedValue"] == $value[0]) : ?>
+                            <option value="<?= $value[0] ?>" selected><?= $value[1]  ?></option>
+                        <?php else : ?>
+                            <option value="<?= $value[0] ?>"><?= $value[1]  ?></option>
+                        <?php endif ?>
                     <?php endforeach; ?>
                 </select>
                 <br>

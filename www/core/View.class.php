@@ -17,10 +17,20 @@
         public function setTemplate($template):void{
             $this->template = strtolower($template);
         }
-        public function assign($key, $value):void
+
+        // public function assign($key, $value):void
+        // {
+        //     $this->data[$key] = $value;
+        // }
+
+        public function assign(array $array): void
         {
-            $this->data[$key] = $value;
-        }
+            foreach ($array as $key => $value) {
+                $this->data[$key] = $value;
+            }
+         }
+
+         
         public function includePartial($partial, $config): void
         {
             if(!file_exists("views/partial/".$partial.".partial.php")){
