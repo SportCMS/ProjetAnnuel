@@ -9,72 +9,54 @@ class Article extends sql
 {
     protected $id;
     protected $title;
-    protected $block_id;
     protected $category_id;
     protected $content;
     protected $position;
+    protected $created_at;
+    protected $updated_at;
 
     public function __construct()
     {
-	    parent::__construct();
+        parent::__construct();
     }
 
-    public function getId():?int
+    public function getId(): ?int
     {
-	    return $this->id;
+        return $this->id;
     }
 
-    public function setTitle($title):void
+    public function setTitle($title): void
     {
-	    $this->title = $title;
-    }	
-
-    public function getTitle():?string
-    {
-	    return $this->title;
+        $this->title = $title;
     }
 
-    public function setBlockId($block_id):void
+    public function getTitle(): ?string
     {
-	    $this->block_id = $block_id;
+        return $this->title;
     }
 
-    public function getBlockId():?int
+
+    public function setCategoryId($category_id): void
     {
-	    return $this->block_id;
+        $this->category_id = $category_id;
     }
 
-    public function setCategoryId($category_id):void
+    public function getCategoryId(): ?int
     {
-	    $this->category_id = $category_id;
+        return $this->category_id;
     }
 
-    public function getCategoryId():?int
+    public function setContent($content): void
     {
-	    return $this->category_id;
+        $this->content = $content;
     }
 
-    public function setContent($content):void
+    public function getContent(): ?string
     {
-	    $this->content = $content;
+        return $this->content;
     }
 
-    public function getContent():?string
-    {
-	    return $this->content;
-    }
 
-    public function setPosition($position):void
-    {
-	    $this->position = $position;
-    }
-
-    public function getPosition():?int
-    {
-	    return $this->position;
-    }
-
-    // ajout 
     public function getCreatedAt(): ?string
     {
         return $this->createdAt;
@@ -95,17 +77,27 @@ class Article extends sql
         $this->created_at = $created_at;
     }
 
-    public function getArticleForm($params = null):array
+    public function setPosition($position): void
     {
-        
+        $this->position = $position;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+
+    public function getArticleForm($params = null): array
+    {
         $category = new Categorie();
         $categories = $category->getAll();
 
         $datas = [];
         for ($i = 0; $i < count($categories); $i++) {
-            $datas[] = [$categories[$i]->getId(),$categories[$i]->getName()];
+            $datas[] = [$categories[$i]['id'], $categories[$i]['name']];
         }
-        //ajout
+
         return [
             "config" => [
                 "method" => "POST",
@@ -129,7 +121,7 @@ class Article extends sql
                 "content" => [
                     "value" => $params != null ? $params['content'] : "",
                     "type" => "textarea",
-                    "id" => "content",
+                    "id" => "editor",
                     "class" => "content",
                     "placeholder" => "Contenu de l'article",
                     //"required" => "required",

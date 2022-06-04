@@ -71,4 +71,13 @@
             
             return $queryPrp->fetchAll(\PDO::FETCH_ASSOC);
         }
+
+        
+        public function delete($id)
+        {
+            $sql = "DELETE FROM {$this->table} WHERE id = ?";
+            $this->pdo->prp($sql, [$id]);
+        }
+    
+    
     }
