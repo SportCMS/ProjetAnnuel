@@ -1,53 +1,65 @@
+#roles mis en place
+
 /:
-    controller: main
-    action: home
+  controller: main
+  action: home
+  role: [public]
 
 /login:
-    controller: user
-    action: login
+  controller: user
+  action: login
+  role: [public]
 
 /logout:
-    controller: user
-    action: logout
+  controller: user
+  action: logout
+  role: [user, admin, super_admin]
     
 /register:
   controller: user
   action: register
+  role: [public]
 
 /confirmaccount:
   controller: user
   action: confirmaccount
+  role: [public]
 
 /dashboard:
   controller: admin
   action: home
+  role: [admin, super_admin]
 
 /mail:
   controller: mail
   action: main
+  role: [user, admin, super_admin]
 
 
 /forgetPassword:
   controller: user
   action: forgetPswd
+  role: [public]
 
 /sendPasswordReset:
   controller: user
   action: sendPswdRst
+  role: [public]
 
 /changePassword:
   controller: user
   action: changePswd
+  role: [user, admin, super_admin]
 
 /confirmChange:
   controller: user
   action: confirmChng
+  role: [user, admin, super_admin]
 
 /redi:
   controller: user
   action: redi
-
-
+  role: [user, admin, super_admin]
 
 
 # ajout 
@@ -55,32 +67,34 @@
 /createArticle:
   controller: article
   action: articleCreate
-  
+  role: [admin, super_admin]
 
 /detailsArticle:
   controller: article
   action: detailsArticle
-  
+  role: [user, admin, super_admin]
 
 /updateArticle:
   controller: article
   action: updateArticle
-
+  role: [admin, super_admin]
 
 /deleteArticle:
   controller: article
   action: deleteArticle
-  
+  role: [admin, super_admin]
 
 /articles:
   controller: article
   action: allArticle
-
+  role: [user, admin, super_admin]
+ 
 
 ###### comments/like ########
 /comment:
   controller: comment
   action: commentCreate
+  role: [user, admin, super_admin]
 
 /replyComment:
   controller: comment

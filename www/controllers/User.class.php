@@ -15,12 +15,7 @@
         {
             $view = new View("Login", "empty");
             $user = new UserModel();
-<<<<<<< HEAD
-            
-            $view->assign("user", $user);
-=======
             $view->assign(["user" => $user]);
->>>>>>> feature/CRUD_article_commentaire
             if(empty($_POST)){
                 die();
             }
@@ -154,25 +149,15 @@
             if(!empty($result)){
                 die("HOO! des erreurs sont présentent dans le formulaire");
             }
-<<<<<<< HEAD
             $user->setId($pswdRst->getIdUser());
-=======
-            
-            $user = $user->setId($pswdRst->getIdUser());
->>>>>>> feature/CRUD_article_commentaire
             $user->setPassword($_POST['password']);
             $user->save();
             echo "Mot de passe changé";
         }
         /*****REGISTER*****/
         public function register(){$user = new UserModel();
-<<<<<<< HEAD
-            $view = new View("register", "empty");
-            $view->assign("user", $user);
-=======
             $view = new View("register");
             $view->assign(["user" => $user]);
->>>>>>> feature/CRUD_article_commentaire
             /* Si post vide alors on affiche le formulaire */
             if(empty($_POST)){
                 die();
@@ -202,7 +187,9 @@
             $user->setEmail($_POST['email']);
             $user->setPassword($_POST['password']);
             $user->generateToken();
-    
+            
+            $user->setRole('User');
+
             $user->save();
 
             $mail = new Mail();
@@ -236,4 +223,57 @@
             }
             header('Location: /login');
         }
+
+        // /* Gestion des rôles */ 
+        // public function isAdmin(){
+        //     $user = new UserModel();
+        //     $foundAdmin = isset($_SESSION['email']) ? $user->getOneBy(['email' => $_SESSION['email']])[0] : null;
+
+        //     if(!empty($foundAdmin)){
+        //         die("Admin non trouvé");
+        //     }
+
+        //     if($foundAdmin->getRole() == "Admin"){
+        //         return true;
+        //     }
+        // }
+
+        // public function isCoach(){
+        //     $user = new UserModel();
+        //     $foundCoach = isset($_SESSION['email']) ? $user->getOneBy(['email' => $_SESSION['email']])[0] : null;
+            
+        //     if(empty($foundCoach)){
+        //         die("Coach non trouvé");
+        //     }
+
+        //     if($foundCoach->getRole() == "Coach"){
+        //         return true;
+        //     }
+        // }
+
+        // public function isSubcriber(){
+        //     $user = new UserModel();
+        //     $foundSub = isset($_SESSION['email']) ? $user->getOneBy(['email' => $_SESSION['email']])[0] : null;
+
+        //     if(empty($foundSub)){
+        //         die("Subscriber non trouvé");
+        //     }
+        
+        //     if($foundSub->getRole() == "Subscriber"){
+        //         return true;
+        //     }
+        // }
+
+        // public function isUser(){
+        //     $user = new UserModel();
+        //     $foundUser = isset($_SESSION['email']) ? $user->getOneBy(['email' => $_SESSION['email']])[0] : null;
+
+        //     if(empty($foundUser)){
+        //         die("User non trouvé");
+        //     }
+        
+        //     if($foundUser->getRole() == "User"){
+        //         return true;
+        //     }
+        // }
     }

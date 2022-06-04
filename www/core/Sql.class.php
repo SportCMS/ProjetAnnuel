@@ -47,6 +47,7 @@
             }
             return $val;
         }
+        
         public function getBy($entrie)
         {
             $val = [];
