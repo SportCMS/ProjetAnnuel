@@ -48,23 +48,49 @@
   action: redi
 
 
-/comment:
-  controller: comment
-  action: commentCreate
 
 
-# routes articles
-/article:
+# ajout 
+# routes CRUD articles
+/createArticle:
   controller: article
   action: articleCreate
+  
 
 /detailsArticle:
   controller: article
   action: detailsArticle
   
+
+/updateArticle:
+  controller: article
+  action: updateArticle
+
+
+/deleteArticle:
+  controller: article
+  action: deleteArticle
+  
+
 /articles:
   controller: article
   action: allArticle
 
 
+###### comments/like ########
+/comment:
+  controller: comment
+  action: commentCreate
 
+/replyComment:
+  controller: comment
+  action: replyComment
+
+/createLike:
+  controller: like
+  action: createLike
+
+/getLikes:
+  controller: like
+  action: getLikes
+###### comments/like ########

@@ -9,86 +9,99 @@ class Article extends sql
 {
     protected $id;
     protected $title;
-    protected $block_id;
     protected $category_id;
     protected $content;
     protected $position;
+    protected $created_at;
+    protected $updated_at;
 
     public function __construct()
     {
-	    parent::__construct();
+        parent::__construct();
     }
 
-    public function getId():?int
+    public function getId(): ?int
     {
-	    return $this->id;
+        return $this->id;
     }
 
-    public function setTitle($title):void
+    public function setTitle($title): void
     {
-	    $this->title = $title;
-    }	
-
-    public function getTitle():?string
-    {
-	    return $this->title;
+        $this->title = $title;
     }
 
-    public function setBlockId($block_id):void
+    public function getTitle(): ?string
     {
-	    $this->block_id = $block_id;
+        return $this->title;
     }
 
-    public function getBlockId():?int
+
+    public function setCategoryId($category_id): void
     {
-	    return $this->block_id;
+        $this->category_id = $category_id;
     }
 
-    public function setCategoryId($category_id):void
+    public function getCategoryId(): ?int
     {
-	    $this->category_id = $category_id;
+        return $this->category_id;
     }
 
-    public function getCategoryId():?int
+    public function setContent($content): void
     {
-	    return $this->category_id;
+        $this->content = $content;
     }
 
-    public function setContent($content):void
+    public function getContent(): ?string
     {
-	    $this->content = $content;
+        return $this->content;
     }
 
-    public function getContent():?string
+
+    public function getCreatedAt(): ?string
     {
-	    return $this->content;
+        return $this->createdAt;
     }
 
-    public function setPosition($position):void
+    public function setCreatedAt($created_at): void
     {
-	    $this->position = $position;
+        $this->created_at = $created_at;
     }
 
-    public function getPosition():?int
+    public function getUpdatedAt(): ?string
     {
-	    return $this->position;
+        return $this->updateddAt;
     }
 
-    public function getArticleForm($params = null):array
+    public function setUpdatedAt($created_at): void
     {
-        
+        $this->created_at = $created_at;
+    }
+
+    public function setPosition($position): void
+    {
+        $this->position = $position;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+
+    public function getArticleForm($params = null): array
+    {
         $category = new Categorie();
         $categories = $category->getAll();
 
         $datas = [];
         for ($i = 0; $i < count($categories); $i++) {
-            $datas[] = [$categories[$i]->getId(),$categories[$i]->getName()];
+            $datas[] = [$categories[$i]['id'], $categories[$i]['name']];
         }
 
         return [
             "config" => [
                 "method" => "POST",
-                "action" => "/article",
+                "action" => "",
                 "class" => "formArticle",
                 "id" => "formArticle",
                 "submit" => "Enregistrer",
@@ -96,7 +109,7 @@ class Article extends sql
 
             "inputs" => [
                 "title" => [
-                    "value" => $params != null ? $params['value'] : "", // permet de préremplir le formulaire lors de la modification du formulaire
+                    "value" =>  $params != null ? $params['title'] : "",
                     "type" => "text",
                     "id" => "title",
                     "class" => "title",
@@ -106,8 +119,9 @@ class Article extends sql
                 ],
 
                 "content" => [
+                    "value" => $params != null ? $params['content'] : "",
                     "type" => "textarea",
-                    "id" => "content",
+                    "id" => "editor",
                     "class" => "content",
                     "placeholder" => "Contenu de l'article",
                     //"required" => "required",
@@ -121,9 +135,9 @@ class Article extends sql
                     "class" => "categories",
                     //"required" => "required",
                     "value" => $datas,
+                    "selectedValue" => $params != null ? $params['selectedValue'] : "",
                 ],
             ]
         ];
     }
-
 }

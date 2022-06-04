@@ -15,30 +15,34 @@
         {
             $view = new View("Login", "empty");
             $user = new UserModel();
+<<<<<<< HEAD
             
             $view->assign("user", $user);
+=======
+            $view->assign(["user" => $user]);
+>>>>>>> feature/CRUD_article_commentaire
             if(empty($_POST)){
                 die();
             }
             $errors = Verificator::checkForm($user->getLoginForm(), $_POST);
             if(!empty($errors)){
-                $view->assign('errors', $errors);
+                $view->assign(['errors' => $errors]);
                 die();
             }
             if(!isset($user->getOneBy(['email' => $_POST['email']])[0])){
-                $view->assign('errors', ["Votre email ou mot de passe est invalide"]);
+                $view->assign(['errors' => ["Votre email ou mot de passe est invalide"]]);
                 die();
             }
             $user = $user->getOneBy(['email' => $_POST['email']])[0];
 
             if(!password_verify($_POST['password'], $user->getPassword())){
-                $view->assign('errors', ["Votre email ou mot de passe est invalide"]);
+                $view->assign(['errors' => ["Votre email ou mot de passe est invalide"]]);
                 die();
             }
             $status = $user->getStatus();
             
             if($status == 0){
-                $view->assign('errors', ["Votre compte n'est pas encore actif"]);
+                $view->assign(['errors' => ["Votre compte n'est pas encore actif"]]);
                 die();
             }
             $session = new Session();
@@ -73,25 +77,25 @@
             }
             $user = new UserModel();
             $view = new View("forgetpswd");
-            $view->assign("user", $user);
+            $view->assign(["user" => $user]);
         }
         //envoie mail utilisateur ou redirection vers formulaire 
         public function sendPswdRst(){
             $view = new View("forgetpswd");
             $user = new UserModel();
-            $view->assign("user", $user);
+            $view->assign(["user" => $user]);
             if(empty($_POST)){
-                $view->assign("error", "Aie un champ a disparue. =,(");
+                $view->assign(["error" => "Aie un champ a disparue. =,("]);
                 die();
             }
             $result = Verificator::checkForm($user->getForgetPswdForm(), $_POST);
             if(!empty($result)){
-                $view->assign("error", "Aie ton email est mal écrit. =,(");
+                $view->assign(["error" => "Aie ton email est mal écrit. =,("]);
                 die();
             }
             $user = $user->getOneBy(["email" => $_POST['email']]);
             if(empty($user)){
-                $view->assign("error", "L'email n'existe pas. =,(");
+                $view->assign(["error" => "L'email n'existe pas. =,("]);
                 die();
             }
             $user = $user[0]; 
@@ -131,7 +135,7 @@
             $session = new Session();
             $session->set("token", $pswdRst->getToken());
             $view = new View("changepswd");
-            $view->assign("user", $user);
+            $view->assign(["user" => $user]);
         }
         //confirm changement mot de passe
         public function confirmChng(){
@@ -146,18 +150,29 @@
                 die("Attention Vous n'avez pas remplie les champs");
             }
             $result = Verificator::checkForm($user->getChangePswdForm(), $_POST);
+
             if(!empty($result)){
                 die("HOO! des erreurs sont présentent dans le formulaire");
             }
+<<<<<<< HEAD
             $user->setId($pswdRst->getIdUser());
+=======
+            
+            $user = $user->setId($pswdRst->getIdUser());
+>>>>>>> feature/CRUD_article_commentaire
             $user->setPassword($_POST['password']);
             $user->save();
             echo "Mot de passe changé";
         }
         /*****REGISTER*****/
         public function register(){$user = new UserModel();
+<<<<<<< HEAD
             $view = new View("register", "empty");
             $view->assign("user", $user);
+=======
+            $view = new View("register");
+            $view->assign(["user" => $user]);
+>>>>>>> feature/CRUD_article_commentaire
             /* Si post vide alors on affiche le formulaire */
             if(empty($_POST)){
                 die();
@@ -166,14 +181,14 @@
             $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
             /* si des erreurs sont présentes on renvois sur la vue avec les erreurs */
             if(!empty($errors)){
-                $view->assign("errors", $errors);
+                $view->assign(["errors" => $errors]);
                 die();
             }
             $firstname = strip_tags($_POST['firstname']);
             $lastname = strip_tags($_POST['lastname']);
             /* si l'email est trouvé en base retour vue avec erreur */
             if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
-                $view->assign("errors",  ["L'utilisateur existe"]);
+                $view->assign(["errors" => ["L'utilisateur existe"]]);
                 die();
             }
 
@@ -202,7 +217,7 @@
             if(!$mail->send()){
                 die("Vous rencontrer une erreur lors de l'envoie de mail");
             }
-            $view->assign("success", "Un e-mail de confirmation vous a été envoyé pour valider votre compte !");
+            $view->assign(["success" => "Un e-mail de confirmation vous a été envoyé pour valider votre compte !"]);
         }
 
         public function confirmaccount() {
