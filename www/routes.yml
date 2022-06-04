@@ -108,3 +108,23 @@
   controller: like
   action: getLikes
 ###### comments/like ########
+
+
+
+
+##### adminmember #####
+
+/adminmember:
+ controller: admin
+ action: memberview
+ role: [admin, super_admin]
+
+/deleteUser:
+  controller: admin
+  action: deleteUser
+  role: [admin, super_admin]
+
+/editUserRole:
+  controller: admin
+  action: editUserRole
+  role: [admin, super_admin]
