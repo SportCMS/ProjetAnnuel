@@ -1,0 +1,43 @@
+@function rem($pxVal){
+    $base: 16;
+    @return ($pxVal / $base) * 1rem;
+}
+
+@mixin cover-bg() {
+    //background-image: url($imageUrl);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@for $i from 1 through $col-nb {
+  .cols-#{$i}{
+      width: ((100 / $col-nb) * $i) * 1%;
+      padding-left: $grid-gutter;
+      padding-right: $grid-gutter;
+  }
+}
+@media screen and (max-width: $md-width) {
+  .container{
+      max-width: 800px;
+  }
+  @for $i from 1 through $col-nb {
+      .cols-md-#{$i}{
+          width: ((100 / $col-nb) * $i) * 1%;
+          padding-left: $grid-gutter;
+          padding-right: $grid-gutter;
+      }
+  }
+}
+@media screen and (max-width: $lg-width) {
+  .container{
+      max-width: 400px;
+  }
+  @for $i from 1 through $col-nb {
+      .cols-sm-#{$i}{
+          width: ((100 / $col-nb) * $i) * 1%;
+          padding-left: $grid-gutter;
+          padding-right: $grid-gutter;
+      }
+  }
+}

@@ -1,0 +1,126 @@
+header {
+    padding: 1em 2em;
+    width: 100%;
+    background-color: var(--bg-color);
+    position: relative;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    & .search {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        align-self: center;
+        border-radius: 16px;
+        background-color: #FFFFFF;
+        width: 25%;
+        margin-left: 10rem;
+
+        & a {
+            margin-left: 1em;
+            z-index: 1001;
+            margin-left: 10px;
+            margin-right: -5px; 
+            border: none;
+            background-color: #FFFFFF;
+            border-radius: 16px 0 0 16px;
+        }
+
+        & input {
+            color: #A4A4A4;
+            width: 100%;
+            height: 50px;
+            text-indent: 25px;
+            border: none;
+            font-weight: 300;
+            font-size: 16px;
+            line-height: 19px;
+            background-color: #FFFFFF;
+            border-radius: 0 16px 16px 0;
+
+            &::placeholder {
+                font-style: italic;
+                color: #A4A4A4;
+                font-weight: 300;
+                font-size: 16px;
+                line-height: 19px;
+            }
+
+            &:focus {
+                outline: none;
+            }    
+            
+            &.large {
+                display: inline-block;
+            }
+            
+            &.small {
+                display: none;
+            }
+        }
+    }
+
+    & .profil {
+        color: #FFFFFF;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        align-self: center;
+
+        & a {
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-decoration: none;
+        }   
+        
+        & .line {
+            width: 2em;
+            border: 1px solid #FFFFFF;
+            transform: rotate(90deg);
+        }
+
+        & img {
+            padding-left: 0.5em;
+            padding-right: 0.5em;
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    header {
+        justify-content: flex-end;
+
+        & .search {
+            display: none;
+        }
+    }
+    input.large {
+        display: none;
+    }
+    input.small {
+        display: inline-block;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    header {
+
+        & .profil {
+            font-size: 0.75rem;
+
+            & p {
+                display: none;
+            }
+
+            & .t-contact {
+                display: none;
+            }
+        }
+    }
+}

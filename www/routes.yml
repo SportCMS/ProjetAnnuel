@@ -70,5 +70,24 @@
 /articles:
   controller: article
   action: allArticle
+
+
+###### comments/like ########
+/comment:
+  controller: comment
+  action: commentCreate
+
+/replyComment:
+  controller: comment
+  action: replyComment
+
+/createLike:
+  controller: like
+  action: createLike
+
+/getLikes:
+  controller: like
+  action: getLikes
+###### comments/like ########
   
  

@@ -147,9 +147,11 @@
                 die("Attention Vous n'avez pas remplie les champs");
             }
             $result = Verificator::checkForm($user->getChangePswdForm(), $_POST);
+
             if(!empty($result)){
                 die("HOO! des erreurs sont présentent dans le formulaire");
             }
+            
             $user = $user->setId($pswdRst->getIdUser());
             $user->setPassword($_POST['password']);
             $user->save();

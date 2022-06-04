@@ -6,6 +6,9 @@ use App\core\View;
 use App\models\Article as ArticleModel;
 use App\core\verificator\VerificatorArticle;
 use App\models\Categorie as CategorieModel;
+use App\models\Comment as CommentModel;
+use App\models\Like as LikeModel;
+
 //tester le drag and drop
 use App\models\Block as BlockModel;
 use App\models\User as UserModel;
@@ -15,6 +18,8 @@ use App\core\Session;
 
 class Article extends Sql
 {
+
+
 	public function articleCreate()
 	{
 		$view = new View("article");
@@ -48,7 +53,7 @@ class Article extends Sql
 
 			header('Location: /articles');
 		}
-		
+
 		// si aucun post par defaut affichage du formulaire
 		$view->assign([
 			"article" => $article
@@ -59,24 +64,40 @@ class Article extends Sql
 	{
 		$article = new ArticleModel();
 		$category = new CategorieModel();
+		$commentManager = new CommentModel();
+		$likeManager = new LikeModel();
 		$view = new View("detailsarticle");
 		$article_id = $_GET['id'];
 
 
-		
+		$like = count($likeManager->getUserLikeByArticle(1, $article_id)); // remplacer par l'id user id de session 
+		$total_likes = $likeManager->countAllLikesByArticle($article_id);
+
 		$articleDatas = $article->getOneBy(['id' => $article_id]);
 		$article = $articleDatas[0];
 
 		$categoryDatas = $category->getOneBy(['id' => $article->getCategoryId()]);
 		$category = $categoryDatas[0];
 
-		
-		
+		$comments = $commentManager->getCommentsByArticle($article_id);
+		$replies = $commentManager->getRepliesByComment($article_id);
+		$countComments = $commentManager->countComments($article_id);
+
+		if (count($comments) > 0) {
+			$view->assign(['comments' => $comments]);
+		}
+		if (count($replies) > 0) {
+			$view->assign(['replies' => $replies]);
+		}
 		$view->assign([
 			"article" => $article,
 			"category" => $category,
+			'countComments' => $countComments,
+			'like' => $like,
+			'total_likes' => $total_likes['likes']
 		]);
 	}
+
 
 	public function allArticle()
 	{
