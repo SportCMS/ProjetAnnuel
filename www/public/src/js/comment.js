@@ -1,5 +1,4 @@
 // reply un commentaire
-
 document.querySelectorAll(".reply").forEach(function (reply) {
     reply.addEventListener('click', function () {
         textarea = document.createElement('textarea')
@@ -37,6 +36,10 @@ document.querySelectorAll(".reply").forEach(function (reply) {
                 success: function (rep) {
                     let response = JSON.parse(rep)
                     let parentBlock = document.getElementById('replyComment' + parentId)
+
+                    // on fait disparaitre le textarea à la validation du commentaire
+                    //$('#textareaReply').html('');
+                    $('#textareaReply').html("").fadeOut();
 
 
                     $go = `
@@ -126,4 +129,3 @@ $('#postComment').on('click', () => {
         });
     })
 });
-
