@@ -15,12 +15,7 @@
         {
             $view = new View("Login", "empty");
             $user = new UserModel();
-<<<<<<< HEAD
-            
-            $view->assign("user", $user);
-=======
             $view->assign(["user" => $user]);
->>>>>>> feature/CRUD_article_commentaire
             if(empty($_POST)){
                 die();
             }
@@ -154,25 +149,15 @@
             if(!empty($result)){
                 die("HOO! des erreurs sont présentent dans le formulaire");
             }
-<<<<<<< HEAD
             $user->setId($pswdRst->getIdUser());
-=======
-            
-            $user = $user->setId($pswdRst->getIdUser());
->>>>>>> feature/CRUD_article_commentaire
             $user->setPassword($_POST['password']);
             $user->save();
             echo "Mot de passe changé";
         }
         /*****REGISTER*****/
         public function register(){$user = new UserModel();
-<<<<<<< HEAD
-            $view = new View("register", "empty");
-            $view->assign("user", $user);
-=======
             $view = new View("register");
             $view->assign(["user" => $user]);
->>>>>>> feature/CRUD_article_commentaire
             /* Si post vide alors on affiche le formulaire */
             if(empty($_POST)){
                 die();
