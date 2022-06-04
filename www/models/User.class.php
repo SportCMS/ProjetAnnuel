@@ -7,6 +7,7 @@
         protected $firstname = null;// ?string (?string)
         protected $lastname = null;// ?string (?string)
         protected $email;// string (string)
+        protected $role;// string(string)
         protected $status = 0;// int (int)
         protected $password;// string (string)
         protected $token = null;// ?string (?string)
@@ -47,6 +48,17 @@
         {
             $this->email = $email;
         }
+
+        //role
+        public function getRole():string
+        {
+            return $this->role;
+        }
+        public function setRole(string $role):void
+        {
+            $this->role = $role;
+        }
+
         //status
         public function getStatus():int
         {
