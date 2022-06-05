@@ -1,4 +1,5 @@
 // reply un commentaire
+
 document.querySelectorAll(".reply").forEach(function (reply) {
     reply.addEventListener('click', function () {
         textarea = document.createElement('textarea')
@@ -125,3 +126,4 @@ $('#postComment').on('click', () => {
         });
     })
 });
+

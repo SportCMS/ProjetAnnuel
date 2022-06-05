@@ -86,7 +86,7 @@
 
 /articles:
   controller: article
-  action: indexArticle
+  action: allArticle
 
 
 ###### comments/like ########

@@ -9,36 +9,42 @@ use App\models\Categorie as CategorieModel;
 use App\models\Comment as CommentModel;
 use App\models\Like as LikeModel;
 
-
 //tester le drag and drop
 use App\models\Block as BlockModel;
 use App\models\User as UserModel;
 use App\core\Sql;
 use App\core\Session;
-use App\helpers\Slugger;
 
 
 class Article extends Sql
 {
+
+
 	public function articleCreate()
 	{
 		$view = new View("article");
 		$article = new ArticleModel();
 
+
+
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$title = addslashes(htmlspecialchars($_POST['title']));
-			$content = $_POST['content'];
+			$content = addslashes(htmlspecialchars($_POST['content']));
 			$category_id = $_POST['category_id'];
 
 			$result = VerificatorArticle::validate($article->getArticleForm(), $_POST);
 
 			if ($result && count($result) > 0) {
-				$view->assign(['result' => $result, "article" => $article]);
+
+				$view->assign([
+					'result' => $result, // tableau erreurs
+					"article" => $article
+				]);
+			
 				return;
 			}
 
 			$article->setTitle($title);
-			$article->setSlug(Slugger::sluggify($_POST['title']));
 			$article->setContent($content);
 			$article->setCategoryId($category_id);
 			$article->setCreatedAt((new \DateTime('now'))->format('Y-m-d H:i:s'));
@@ -47,7 +53,11 @@ class Article extends Sql
 
 			header('Location: /articles');
 		}
-		$view->assign(["article" => $article]);
+
+		// si aucun post par defaut affichage du formulaire
+		$view->assign([
+			"article" => $article
+			]);
 	}
 
 	public function detailsArticle()
@@ -57,21 +67,21 @@ class Article extends Sql
 		$commentManager = new CommentModel();
 		$likeManager = new LikeModel();
 		$view = new View("detailsarticle");
-		$article_id = $_GET['slug'];
+		$article_id = $_GET['id'];
 
-
-		$articleDatas = $article->getOneBy(['slug' => $article_id]);
-		$article = $articleDatas[0];
 
 		$like = count($likeManager->getUserLikeByArticle(1, $article_id)); // remplacer par l'id user id de session 
-		$total_likes = $likeManager->countAllLikesByArticle($article->getId());
+		$total_likes = $likeManager->countAllLikesByArticle($article_id);
+
+		$articleDatas = $article->getOneBy(['id' => $article_id]);
+		$article = $articleDatas[0];
 
 		$categoryDatas = $category->getOneBy(['id' => $article->getCategoryId()]);
 		$category = $categoryDatas[0];
 
-		$comments = $commentManager->getCommentsByArticle($article->getId());
-		$replies = $commentManager->getRepliesByComment($article->getId());
-		$countComments = $commentManager->countComments($article->getId());
+		$comments = $commentManager->getCommentsByArticle($article_id);
+		$replies = $commentManager->getRepliesByComment($article_id);
+		$countComments = $commentManager->countComments($article_id);
 
 		if (count($comments) > 0) {
 			$view->assign(['comments' => $comments]);
@@ -88,16 +98,18 @@ class Article extends Sql
 		]);
 	}
 
-	public function indexArticle()
+
+	public function allArticle()
 	{
 		$view = new View("articles");
 		$article = new ArticleModel();
 
-
+		
 		$all_article = $article->getAll();
 
 		$view->assign([
 			"all_article" => $all_article,
+			
 		]);
 	}
 
@@ -108,9 +120,9 @@ class Article extends Sql
 
 		$view = new View("updateArticle");
 
-		$article_id = $_GET['slug'];
+		$article_id = $_GET['id'];
 
-		$articleDatas = $manager->getOneBy(['slug' => $article_id]);
+		$articleDatas = $manager->getOneBy(['id' => $article_id]);
 		$articleObject = $articleDatas[0];
 
 		$categoryDatas = $category->getOneBy(['id' => $articleObject->getCategoryId()]);
@@ -149,9 +161,6 @@ class Article extends Sql
 	public function deleteArticle()
 	{
 		$article = new ArticleModel();
-		$comment = new CommentModel();
-
-		$comment->deleteComments($_GET['id']);
 		$article->delete($_GET['id']);
 
 		header('Location: /articles');
@@ -159,6 +168,4 @@ class Article extends Sql
 
 	
 }
-	
-
 
