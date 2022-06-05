@@ -94,3 +94,22 @@
   controller: like
   action: getLikes
 ###### comments/like ########
+
+
+###### gestion des pages ########
+/addPage:
+  controller: admin
+  action: addPage
+  
+/deletePage:
+  controller: admin
+  action: deletePageAdmin
+
+
+
+
+
+/la coucou page:
+  controller: article
+  action: indexArticle
+  role: [public]

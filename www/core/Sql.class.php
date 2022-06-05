@@ -75,10 +75,24 @@
         }
 
         
+        // a optimiser
         public function delete($id)
         {
             $sql = "DELETE FROM {$this->table} WHERE id = ?";
             $this->pdo->prp($sql, [$id]);
+        }
+
+        
+        public function deletePage($page)
+        {
+            $sql = "DELETE FROM {$this->table} WHERE title = ?";
+            $this->pdo->prp($sql, [$page]);
+        }
+
+        public function deleteBlock($page)
+        {
+            $sql = "DELETE FROM {$this->table} WHERE page_id = ?";
+            $this->pdo->prp($sql, [$page]);
         }
 
         // creation de la fonctionnalité commentaires
