@@ -1,4 +1,3 @@
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
 let article = document.querySelector('#heart_like').dataset.article
 
 $.ajax({

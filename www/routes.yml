@@ -74,7 +74,7 @@
 
 /articles:
   controller: article
-  action: allArticle
+  action: indexArticle
 
 
 ###### comments/like ########
