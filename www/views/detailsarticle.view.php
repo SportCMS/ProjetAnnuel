@@ -9,9 +9,13 @@
 </style>
 
 
+<!-- redirection articles front : à modifier (sans CRUD) -->
 <a href="/articles">Back</a>
 
 <div class="container">
+
+
+
     <div class="block-article" style="min-height:250px;width:500px;margin:0 auto">
         <h1><?= $article->getTitle() ?></h1>
         <small>Posté par Admin - Catégorie : <?= $category->getName() ?> -
@@ -37,9 +41,14 @@
         <?php if (isset($comments)) : ?>
             <?php foreach ($comments as $comment) : ?>
                 <hr>
-                <small style=font-weight:bold;font-style:italic>Commenté par <?= $comment['firstname'] . ' ' . $comment['lastname'] ?> le
-                    <?= substr($comment['created_at'], 0, 10) ?> à <?= substr($comment['created_at'], -9, 18) ?>
-                </small>
+                <div style="display:flex; justify-content:space-between">
+                    <small style=font-weight:bold;font-style:italic>Commenté par <?= $comment['firstname'] . ' ' . $comment['lastname'] ?> le
+                        <?= substr($comment['created_at'], 0, 10) ?> à <?= substr($comment['created_at'], -9, 18) ?>
+                    </small>
+                    <a title="signaler" href="/reportComment?id=<?= $comment['idComment'] ?>">
+                        <img src="/public/assets/images/warning.svg" alt="" width="19" height="19">
+                    </a>
+                </div>
                 <div style="display:flex;align-items:center;margin-top:10px;">
                     <span style="padding:10px;border-radius:50%;background:grey;color:white">
                         <?= ucfirst(substr($comment['firstname'], 0, 1)) . ucfirst(substr($comment['lastname'], 0, 1)) ?>
@@ -63,9 +72,14 @@
                                 <br>
                                 <br>
                                 <div style="margin-left:50px;padding:8px 0; border-top:1px solid black">
-                                    <small style="font-weight:bold;font-style:italic">répondu par <?= $reply['firstname'] . ' ' . $reply['lastname'] ?> le
-                                        <?= substr($reply['created_at'], 0, 10) ?> à <?= substr($reply['created_at'], -9, 18) ?>
-                                    </small>
+                                    <div style="display:flex; justify-content:space-between">
+                                        <small style="font-weight:bold;font-style:italic">répondu par <?= $reply['firstname'] . ' ' . $reply['lastname'] ?> le
+                                            <?= substr($reply['created_at'], 0, 10) ?> à <?= substr($reply['created_at'], -9, 18) ?>
+                                        </small>
+                                        <a title="signaler" href="/reportComment?id=<?= $reply['idComment'] ?>">
+                                            <img src="/public/assets/images/warning.svg" alt="" width="19" height="19">
+                                        </a>
+                                    </div>
                                     <div style="display:flex;align-items:center;margin-top:10px;">
                                         <span style="padding:5px;border-radius:50%;background:grey;color:white">
                                             <?= ucfirst(substr($reply['firstname'], 0, 1)) . ucfirst(substr($reply['lastname'], 0, 1)) ?>
@@ -88,5 +102,6 @@
 
 
 
-
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/public/src/js/comment.js"></script>
+<script type="text/javascript" src="/public/src/js/like.js"></script>

@@ -72,7 +72,7 @@
 /detailsArticle:
   controller: article
   action: detailsArticle
-  role: [user, admin, super_admin]
+  role: [public, user, admin, super_admin]
 
 /updateArticle:
   controller: article
@@ -87,23 +87,41 @@
 /articles:
   controller: article
   action: allArticle
-
+  role: [public, user, admin, super_admin]
+ 
 
 ###### comments/like ########
 /comment:
   controller: comment
   action: commentCreate
-  role: [user, admin, super_admin]
+  role: [public, user, admin, super_admin]
 
 /replyComment:
   controller: comment
   action: replyComment
+  role: [public, user, admin, super_admin]
 
 /createLike:
   controller: like
   action: createLike
+  role: [public, user, admin, super_admin]
 
 /getLikes:
   controller: like
   action: getLikes
+  role: [public, user, admin, super_admin]
 ###### comments/like ########
+
+###### report/comments ########
+/reportComment:
+  controller: comment 
+  action: reportComment
+  role: [public, user, admin, super_admin]
+###### report/comments ########
+
+
+/reports:
+  controller: comment
+  action: getReports
+  role: [public, user, admin, super_admin]
+

@@ -66,7 +66,7 @@ class Article extends Sql
 		$category = new CategorieModel();
 		$commentManager = new CommentModel();
 		$likeManager = new LikeModel();
-		$view = new View("detailsarticle");
+		$view = new View("detailsarticle", "empty");
 		$article_id = $_GET['id'];
 
 
