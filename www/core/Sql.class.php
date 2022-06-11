@@ -158,6 +158,15 @@
         return $queryPrp->fetch();
         }
 
+
+        // requete recupération des notifications pour la modération
+        public function getReportNotifications()
+        {
+            $sql = "SELECT * FROM " . $this->table . " as r WHERE r.has_read = 0 ";
+            $queryPrp = $this->pdo->prp($sql, []);
+            return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
+        }
+
     
     
     

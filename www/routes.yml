@@ -119,3 +119,9 @@
   role: [public, user, admin, super_admin]
 ###### report/comments ########
 
+
+/reports:
+  controller: comment
+  action: getReports
+  role: [public, user, admin, super_admin]
+

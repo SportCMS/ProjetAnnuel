@@ -122,6 +122,7 @@ class Comment extends Sql
             $report->setCommentId($_GET['id']);
             $report->setEmail($email);
             $report->setMessage($message);
+	    $report->setHasRead(0);
             $report->setCreatedAt((new \Datetime('now'))->format('Y-m-d H:i:s'));
             $report->save();
 
@@ -133,5 +134,22 @@ class Comment extends Sql
             "comment" => $comment,
             "author" => $user
         ]);
+    }
+
+    public function getReports()
+    {
+        $view = new View("reports", "empty");
+        $reportManager = new ReportModel();
+        $reports = $reportManager->getBy(['has_read' => 0]);
+
+        $_SESSION['report'] = 0;
+
+        foreach ($reports as $report) {
+            $report->setHasRead(1);
+            $report->save();
+        }
+
+
+        $view->assign(['reports' => $reports]);
     }
 }

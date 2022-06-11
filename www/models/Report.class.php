@@ -11,6 +11,7 @@ class Report extends sql
     protected $comment_id;
     protected $message;
     protected $email;
+    protected $has_read;
     protected $created_at;
 
     public function __construct()
@@ -51,6 +52,16 @@ class Report extends sql
     public function getEmail(): ?string
     {
         return $this->email;
+    }
+
+    public function getHasRead(): ?int
+    {
+        return $this->has_read;
+    }
+
+    public function setHasRead($has_read): void
+    {
+        $this->has_read = $has_read;
     }
 
     public function setCreatedAt($created_at): void
