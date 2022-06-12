@@ -156,11 +156,7 @@
         }
         /*****REGISTER*****/
         public function register(){$user = new UserModel();
-<<<<<<< HEAD
-            $view = new View("register", 'empty');
-=======
             $view = new View("register");
->>>>>>> feature/slug
             $view->assign(["user" => $user]);
             /* Si post vide alors on affiche le formulaire */
             if(empty($_POST)){

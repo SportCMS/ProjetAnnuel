@@ -56,13 +56,8 @@ class Article extends Sql
 		$category = new CategorieModel();
 		$commentManager = new CommentModel();
 		$likeManager = new LikeModel();
-<<<<<<< HEAD
 		$view = new View("detailsarticle", "empty");
-		$article_id = $_GET['id'];
-=======
-		$view = new View("detailsarticle");
 		$article_id = $_GET['slug'];
->>>>>>> feature/slug
 
 
 		$articleDatas = $article->getOneBy(['slug' => $article_id]);
