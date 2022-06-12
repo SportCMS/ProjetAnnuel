@@ -167,6 +167,19 @@
             return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        // requete appelé dans admin
+        public function deletePage($page)
+        {
+        $sql = "DELETE FROM {$this->table} WHERE title = ?";
+        $this->pdo->prp($sql, [$page]);
+        }
+
+        public function deleteBlock($page)
+        {
+            $sql = "DELETE FROM {$this->table} WHERE page_id = ?";
+            $this->pdo->prp($sql, [$page]);
+        }
+
     
     
     

@@ -130,3 +130,17 @@
   action: dashboard
   role: [public, user, admin, super_admin]
 
+#### gestion des pages
+/gerer-mes-pages:
+  controller: admin
+  action: addPage
+
+/editPage:
+  controller: admin
+  action: editPage
+
+/deletePage:
+  controller: admin
+  action: deletePageAdmin
+
+
