@@ -9,167 +9,154 @@ use App\core\verificator\VerificatorArticle;
 use App\models\Categorie as CategorieModel;
 use App\models\Comment as CommentModel;
 use App\models\Like as LikeModel;
+use App\Helpers\Slugger;
 
 //tester le drag and drop
-use App\models\Block as BlockModel;
 use App\models\User as UserModel;
 use App\core\Sql;
 use App\core\Session;
 
-
-
-
 class Article extends Sql
 {
+	public function indexArticle()
+    {
+        $article = new ArticleModel();
 
-	
+        $all_article = $article->getAll();
+
+        Router::render("front/article/articles.view.php", [
+            "all_article" => $all_article        
+		]);
+    }
 
 	public function articleCreate()
-	{
-		$view = new View("article");
-		$article = new ArticleModel();
+    {
+        $article = new ArticleModel();
 
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $title = addslashes(htmlspecialchars($_POST['title']));
+            $content = $_POST['content'];
+            $category_id = $_POST['category_id'];
 
+            $result = VerificatorArticle::validate($article->getArticleForm(), $_POST);
 
-		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-			$title = addslashes(htmlspecialchars($_POST['title']));
-			$content = addslashes(htmlspecialchars($_POST['content']));
-			$category_id = $_POST['category_id'];
+            if ($result && count($result) > 0) {
+                Router::render('admin/article/articleCreate.view.php', [
+                    'result' => $result,
+                    "article" => $article
+                ]);
 
-			$result = VerificatorArticle::validate($article->getArticleForm(), $_POST);
+                return;
+            }
 
-			if ($result && count($result) > 0) {
+            $article->setTitle($title);
+            $article->setSlug(Slugger::sluggify($_POST['title']));
+            $article->setContent($content);
+            $article->setCategoryId($category_id);
+            $article->setCreatedAt((new \DateTime('now'))->format('Y-m-d H:i:s'));
+            //$article->setPosition($_POST['position']);
+            $article->save();
 
-				$view->assign([
-					'result' => $result, // tableau erreurs
-					"article" => $article
-				]);
-			
-				return;
-			}
+            header('Location: /gerer-mes-articles');
+        }
+        Router::render('admin/article/articleCreate.view.php', [
+            "article" => $article,
+            'form' => $article->getArticleForm(null),
+        ]);
+    }
 
-			$article->setTitle($title);
-			$article->setContent($content);
-			$article->setCategoryId($category_id);
-			$article->setCreatedAt((new \DateTime('now'))->format('Y-m-d H:i:s'));
-			//$article->setPosition($_POST['position']);
-			$article->save();
+	public function showArticle()
+    {
+        $articleManager = new ArticleModel();
+        $category = new CategorieModel();
+        $commentManager = new CommentModel();
+        $likeManager = new LikeModel();
+        $article_id = $_GET['slug'];
 
-			header('Location: /articles');
-		}
+        $articleDatas = $articleManager->getOneBy(['slug' => $article_id]);
+        $article = $articleDatas[0];
 
-		// si aucun post par defaut affichage du formulaire
-		$view->assign([
-			"article" => $article
-			]);
-	}
+        $like = count($likeManager->getUserLikeByArticle(1, $article_id)); // remplacer par l'id user id de session 
+        $total_likes = $likeManager->countAllLikesByArticle($article->getId());
 
-	public function detailsArticle()
-	{
-		$article = new ArticleModel();
-		$category = new CategorieModel();
-		$commentManager = new CommentModel();
-		$likeManager = new LikeModel();
-		$view = new View("detailsarticle", "empty");
-		$article_id = $_GET['id'];
+        $categoryDatas = $category->getOneBy(['id' => $article->getCategoryId()]);
+        $category = $categoryDatas[0];
 
+        $comments = $commentManager->getCommentsByArticle($article->getId());
+        $replies = $commentManager->getRepliesByComment($article->getId());
+        $countComments = $commentManager->countComments($article->getId());
 
-		$like = count($likeManager->getUserLikeByArticle(1, $article_id)); // remplacer par l'id user id de session 
-		$total_likes = $likeManager->countAllLikesByArticle($article_id);
+        Router::render("front/article/article.view.php", [
+            "article" => $article,
+            "category" => $category,
+            'countComments' => count($countComments) > 0 ? $countComments : null,
+            'replies' => count($replies) > 0 ? $replies : null,
+            'like' => $like,
+            'total_likes' => $total_likes['likes'],
+            'comments' => $comments
 
-		$articleDatas = $article->getOneBy(['id' => $article_id]);
-		$article = $articleDatas[0];
-
-		$categoryDatas = $category->getOneBy(['id' => $article->getCategoryId()]);
-		$category = $categoryDatas[0];
-
-		$comments = $commentManager->getCommentsByArticle($article_id);
-		$replies = $commentManager->getRepliesByComment($article_id);
-		$countComments = $commentManager->countComments($article_id);
-
-		if (count($comments) > 0) {
-			$view->assign(['comments' => $comments]);
-		}
-		if (count($replies) > 0) {
-			$view->assign(['replies' => $replies]);
-		}
-		$view->assign([
-			"article" => $article,
-			"category" => $category,
-			'countComments' => $countComments,
-			'like' => $like,
-			'total_likes' => $total_likes['likes']
-		]);
-	}
-
-
-	public function allArticle()
-	{
-		$view = new View("articles");
-		$article = new ArticleModel();
-
-		
-		$all_article = $article->getAll();
-
-		$view->assign([
-			"all_article" => $all_article,
-			
-		]);
-	}
+        ]);
+    }
 
 	public function updateArticle()
-	{
-		$manager = new ArticleModel();
-		$category = new CategorieModel();
+    {
+        $manager = new ArticleModel();
+        $category = new CategorieModel();
 
-		$view = new View("updateArticle");
+        $article_id = $_GET['slug'];
 
-		$article_id = $_GET['id'];
+        $articleDatas = $manager->getOneBy(['slug' => $article_id]);
+        $articleObject = $articleDatas[0];
 
-		$articleDatas = $manager->getOneBy(['id' => $article_id]);
-		$articleObject = $articleDatas[0];
+        $categoryDatas = $category->getOneBy(['id' => $articleObject->getCategoryId()]);
+        $categoryObject = $categoryDatas[0];
 
-		$categoryDatas = $category->getOneBy(['id' => $articleObject->getCategoryId()]);
-		$categoryObject = $categoryDatas[0];
+        $params = [
+            // "id" => $articleObject->getId(),
+            "title" => $articleObject->getTitle(),
+            "content" => $articleObject->getContent(),
+            "selectedValue" => $categoryObject->getId()
+        ];
 
-		$params = [
-			// "id" => $articleObject->getId(),
-			"title" => $articleObject->getTitle(),
-			"content" => $articleObject->getContent(),
-			"selectedValue" => $categoryObject->getId()
-		];
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $title = htmlspecialchars($_POST['title']);
+            $content = $_POST['content']; // pas de htmlspecialchars avec le wysiwyg
+            $category_id = intval($_POST['category_id']);
 
-		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-			$title = htmlspecialchars($_POST['title']);
-			$content = $_POST['content']; // pas de htmlspecialchars avec le wysiwyg
-			$category_id = intval($_POST['category_id']);
+            $result = VerificatorArticle::validate($manager->getArticleForm(), $_POST);
 
-			$result = VerificatorArticle::validate($manager->getArticleForm(), $_POST);
+            if ($result != null && count($result) > 0) {
+                Router::render("admin/article/updateArticle.view.php", [
+                    'result' => $result,
+                    "article" => $manager,
+                    'params' => $params
+                ]);
+            }
 
-			if ($result != null && count($result) > 0) {
-				$view->assign(['result' => $result, "article" => $manager, 'params' => $params]);
-				return;
-			}
+            $articleObject->setTitle($title);
+            $articleObject->setContent($content);
+            $articleObject->setCategoryId($category_id);
+            $articleObject->setUpdatedAt((new \DateTime('now'))->format('Y-m-d'));
+            $articleObject->save();
 
-			$articleObject->setTitle($title);
-			$articleObject->setContent($content);
-			$articleObject->setCategoryId($category_id);
-			$articleObject->setUpdatedAt((new \DateTime('now'))->format('Y-m-d'));
-			$articleObject->save();
-
-			header('Location: /articles');
-		}
-		$view->assign(["params" => $params, "article" => $manager]);
-	}
+            header('Location: /gerer-mes-articles');
+        }
+        Router::render("admin/article/updateArticle.view.php", [
+            "article" => $manager,
+            'params' => $params
+        ]);
+    }
 
 	public function deleteArticle()
-	{
-		$article = new ArticleModel();
-		$article->delete($_GET['id']);
+    {
+        $article = new ArticleModel();
+        $comment = new CommentModel();
 
-		header('Location: /articles');
+        $comment->deleteComments($_GET['id']);
+        $article->delete($_GET['id']);
+
+        header('Location: /gerer-mes-articles');
 	}
-
 	
 }
 

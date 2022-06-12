@@ -27,7 +27,7 @@
 
 /dashboard:
   controller: admin
-  action: home
+  action: dashboard
   role: [admin, super_admin]
 
 /mail:
@@ -64,6 +64,26 @@
 
 # ajout 
 # routes CRUD articles
+/article:
+  controller: article
+  action: showArticle
+  role: [public]
+
+/ecrire-un-article:
+  controller: article
+  action: articleCreate
+  role: [public]
+
+/editer-un-article:
+  controller: article
+  action: updateArticle
+  role: [public]
+
+/deleteArticle:
+  controller: article
+  action: deleteArticle
+  role: [public]
+
 /createArticle:
   controller: article
   action: articleCreate
@@ -77,12 +97,7 @@
 /updateArticle:
   controller: article
   action: updateArticle
-  role: [admin, super_admin]
-
-/deleteArticle:
-  controller: article
-  action: deleteArticle
-  role: [admin, super_admin]
+  role: [admin, super_admin]  
 
 /articles:
   controller: article
@@ -125,11 +140,6 @@
   action: getReports
   role: [public, user, admin, super_admin]
 
-/dashboard:
-  controller: admin
-  action: dashboard
-  role: [public, user, admin, super_admin]
-
 #### gestion des pages
 /gerer-mes-pages:
   controller: admin
@@ -155,3 +165,9 @@
   controller: error
   action: notFoundError
   role: [public, user, admin, super_admin]
+
+
+/test123:
+  controller: article
+  action: indexArticle
+  role: [public]

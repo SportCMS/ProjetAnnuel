@@ -178,9 +178,11 @@
         {
             $sql = "DELETE FROM {$this->table} WHERE page_id = ?";
             $this->pdo->prp($sql, [$page]);
+        }   
+        
+        public function deleteComments($id)
+        {
+            $sql = "DELETE FROM {$this->table} WHERE article_id = ?";
+            $this->pdo->prp($sql, [$id]);
         }
-
-    
-    
-    
     }
