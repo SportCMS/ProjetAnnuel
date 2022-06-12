@@ -125,3 +125,8 @@
   action: getReports
   role: [public, user, admin, super_admin]
 
+/dashboard:
+  controller: admin
+  action: dashboard
+  role: [public, user, admin, super_admin]
+

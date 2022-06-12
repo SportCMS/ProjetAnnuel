@@ -4,21 +4,21 @@
     use App\core\View;
     use App\models\User as UserModel;
     use App\models\Report as ReportModel;
+    use App\core\Router;
     class Admin
     {
-        public function home()
+        public function dashboard(): void
         {
-            // $firstname []= 'simon';
-            $view = new View("dashboard", "back");
-    
-            $reportManager = new ReportModel();
-            $reports = $reportManager->getReportNotifications();
-            $_SESSION['report'] = count($reports);
-            // $view->assign(['firstname' => $firstname]);
-            
-            
-            // $user = new UserModel();
-            
-            // $view->assign(["user" => $user]);
+        // session en dur pour les tests
+        // a setter au login si role du user = 'admin
+        $_SESSION['role'] = 'admin';
+
+        $reportManager = new ReportModel();
+        $reports = $reportManager->getReportNotifications();
+        $_SESSION['report'] = count($reports);
+        Router::render('admin/home.view.php');
         }
+
+     
+  
     }
