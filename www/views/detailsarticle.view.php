@@ -17,6 +17,8 @@
         <small>Posté par Admin - Catégorie : <?= $category->getName() ?> -
             <span id="heart_like" style="cursor:pointer;font-size:20px" data-article="<?= $article->getId() ?>">♥</span>
             <span id="count_like"><?= $total_likes ?></span> -
+            <span id="star_favorite" style="cursor:pointer;font-size:20px" data-article="<?= $article->getId() ?>"><img src="../public/assets/images/Star.png" height="24px" width="24px" alt=""></span> 
+            <span id="count_favorite"><?= $total_favorites ?></span> -
         </small>
         <small>commentaires(<?= $countComments['count'] ?>)</small>
         <p><?= $article->getContent() ?></p>

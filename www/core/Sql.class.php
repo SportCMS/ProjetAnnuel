@@ -132,6 +132,19 @@
             $queryPrp = $this->pdo->prp($sql, [$user_id, $article_id]);
             return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        public function getUserFavoriteByArticle($user_id, $article_id)
+        {
+            $sql = "SELECT f.id as 'favorite' FROM `bgfb_favorite` as f
+            JOIN `bgfb_user`as u
+            ON f.user_id = u.id
+            JOIN `bgfb_article`as a
+            ON f.article_id = a.id
+            WHERE u.id = ?
+            AND a.id = ?";
+            $queryPrp = $this->pdo->prp($sql, [$user_id, $article_id]);
+            return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
+        }
     
 
         public function toggleLikes($user_id, $article_id)
@@ -148,17 +161,37 @@
             }
         }
 
-        public function countAllLikesByArticle($article_id)
+        public function toggleFavorites($user_id, $article_id)
         {
-        $sql = "SELECT count(l.id) as 'likes' FROM `bgfb_like` as l
-        JOIN `bgfb_article`as a
-        ON l.article_id = a.id
-        AND a.id = ?";
-        $queryPrp = $this->pdo->prp($sql, [$article_id]);
-        return $queryPrp->fetch();
+            $favorites = $this->getUserFavoriteByArticle($user_id, $article_id);
+    
+    
+            if (count($favorites) == 0) {
+                $sql = "INSERT INTO bgfb_favorite (user_id, article_id) VALUES (?, ?)";
+                $this->pdo->prp($sql, [$user_id, $article_id]);
+            } else {
+                $sql = "DELETE FROM {$this->table} WHERE user_id = ? AND article_id = ?";
+                $this->pdo->prp($sql, [$user_id, $article_id]);
+            }
         }
 
-    
-    
-    
+        public function countAllLikesByArticle($article_id)
+        {
+            $sql = "SELECT count(l.id) as 'likes' FROM `bgfb_like` as l
+            JOIN `bgfb_article`as a
+            ON l.article_id = a.id
+            AND a.id = ?";
+            $queryPrp = $this->pdo->prp($sql, [$article_id]);
+            return $queryPrp->fetch();
+        }
+
+        public function countAllFavoritesByArticle($article_id)
+        {
+            $sql = "SELECT count(f.id) as 'favorites' FROM `bgfb_favorite` as f
+            JOIN `bgfb_article`as a
+            ON f.article_id = a.id
+            AND a.id = ?";
+            $queryPrp = $this->pdo->prp($sql, [$article_id]);
+            return $queryPrp->fetch();
+        }
     }

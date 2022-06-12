@@ -72,7 +72,7 @@
 /detailsArticle:
   controller: article
   action: detailsArticle
-  role: [user, admin, super_admin]
+  role: [public, user, admin, super_admin]
 
 /updateArticle:
   controller: article
@@ -87,7 +87,7 @@
 /articles:
   controller: article
   action: allArticle
-  role: [user, admin, super_admin]
+  role: [public, user, admin, super_admin]
  
 
 ###### comments/like ########
@@ -108,3 +108,16 @@
   controller: like
   action: getLikes
 ###### comments/like ########
+
+###### favorite ########
+/createFavorite:
+  controller: favorite
+  action: createFavorite
+  role: [public, user, admin, super_admin]
+
+
+/getFavorites:
+  controller: favorite
+  action: getFavorites
+  role: [public, user, admin, super_admin]
+###### favorite ########

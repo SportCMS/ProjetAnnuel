@@ -10,5 +10,6 @@
     <?php
         include $this->view . '.view.php';
     ?>
+    <script src="../public/src/js/favorite.js"></script>
 </body>
 </html>

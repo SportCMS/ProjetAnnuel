@@ -8,6 +8,7 @@ use App\core\verificator\VerificatorArticle;
 use App\models\Categorie as CategorieModel;
 use App\models\Comment as CommentModel;
 use App\models\Like as LikeModel;
+use App\models\Favorite as FavoriteModel;
 
 //tester le drag and drop
 use App\models\Block as BlockModel;
@@ -66,12 +67,16 @@ class Article extends Sql
 		$category = new CategorieModel();
 		$commentManager = new CommentModel();
 		$likeManager = new LikeModel();
-		$view = new View("detailsarticle");
+		$favoriteManager = new FavoriteModel();
+		$view = new View("detailsarticle", "empty");
 		$article_id = $_GET['id'];
 
 
 		$like = count($likeManager->getUserLikeByArticle(1, $article_id)); // remplacer par l'id user id de session 
 		$total_likes = $likeManager->countAllLikesByArticle($article_id);
+
+		$favorite = count($favoriteManager->getUserLikeByArticle(1, $article_id)); // remplacer par l'id user id de session 
+		$total_favorites = $favoriteManager->countAllFavoritesByArticle($article_id);
 
 		$articleDatas = $article->getOneBy(['id' => $article_id]);
 		$article = $articleDatas[0];
@@ -94,7 +99,9 @@ class Article extends Sql
 			"category" => $category,
 			'countComments' => $countComments,
 			'like' => $like,
-			'total_likes' => $total_likes['likes']
+			'total_likes' => $total_likes['likes'],
+			'favorite' => $favorite,
+			'total_favorites' => $total_favorites['favorites']
 		]);
 	}
 
