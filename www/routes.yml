@@ -134,13 +134,21 @@
 /gerer-mes-pages:
   controller: admin
   action: addPage
+  role: [public, user, admin, super_admin]
 
 /editPage:
   controller: admin
   action: editPage
+  role: [public, user, admin, super_admin]
 
 /deletePage:
   controller: admin
   action: deletePageAdmin
+  role: [public, user, admin, super_admin]
+
+/gerer-mes-articles:
+  controller: admin
+  action: indexArticle
+  role: [public, user, admin, super_admin]
 
 

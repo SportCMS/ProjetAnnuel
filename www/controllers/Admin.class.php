@@ -5,9 +5,9 @@
     use App\models\User as UserModel;
     use App\models\Report as ReportModel;
     use App\core\Router;
-    use App\models\Block as BlockModel;
     use App\models\Theme as ThemeModel;
     use App\models\Page as PageModel;
+    use App\models\Article as ArticleModel;
     use App\core\Sql;
 
 
@@ -25,6 +25,18 @@
         $_SESSION['report'] = count($reports);
         Router::render('admin/home.view.php');
         }
+
+        public function indexArticle()
+    	{
+        $article = new ArticleModel();
+
+        $all_article = $article->getAll();
+
+        Router::render("admin/article/articles.view.php", [
+            "all_article" => $all_article,
+            
+        ]);
+    	}
 
         public function addPage(): void
         {
@@ -65,12 +77,7 @@
             $pageData = $pageManager->getOneBy(['title' => $pageManager->getTitle()]);
             $page = $pageData[0];
 
-            $block = new BlockModel();
-            $block->setPageId($page->getId());
-            $block->setPosition(1); // create a default position
-            $block->setTitle($_POST['page_title']);
-            $block->save();
-
+          
             $this->writeRoute($params);
 
             header('Location: /dashboard');
@@ -84,10 +91,9 @@
     public function deletePageAdmin(): void
     {
         $page = new PageModel();
-        $block = new BlockModel();
+        
 
         $page->deletePage($_GET['page']);
-        $block->deleteBlock($_GET['id']);
         $this->eraseRoute($_GET['page']);
 
         header('Location: /gerer-mes-pages');
@@ -111,7 +117,7 @@
 
         $output = [];
         for ($i = 0; $i < count($arrayContent); $i++) {
-            if (strstr($arrayContent[$i], $route) == false &&       $arrayContent[$i] != '') {
+            if (strstr($arrayContent[$i], $route) == false && $arrayContent[$i] != '') {
                 $output[] = '/' . $arrayContent[$i];
             }
         }
@@ -123,6 +129,6 @@
         }
         file_put_contents('routes.yml', $content);
 
-        unlink('views/' . strtolower($route) . '.view.php');
+       
     }
 }

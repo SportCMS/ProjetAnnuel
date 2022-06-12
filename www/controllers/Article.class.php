@@ -2,6 +2,7 @@
 
 namespace App\controllers;
 
+use App\core\Router;
 use App\core\View;
 use App\models\Article as ArticleModel;
 use App\core\verificator\VerificatorArticle;
@@ -16,9 +17,12 @@ use App\core\Sql;
 use App\core\Session;
 
 
+
+
 class Article extends Sql
 {
 
+	
 
 	public function articleCreate()
 	{

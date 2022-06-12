@@ -27,17 +27,17 @@
                     <td><?= substr($value['created_at'], 0, 10) ?></td>
                     <td>
                         <a href="/article?slug=<?= $value['slug'] ?>">
-                            <img src="/public/assets/img/eye.svg" alt="" width="20" height="20">
+                            <img src="/public/assets/images/eye.svg" alt="" width="20" height="20">
                         </a>
                     </td>
                     <td>
                         <a href="/editer-un-article?slug=<?= $value['slug'] ?>">
-                            <img src="/public/assets/img/edit.svg" alt="" width="20" height="20">
+                            <img src="/public/assets/images/edit.svg" alt="" width="20" height="20">
                         </a>
                     </td>
                     <td>
                         <a href="/deleteArticle?id=<?= $value['id'] ?>" onclick="confirm('voulez-vous supprimer l\'article ?')">
-                            <img src="/public/assets/img/trash.svg" alt="" width="20" height="20">
+                            <img src="/public/assets/images/trash.svg" alt="" width="20" height="20">
                         </a>
                     </td>
                 </tr>

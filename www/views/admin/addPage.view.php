@@ -9,13 +9,13 @@
         &nbsp;
         <span>
             <a href="/editPage?page=<?= $page['title'] ?>">
-                <img src="/public/assets/img/edit.svg" alt="" width="20" height="20" />
+                <img src="/public/assets/images/edit.svg" alt="" width="20" height="20" />
             </a>
         </span>
         &nbsp;
         <span>
             <a href="/deletePage?page=<?= $page['title'] ?>&id=<?= $page['id'] ?>" onclick="confirm('confirmer la suppression?')">
-                <img src="/public/assets/img/trash.svg" alt="" width="20" height="20" />
+                <img src="/public/assets/images/trash.svg" alt="" width="20" height="20" />
             </a>
         </span>
     </div>
