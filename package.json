@@ -1,0 +1,22 @@
+{
+  "name": "projetannuel",
+  "version": "1.0.0",
+  "description": "Création d'un cms en PHP from scratch",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SportCMS/ProjetAnnuel.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SportCMS/ProjetAnnuel/issues"
+  },
+  "homepage": "https://github.com/SportCMS/ProjetAnnuel#readme",
+  "dependencies": {
+    "sass": "^1.52.1"
+  }
+}
