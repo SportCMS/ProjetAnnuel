@@ -34,7 +34,7 @@
             }
             $this->pdo->prp($sql, $colums);
         }
-        ////////////////////////////////////////
+        
 
 
         public function getOneBy($entrie)
@@ -76,24 +76,10 @@
         }
 
         
-        // a optimiser
         public function delete($id)
         {
             $sql = "DELETE FROM {$this->table} WHERE id = ?";
             $this->pdo->prp($sql, [$id]);
-        }
-
-        
-        public function deletePage($page)
-        {
-            $sql = "DELETE FROM {$this->table} WHERE title = ?";
-            $this->pdo->prp($sql, [$page]);
-        }
-
-        public function deleteBlock($page)
-        {
-            $sql = "DELETE FROM {$this->table} WHERE page_id = ?";
-            $this->pdo->prp($sql, [$page]);
         }
 
         // creation de la fonctionnalité commentaires
@@ -179,6 +165,19 @@
             $sql = "SELECT * FROM " . $this->table . " as r WHERE r.has_read = 0 ";
             $queryPrp = $this->pdo->prp($sql, []);
             return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        // requete appelé dans admin controller
+        public function deletePage($page)
+        {
+        $sql = "DELETE FROM {$this->table} WHERE title = ?";
+        $this->pdo->prp($sql, [$page]);
+        }
+
+        public function deleteBlock($page)
+        {
+            $sql = "DELETE FROM {$this->table} WHERE page_id = ?";
+            $this->pdo->prp($sql, [$page]);
         }
 
     
