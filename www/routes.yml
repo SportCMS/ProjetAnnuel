@@ -86,9 +86,8 @@
 
 /articles:
   controller: article
-  action: allArticle
-  role: [public, user, admin, super_admin]
- 
+  action: indexArticle
+
 
 ###### comments/like ########
 /comment:
@@ -112,16 +111,18 @@
   role: [public, user, admin, super_admin]
 ###### comments/like ########
 
-###### report/comments ########
-/reportComment:
-  controller: comment 
-  action: reportComment
-  role: [public, user, admin, super_admin]
-###### report/comments ########
+
+###### gestion des pages ########
+/addPage:
+  controller: admin
+  action: addPage
+  
+/deletePage:
+  controller: admin
+  action: deletePageAdmin
 
 
-/reports:
-  controller: comment
-  action: getReports
-  role: [public, user, admin, super_admin]
-
+/la coucou page:
+  controller: article
+  action: indexArticle
+  role: [public]

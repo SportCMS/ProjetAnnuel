@@ -1,0 +1,1 @@
+<h1>La coucou page</h1>
