@@ -151,4 +151,7 @@
   action: indexArticle
   role: [public, user, admin, super_admin]
 
-
+/page-non-trouvee:
+  controller: error
+  action: notFoundError
+  role: [public, user, admin, super_admin]
