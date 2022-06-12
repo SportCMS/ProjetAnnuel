@@ -86,14 +86,8 @@
 
 /articles:
   controller: article
-<<<<<<< HEAD
-  action: allArticle
-  role: [public, user, admin, super_admin]
- 
-=======
   action: indexArticle
 
->>>>>>> feature/slug
 
 ###### comments/like ########
 /comment:
@@ -126,9 +120,6 @@
 /deletePage:
   controller: admin
   action: deletePageAdmin
-
-
-
 
 
 /la coucou page:
