@@ -12,10 +12,14 @@
 <!-- redirection articles front : à modifier (sans CRUD) -->
 <a href="/articles">Back</a>
 
+<<<<<<< HEAD
 <div class="container">
 
 
 
+=======
+<div class="container" style="padding-top: 100px;">
+>>>>>>> feature/slug
     <div class="block-article" style="min-height:250px;width:500px;margin:0 auto">
         <h1><?= $article->getTitle() ?></h1>
         <small>Posté par Admin - Catégorie : <?= $category->getName() ?> -
@@ -103,5 +107,10 @@
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<<<<<<< HEAD
 <script type="text/javascript" src="/public/src/js/comment.js"></script>
 <script type="text/javascript" src="/public/src/js/like.js"></script>
+=======
+<script src="/public/src/js/comment.js"></script>
+<script src="/public/src/js/like.js"></script>
+>>>>>>> feature/slug
