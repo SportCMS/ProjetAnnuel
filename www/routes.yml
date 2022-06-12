@@ -117,21 +117,6 @@
   role: [public, user, admin, super_admin]
 ###### comments/like ########
 
-<<<<<<< HEAD
-###### report/comments ########
-/reportComment:
-  controller: comment 
-  action: reportComment
-  role: [public, user, admin, super_admin]
-###### report/comments ########
-
-
-/reports:
-  controller: comment
-  action: getReports
-  role: [public, user, admin, super_admin]
-
-=======
 
 ###### gestion des pages ########
 /addPage:
@@ -150,4 +135,3 @@
   controller: article
   action: indexArticle
   role: [public]
->>>>>>> feature/slug
