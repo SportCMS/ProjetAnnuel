@@ -1,11 +1,11 @@
-<h1>Login</h1>
+
+	<img class="logo__login" src="../public/assets/images/SportCMS.png" alt="logo SPORT-CMS">
 
 <?php if(!empty($errors)): ?>
-				<div class="">
 					<?php foreach($errors as $error): ?>
-						<p> <?=$error?> </p>
+						<p class="error__login"> <?=$error?> </p>
 					<?php endforeach ?>
-				</div>
+				
         <?php endif ?>
 
 <?php $this->includePartial("form", $user->getLoginForm());?>

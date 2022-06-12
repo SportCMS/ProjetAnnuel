@@ -13,7 +13,7 @@
         /* Session test*/
         public function login()
         {
-            $view = new View("Login", "empty");
+            $view = new View("Login", "front");
             $user = new UserModel();
             $view->assign(["user" => $user]);
             if(empty($_POST)){

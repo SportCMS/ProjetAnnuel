@@ -159,13 +159,14 @@
                     "id"=>"formLogin",
                     "class"=>"formLogin",
                     "submit"=>"Se connecter"
+                    
                 ],
                 "inputs"=>[
                     "email"=>[
                         "placeholder"=>"Votre email ...",
                         "type"=>"email",
                         "id"=>"emailRegister",
-                        "class"=>"formRegister",
+                        "class"=>"formLogin",
                         "error"=>"Email incorrect",
                         "required"=>true,
                     ],
@@ -173,12 +174,14 @@
                         "placeholder"=>"Votre mot de passe ...",
                         "type"=>"password",
                         "id"=>"pwdRegister",
-                        "class"=>"formRegister",
+                        "class"=>"formLogin",
                         "error"=>"Password incorrect",
                         "required"=>true,
                         "error"=>"Mot de passe invalide"
                     ]
-                ]
+                    
+                    ]
+                    
             ];
         }
         /* formulaire de d'envoie de l'email pour change mot de passe */

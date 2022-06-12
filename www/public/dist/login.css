@@ -1,0 +1,41 @@
+#formLogin{
+    margin-top: 2%;
+}
+
+.logo__login{
+    display: flex;
+    margin: auto;
+}
+
+.formLogin{
+    margin: 1rem auto 1rem auto;
+}
+
+.error__login{
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+
+input[type="submit"]{
+    font-size: 20px;
+    margin: auto;
+    width: 35%;
+    margin-top: 2.5em;
+    margin-bottom: 1em;
+    background: #2A4365;
+    color: white;
+    height: 60px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.link_register{
+    margin: auto;
+    margin-bottom: 1rem;
+}
+
+.logo__text{
+    display: flex;
+}

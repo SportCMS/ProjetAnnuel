@@ -1,4 +1,6 @@
-<h1>Mot de passe oublié ?</h1>
+
+<img class="logo__login" src="../public/assets/images/SportCMS.png" alt="logo SPORT-CMS">
+
 <?php
     if(isset($error)):
     ?>

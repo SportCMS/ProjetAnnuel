@@ -9,12 +9,19 @@
 
         <!-- LINK CSS -->
         <link rel="stylesheet" href="../public/dist/main.css">
+        <link rel="stylesheet" href="../public/dist/login.css">
+        <link rel="stylesheet" href="../public/dist/registerr.css">
+        <link rel="stylesheet" href="../public/dist/login.css">
 
         <!-- SCRIPTS -->
         <script src="../public/src/js/vendor/jquery-3.6.0.min.js"></script>
         <script src="../public/src/js/main.js"></script>
     </head>
     <body>
+
+    <?php 
+    
+    if($_SERVER['REQUEST_URI'] != '/login') :?>
         <header id="site-header">
             <div class="container">
                 <button id="menu-button"></button>
@@ -28,6 +35,8 @@
                 </nav>
             </div>
         </header>
+
+        <?php endif?>
         <?php
             include $this->view . '.view.php';
         ?>
