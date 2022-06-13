@@ -4,10 +4,12 @@
     use App\core\View;
     use App\models\User as UserModel;
     use App\models\Report as ReportModel;
+    use App\models\MenuItem as MenuItemsModel;
     use App\core\Router;
     use App\models\Theme as ThemeModel;
     use App\models\Page as PageModel;
     use App\models\Article as ArticleModel;
+    
     use App\core\Sql;
 
 
@@ -131,4 +133,43 @@
 
        
     }
+
+    // gestion menu 
+    public function editMenu()
+    {
+        $itemsManager = new MenuItemsModel();
+        $items = $itemsManager->getAllByPosition();
+
+        $pagesManager = new PageModel();
+        $pages = $pagesManager->getAll();
+
+        Router::render('admin/editMenu.view.php', [
+            'items' => $items,
+            'pages' => $pages
+        ]);
+    }
+
+        public function addItem()
+        {
+            $item = new MenuItemsModel();
+            $count = count($item->getAllByPosition());
+
+            $item->setLink("/{$_POST['route']}");
+            $item->setName($_POST['name']);
+            $item->setPosition($count + 1);
+            $item->save();
+
+            echo json_encode(['id' => $count + 1]);
+        }
+        
+        public function moveItemPosition(): void
+        {
+            $blockManager = new MenuItemsModel();
+            var_dump($blockManager);
+            
+            foreach ($_POST as $key => $value) {
+                $blockManager->updateItemPosition($key, $value);
+            }
+            echo json_encode(['data' => $_POST, 'objet' => $blockManager]);
+        }
 }

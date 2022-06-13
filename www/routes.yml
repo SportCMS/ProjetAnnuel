@@ -171,3 +171,21 @@
   controller: article
   action: indexArticle
   role: [public]
+
+/gerer-mon-menu:
+  controller: admin
+  action: editMenu
+  role: [public]
+
+
+### menu des items drag and drop
+
+/moveItemPosition:
+  controller: admin
+  action: moveItemPosition
+  role: [public]
+
+/addItem:
+  controller: admin
+  action: addItem
+  role: [public]
