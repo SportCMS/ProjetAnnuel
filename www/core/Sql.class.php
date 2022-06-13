@@ -200,4 +200,11 @@
             $sql = "UPDATE " . $this->table . " SET position = ?  WHERE id= ?";
             $queryPrp = $this->pdo->prp($sql, [$block_id, $position]);
         }
+
+        // fixtures
+        public function truncate($table)
+        {
+            $sql = "TRUNCATE TABLE bgfb_" . $table;
+            $queryPrp = $this->pdo->prp($sql, []);
+        }
     }

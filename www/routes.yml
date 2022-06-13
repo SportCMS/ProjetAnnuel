@@ -189,3 +189,161 @@
   controller: admin
   action: addItem
   role: [public]
+
+### fixtures
+/devFixtures:
+  controller: admin
+  action: loadFixtures
+  role: [public]
+
+
+
+/actus:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-1:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-2:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/foot-feminin:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/champions-league:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/psg:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/actus:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-1:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-2:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/foot-feminin:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/champions-league:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/psg:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/actus:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-1:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-2:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/foot-feminin:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/champions-league:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/psg:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/actus:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-1:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-2:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/foot-feminin:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/champions-league:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/psg:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/actus:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-1:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-2:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/foot-feminin:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/champions-league:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/psg:
+  controller: categories
+  action: categoryPage
+  role: [public]

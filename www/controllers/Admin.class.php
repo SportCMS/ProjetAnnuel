@@ -9,6 +9,7 @@
     use App\models\Theme as ThemeModel;
     use App\models\Page as PageModel;
     use App\models\Article as ArticleModel;
+    use App\Helpers\Fixtures;
     
     use App\core\Sql;
 
@@ -170,6 +171,19 @@
             foreach ($_POST as $key => $value) {
                 $blockManager->updateItemPosition($key, $value);
             }
-            echo json_encode(['data' => $_POST, 'objet' => $blockManager]);
+            
+        }
+
+        public function loadFixtures():void
+        {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $fixtures = new Fixtures();
+                $fixtures->generateFixtures();
+                $message = 'fixtures enregistrÃ©es';
+                Router::render('admin/fixture.view.php', ['message', $message]);
+                
+            }
+            
+            Router::render('admin/fixture.view.php');
         }
 }
