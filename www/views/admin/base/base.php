@@ -6,7 +6,7 @@
 <?php include_once './views/admin/partials/header.php' ?>
 
 <body id="body-pd">
-  <main style="min-height:58vh">
+  <main style="min-height:58vh; padding: 100px 20px 50px 20px;">
 
     <?= $content ?>
 

@@ -27,7 +27,7 @@
 
 /dashboard:
   controller: admin
-  action: home
+  action: dashboard
   role: [admin, super_admin]
 
 /mail:
@@ -64,6 +64,26 @@
 
 # ajout 
 # routes CRUD articles
+/article:
+  controller: article
+  action: showArticle
+  role: [public]
+
+/ecrire-un-article:
+  controller: article
+  action: articleCreate
+  role: [public]
+
+/editer-un-article:
+  controller: article
+  action: updateArticle
+  role: [public]
+
+/deleteArticle:
+  controller: article
+  action: deleteArticle
+  role: [public]
+
 /createArticle:
   controller: article
   action: articleCreate
@@ -77,12 +97,7 @@
 /updateArticle:
   controller: article
   action: updateArticle
-  role: [admin, super_admin]
-
-/deleteArticle:
-  controller: article
-  action: deleteArticle
-  role: [admin, super_admin]
+  role: [admin, super_admin]  
 
 /articles:
   controller: article
@@ -118,14 +133,53 @@
   controller: admin
   action: addPage
   role: [public, user, admin, super_admin]
-  
+
+#### gestion des pages
+/gerer-mes-pages:
+  controller: admin
+  action: addPage
+  role: [public, user, admin, super_admin]
+
+/editPage:
+  controller: admin
+  action: editPage
+  role: [public, user, admin, super_admin]
+
 /deletePage:
   controller: admin
   action: deletePageAdmin
   role: [public, user, admin, super_admin]
 
+/gerer-mes-articles:
+  controller: admin
+  action: indexArticle
+  role: [public, user, admin, super_admin]
 
-/la coucou page:
+/page-non-trouvee:
+  controller: error
+  action: notFoundError
+  role: [public, user, admin, super_admin]
+
+
+/test123:
   controller: article
   action: indexArticle
+  role: [public]
+
+/gerer-mon-menu:
+  controller: admin
+  action: editMenu
+  role: [public]
+
+
+### menu des items drag and drop
+
+/moveItemPosition:
+  controller: admin
+  action: moveItemPosition
+  role: [public]
+
+/addItem:
+  controller: admin
+  action: addItem
   role: [public]

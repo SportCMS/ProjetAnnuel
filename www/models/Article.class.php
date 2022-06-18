@@ -98,7 +98,6 @@ class Article extends sql
         return $this->slug;
     }
 
-
     public function getArticleForm($params = null): array
     {
         $category = new Categorie();

@@ -167,7 +167,7 @@
             return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        // requete appelé dans admin controller
+        // requete appelé dans admin
         public function deletePage($page)
         {
         $sql = "DELETE FROM {$this->table} WHERE title = ?";
@@ -178,9 +178,26 @@
         {
             $sql = "DELETE FROM {$this->table} WHERE page_id = ?";
             $this->pdo->prp($sql, [$page]);
+        }   
+        
+        public function deleteComments($id)
+        {
+            $sql = "DELETE FROM {$this->table} WHERE article_id = ?";
+            $this->pdo->prp($sql, [$id]);
         }
 
-    
-    
-    
+        // geestion de positions
+        public function getAllByPosition()
+        {
+            $sql = 'SELECT * FROM ' . $this->table . ' ORDER BY position ';
+            $queryPrp = $this->pdo->prp($sql);
+
+            return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function updateItemPosition($position, $block_id)
+        {
+            $sql = "UPDATE " . $this->table . " SET position = ?  WHERE id= ?";
+            $queryPrp = $this->pdo->prp($sql, [$block_id, $position]);
+        }
     }

@@ -39,7 +39,7 @@ class Page extends sql
         $this->theme_id = $theme_id;
     }
 
-    public function getThemeId(): ?string
+    public function getThemeId(): ?int
     {
         return $this->theme_id;
     }

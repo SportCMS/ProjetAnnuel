@@ -1,35 +1,51 @@
 <?php
 
-namespace App\controllers;
+    namespace App\controllers;
+    use App\core\View;
+    use App\models\User as UserModel;
+    use App\models\Report as ReportModel;
+    use App\models\MenuItem as MenuItemsModel;
+    use App\core\Router;
+    use App\models\Theme as ThemeModel;
+    use App\models\Page as PageModel;
+    use App\models\Article as ArticleModel;
+    
+    use App\core\Sql;
 
-use App\core\Sql;
-use Exception;
-use App\core\View;
-
-use App\models\Page as PageModel;
-use App\models\Theme as ThemeModel;
-use App\models\Block as BlockModel;
 
 
-class Admin extends Sql
-{
-    public function home(): void
+    class Admin extends Sql
     {
-        $firstname = 'jean';
-        $view = new View("dashboard", "back");
+        public function dashboard(): void
+        {
+        // session en dur pour les tests
+        // a setter au login si role du user = 'admin
+        $_SESSION['role'] = 'admin';
 
+        $reportManager = new ReportModel();
+        $reports = $reportManager->getReportNotifications();
+        $_SESSION['report'] = count($reports);
+        Router::render('admin/home.view.php');
+        }
+
+        public function indexArticle()
+    	{
+        $article = new ArticleModel();
+
+        $all_article = $article->getAll();
+
+        Router::render("admin/article/articles.view.php", [
+            "all_article" => $all_article,
+            
+        ]);
+    	}
+
+        public function addPage(): void
+        {
+        $themeManager = new ThemeModel();
         $pageManager = new PageModel();
         $pages = $pageManager->getAll();
-        $view->assign([
-            'firstname' => $firstname,
-            'pages' => $pages
-        ]);
-    }
 
-    public function addPage(): void
-    {
-        $view = new View("admin/addPage", 'back');
-        $themeManager = new ThemeModel();
         $params = [];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -37,6 +53,7 @@ class Admin extends Sql
             if (!$_POST['page_title'] || !$_POST['page_role'] || !$_POST['type']) {
                 throw new \Exception('missing parameters');
             }
+
             $params['route'] = strtolower($_POST['page_title']) ?? null;
             $params['role'] = strtolower($_POST['page_role']) ?? null;
             $params['model'] = strtolower($_POST['type']) ?? null;
@@ -48,9 +65,8 @@ class Admin extends Sql
 
             foreach ($currentPages as $currentPage) {
                 if ($currentPage['type'] == $params['model']) {
-                    $message = 'Page dÃ©ja existante';
-                    $view->assign(["message" => $message]);
-                    return;
+                    $message = 'Page déja existante';
+                    Router::render('admin/addPage.view.php', ["message" => $message]);
                 }
             }
 
@@ -63,53 +79,26 @@ class Admin extends Sql
             $pageData = $pageManager->getOneBy(['title' => $pageManager->getTitle()]);
             $page = $pageData[0];
 
-            $block = new BlockModel();
-            $block->setPageId($page->getId());
-            $block->setPosition(1); // create a default position
-            $block->setTitle($_POST['page_title']);
-            $block->save();
-
+          
             $this->writeRoute($params);
 
             header('Location: /dashboard');
         }
+        Router::render('admin/addPage.view.php', ['pages' => $pages]);
     }
+
+
 
     # delete a page 
     public function deletePageAdmin(): void
     {
         $page = new PageModel();
-        $block = new BlockModel();
+        
 
         $page->deletePage($_GET['page']);
-        $block->deleteBlock($_GET['id']);
-
         $this->eraseRoute($_GET['page']);
 
-        header('Location: /dashboard');
-    }
-
-
-    /**
-     * A FAIRE SAMEDI
-     *
-     */
-    public function editPage()
-    {
-        $pageModel = new PageModel();
-        $view = new View("admin/editPage", 'back');
-
-        $data = $pageModel->getOneBy(['title' => $_GET['page']]);
-        $page = $data[0];
-    }
-
-    /**
-     * A FAIRE SAMEDI
-     *
-     */
-    public function editMenu()
-    {
-        $view = new View("admin/editMenu", 'back');
+        header('Location: /gerer-mes-pages');
     }
 
     # write route in route.yaml
@@ -121,10 +110,6 @@ class Admin extends Sql
         $content .= "\n  action: " . $params['action'];
         $content .= "\n  role: [" . $params['role'] . "]";
         file_put_contents('routes.yml', $content);
-
-        $file = fopen('views/' . strtolower($params['route']) . '.view.php', 'a');
-        fwrite($file, '<h1>' . ucfirst($params['route']) . '</h1>');
-        fclose($file);
     }
 
     private function eraseRoute(string $route): void
@@ -146,6 +131,45 @@ class Admin extends Sql
         }
         file_put_contents('routes.yml', $content);
 
-        unlink('views/' . strtolower($route) . '.view.php');
+       
     }
+
+    // gestion menu 
+    public function editMenu()
+    {
+        $itemsManager = new MenuItemsModel();
+        $items = $itemsManager->getAllByPosition();
+
+        $pagesManager = new PageModel();
+        $pages = $pagesManager->getAll();
+
+        Router::render('admin/editMenu.view.php', [
+            'items' => $items,
+            'pages' => $pages
+        ]);
+    }
+
+        public function addItem()
+        {
+            $item = new MenuItemsModel();
+            $count = count($item->getAllByPosition());
+
+            $item->setLink("/{$_POST['route']}");
+            $item->setName($_POST['name']);
+            $item->setPosition($count + 1);
+            $item->save();
+
+            echo json_encode(['id' => $count + 1]);
+        }
+        
+        public function moveItemPosition(): void
+        {
+            $blockManager = new MenuItemsModel();
+            var_dump($blockManager);
+            
+            foreach ($_POST as $key => $value) {
+                $blockManager->updateItemPosition($key, $value);
+            }
+            echo json_encode(['data' => $_POST, 'objet' => $blockManager]);
+        }
 }
