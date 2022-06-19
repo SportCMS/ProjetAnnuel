@@ -1,7 +1,7 @@
 <?php
     namespace App\controllers;
     use App\core\User as Us;
-    use App\core\View;
+    use App\core\Router;
     use App\models\User as UserModel;
     use App\models\Password_reset as PswdRst;
     use App\core\verificator\Verificator;
@@ -13,31 +13,30 @@
         /* Session test*/
         public function login()
         {
-            $view = new View("Login", "empty");
             $user = new UserModel();
-            $view->assign(["user" => $user]);
+            Router::render('front/security/login.view.php',["user" => $user]);
             if(empty($_POST)){
                 die();
             }
             $errors = Verificator::checkForm($user->getLoginForm(), $_POST);
             if(!empty($errors)){
-                $view->assign(['errors' => $errors]);
+                Router::render('front/security/login.view.php',['errors' => $errors]);
                 die();
             }
             if(!isset($user->getOneBy(['email' => $_POST['email']])[0])){
-                $view->assign(['errors' => ["Votre email ou mot de passe est invalide"]]);
+                Router::render('front/security/login.view.php',['errors' => ["Votre email ou mot de passe est invalide"]]);
                 die();
             }
             $user = $user->getOneBy(['email' => $_POST['email']])[0];
 
             if(!password_verify($_POST['password'], $user->getPassword())){
-                $view->assign(['errors' => ["Votre email ou mot de passe est invalide"]]);
+                Router::render('front/security/login.view.php',['errors' => ["Votre email ou mot de passe est invalide"]]);
                 die();
             }
             $status = $user->getStatus();
             
             if($status == 0){
-                $view->assign(['errors' => ["Votre compte n'est pas encore actif"]]);
+                Router::render('front/security/login.view.php',['errors' => ["Votre compte n'est pas encore actif"]]);
                 die();
             }
             $session = new Session();
@@ -71,26 +70,24 @@
                 die();
             }
             $user = new UserModel();
-            $view = new View("forgetpswd");
-            $view->assign(["user" => $user]);
+            Router::render('front/security/forgetpwsd.view.php',["user" => $user]);
         }
         //envoie mail utilisateur ou redirection vers formulaire 
         public function sendPswdRst(){
-            $view = new View("forgetpswd");
             $user = new UserModel();
-            $view->assign(["user" => $user]);
+            Router::render('front/security/forgetpwsd.view.php',["user" => $user]);
             if(empty($_POST)){
-                $view->assign(["error" => "Aie un champ a disparue. =,("]);
+                Router::render('front/security/forgetpwsd.view.php',["error" => "Aie un champ a disparue. =,("]);
                 die();
             }
             $result = Verificator::checkForm($user->getForgetPswdForm(), $_POST);
             if(!empty($result)){
-                $view->assign(["error" => "Aie ton email est mal écrit. =,("]);
+                Router::render('front/security/forgetpwsd.view.php',["error" => "Aie ton email est mal écrit. =,("]);
                 die();
             }
             $user = $user->getOneBy(["email" => $_POST['email']]);
             if(empty($user)){
-                $view->assign(["error" => "L'email n'existe pas. =,("]);
+                Router::render('front/security/forgetpwsd.view.php',["error" => "L'email n'existe pas. =,("]);
                 die();
             }
             $user = $user[0]; 
@@ -129,8 +126,7 @@
             }
             $session = new Session();
             $session->set("token", $pswdRst->getToken());
-            $view = new View("changepswd");
-            $view->assign(["user" => $user]);
+            Router::render('front/security/changepswd.view.php',["user" => $user]);
         }
         //confirm changement mot de passe
         public function confirmChng(){
@@ -155,9 +151,9 @@
             echo "Mot de passe changé";
         }
         /*****REGISTER*****/
-        public function register(){$user = new UserModel();
-            $view = new View("register");
-            $view->assign(["user" => $user]);
+        public function register(){
+            $user = new UserModel();
+            Router::render('front/security/register.view.php',["user" => $user]);
             /* Si post vide alors on affiche le formulaire */
             if(empty($_POST)){
                 die();
@@ -166,14 +162,14 @@
             $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
             /* si des erreurs sont présentes on renvois sur la vue avec les erreurs */
             if(!empty($errors)){
-                $view->assign(["errors" => $errors]);
+                Router::render('front/security/register.view.php',["errors" => $errors]);
                 die();
             }
             $firstname = strip_tags($_POST['firstname']);
             $lastname = strip_tags($_POST['lastname']);
             /* si l'email est trouvé en base retour vue avec erreur */
             if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
-                $view->assign(["errors" => ["L'utilisateur existe"]]);
+                Router::render('front/security/register.view.php',["errors" => ["L'utilisateur existe"]]);
                 die();
             }
 
@@ -204,13 +200,11 @@
             if(!$mail->send()){
                 die("Vous rencontrer une erreur lors de l'envoie de mail");
             }
-            $view->assign(["success" => "Un e-mail de confirmation vous a été envoyé pour valider votre compte !"]);
+            Router::render('front/security/register.view.php',["success" => "Un e-mail de confirmation vous a été envoyé pour valider votre compte !"]);
         }
 
         public function confirmaccount() {
             $user = new UserModel();
-
-            $view = new View("confirmaccount", "empty");
             
             if(!isset($user->getOneBy(['token' => $_GET['token']])[0])){
                 die();

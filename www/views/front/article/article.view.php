@@ -1,3 +1,5 @@
+<?php ob_start(); ?>
+
 <style>
     .unliked {
         color: grey;
@@ -8,11 +10,13 @@
     }
 </style>
 
+<?php if (isset($_SESSION['admin'])) : ?>
+    <a href="/gerer-mes-articles">Back</a>
+<?php else : ?>
+    <a href="/articles">Back</a>
+<?php endif ?>
 
-<!-- redirection articles front : à modifier (sans CRUD) -->
-<a href="/articles">Back</a>
-
-<div class="container" style="padding-top: 100px;">
+<div class="container">
     <div class="block-article" style="min-height:250px;width:500px;margin:0 auto">
         <h1><?= $article->getTitle() ?></h1>
         <small>Posté par Admin - Catégorie : <?= $category->getName() ?> -
@@ -43,7 +47,7 @@
                         <?= substr($comment['created_at'], 0, 10) ?> à <?= substr($comment['created_at'], -9, 18) ?>
                     </small>
                     <a title="signaler" href="/reportComment?id=<?= $comment['idComment'] ?>">
-                        <img src="/public/assets/images/warning.svg" alt="" width="19" height="19">
+                        <img src="/public/assets/img/warning.svg" alt="" width="19" height="19">
                     </a>
                 </div>
                 <div style="display:flex;align-items:center;margin-top:10px;">
@@ -74,7 +78,7 @@
                                             <?= substr($reply['created_at'], 0, 10) ?> à <?= substr($reply['created_at'], -9, 18) ?>
                                         </small>
                                         <a title="signaler" href="/reportComment?id=<?= $reply['idComment'] ?>">
-                                            <img src="/public/assets/images/warning.svg" alt="" width="19" height="19">
+                                            <img src="/public/assets/img/warning.svg" alt="" width="19" height="19">
                                         </a>
                                     </div>
                                     <div style="display:flex;align-items:center;margin-top:10px;">
@@ -97,8 +101,9 @@
     </div>
 </div>
 
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<script src="/public/src/js/comment.js"></script>
-<script src="/public/src/js/like.js"></script>
+<script type="text/javascript" src="/public/assets/js/comment.js"></script>
+<script type="text/javascript" src="/public/assets/js/like.js"></script>
+
+<?php $base = ob_get_clean(); ?>
+<?php require('./views/front/base/base.php'); ?>

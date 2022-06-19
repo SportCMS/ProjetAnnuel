@@ -1,9 +1,8 @@
-#roles mis en place
+##########################################
+##############  FRONT   ##################
+##########################################
 
-/:
-  controller: main
-  action: home
-  role: [public]
+### SECURITY ###
 
 /login:
   controller: user
@@ -13,28 +12,17 @@
 /logout:
   controller: user
   action: logout
-  role: [user, admin, super_admin]
-    
+  role: [public]
+
 /register:
   controller: user
   action: register
   role: [public]
 
-/confirmaccount:
-  controller: user
-  action: confirmaccount
-  role: [public]
-
-/dashboard:
-  controller: admin
-  action: dashboard
-  role: [admin, super_admin]
-
 /mail:
   controller: mail
   action: main
-  role: [user, admin, super_admin]
-
+  role: [public]
 
 /forgetPassword:
   controller: user
@@ -49,34 +37,160 @@
 /changePassword:
   controller: user
   action: changePswd
-  role: [user, admin, super_admin]
+  role: [public]
 
 /confirmChange:
   controller: user
   action: confirmChng
-  role: [user, admin, super_admin]
+  role: [public]
 
 /redi:
   controller: user
   action: redi
-  role: [user, admin, super_admin]
+  role: [public]
 
+### SECURITY ###
 
-# ajout 
-# routes CRUD articles
+### HOME ###
+/:
+  controller: main
+  action: home
+  role: [public]
+
+/home:
+  controller: main
+  action: home
+  role: [public]
+
+### HOME ###
+
+/about:
+  controller: about
+  action: index
+  role: [public]
+
+/contact:
+  controller: contact
+  action: index
+  role: [public]
+
+/presentation:
+  controller: presentation
+  action: index
+  role: [public]
+
+###### comments/like ########
+/comment:
+  controller: comment
+  action: commentCreate
+  role: [public]
+
+/replyComment:
+  controller: comment
+  action: replyComment
+  role: [public]
+
+/createLike:
+  controller: like
+  action: createLike
+  role: [public]
+
+/getLikes:
+  controller: like
+  action: getLikes
+  role: [public]
+###### comments/like ########
+
+###### articles ########
 /article:
   controller: article
   action: showArticle
   role: [public]
 
+/articles:
+  controller: article
+  action: indexArticle
+  role: [public]
+
+###### articles ########
+
+###### report ########
+
+/reportComment:
+  controller: comment
+  action: reportComment
+  role: [public]
+
+###### report ########
+
+###### errors ########
+
+/page-non-trouvee:
+  controller: error
+  action: notFoundError
+  role: [public]
+
+/non-autorise:
+  controller: error
+  action: unauthorizedError
+  role: [public]
+
+/probleme-technique:
+  controller: error
+  action: serverError
+  role: [public]
+
+###### errors ########
+
+##########################################
+##############  FRONT   ##################
+##########################################
+
+##########################################
+##############  ADMIN   ##################
+##########################################
+
+/dashboard:
+  controller: admin
+  action: dashboard
+  role: [public]
+
+/getStatConnexion:
+  controller: admin
+  action: getStatConnexion
+  role: [public]
+
+/gerer-mes-messages:
+  controller: admin
+  action: indexContact
+  role: [public]
+
+/deleteContact:
+  controller: admin
+  action: deleteContact
+  role: [public]
+
+/devFixtures:
+  controller: admin
+  action: loadFixtures
+  role: [public]
+
+###### articles ########
+# C #
 /ecrire-un-article:
   controller: article
   action: articleCreate
   role: [public]
 
+# U #
 /editer-un-article:
   controller: article
   action: updateArticle
+  role: [public]
+
+/gerer-mes-articles:
+  controller: admin
+  action: indexArticle
   role: [public]
 
 /deleteArticle:
@@ -84,95 +198,59 @@
   action: deleteArticle
   role: [public]
 
-/createArticle:
-  controller: article
-  action: articleCreate
-  role: [admin, super_admin]
+###### articles ########
 
-/detailsArticle:
-  controller: article
-  action: detailsArticle
-  role: [public, user, admin, super_admin]
+###### report ########
 
-/updateArticle:
-  controller: article
-  action: updateArticle
-  role: [admin, super_admin]  
-
-/articles:
-  controller: article
-  action: indexArticle
-  role: [public, user, admin, super_admin]
-
-
-###### comments/like ########
-/comment:
+/reports:
   controller: comment
-  action: commentCreate
-  role: [public, user, admin, super_admin]
+  action: getReports
+  role: [public]
 
-/replyComment:
-  controller: comment
-  action: replyComment
-  role: [public, user, admin, super_admin]
+###### report ########
 
-/createLike:
-  controller: like
-  action: createLike
-  role: [public, user, admin, super_admin]
+###### categories ########
+/gerer-mes-categories:
+  controller: categories
+  action: indexCategories
+  role: [public]
 
-/getLikes:
-  controller: like
-  action: getLikes
-  role: [public, user, admin, super_admin]
-###### comments/like ########
+/crer-une-categorie:
+  controller: categories
+  action: addCategory
+  role: [public]
 
+/deleteCategory:
+  controller: categories
+  acion: deleteCategory
+  role: [public]
 
-###### gestion des pages ########
-/addPage:
-  controller: admin
-  action: addPage
-  role: [public, user, admin, super_admin]
+###### categories ########
 
-#### gestion des pages
+###### pages ########
+
 /gerer-mes-pages:
   controller: admin
   action: addPage
-  role: [public, user, admin, super_admin]
+  role: [public]
 
 /editPage:
   controller: admin
   action: editPage
-  role: [public, user, admin, super_admin]
+  role: [public]
 
 /deletePage:
   controller: admin
   action: deletePageAdmin
-  role: [public, user, admin, super_admin]
-
-/gerer-mes-articles:
-  controller: admin
-  action: indexArticle
-  role: [public, user, admin, super_admin]
-
-/page-non-trouvee:
-  controller: error
-  action: notFoundError
-  role: [public, user, admin, super_admin]
-
-
-/test123:
-  controller: article
-  action: indexArticle
   role: [public]
 
+###### pages ########
+
+###### Menu ########
 /gerer-mon-menu:
   controller: admin
   action: editMenu
   role: [public]
-
-
-### menu des items drag and drop
 
 /moveItemPosition:
   controller: admin
@@ -182,4 +260,44 @@
 /addItem:
   controller: admin
   action: addItem
+  role: [public]
+
+###### Menu ########
+
+##########################################
+##############  ADMIN   ##################
+##########################################
+
+##########################################
+##########  FRONT DYNAMIQUE   ############
+##########################################
+
+/actus:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-1:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-2:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/foot-feminin:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/champions-league:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/psg:
+  controller: categories
+  action: categoryPage
   role: [public]
