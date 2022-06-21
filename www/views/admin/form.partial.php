@@ -29,8 +29,39 @@
                 endforeach;
                 break; //ccf
                 ?>
+                <?php
+            case 'email': //ccd
+                ?>
+                <div class="logo__text">
+                    <img class="logo" src="../public/assets/images/mail.png" alt="logo SPORT-CMS">
+                    <p>Email</p>
+                </div>
+                <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
+                <?php break; 
+                ?>
 
 
+                <?php
+            case 'password': 
+                 ?>
+                <div class="logo__text">
+                <img class="logo" src="../public/assets/images/lock.png" alt="logo SPORT-CMS">
+                <p>Mot de passe</p>
+                </div>
+                <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
+                <?php break; 
+                ?>
+
+                <?php
+            case 'passwordConfirm': 
+                 ?>
+                <div class="logo__text">
+                <img class="logo" src="../public/assets/images/lock.png" alt="logo SPORT-CMS">
+                <p>Confirmation du mot de passe</p>
+                </div>
+                <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
+                <?php break; 
+                ?>
             <?php
             case "select": //csd
             ?>
@@ -95,5 +126,8 @@
 
     <input type="submit" value="<?= $config["config"]["submit"] ?? "Envoyer" ?>">
 
+    <?php if($_SERVER['REQUEST_URI'] == '/register') :?>
+        <p class="link_register">Déjà un compte ? <a href="/login">Connectez-vous !</a></p> 
+        <?php endif?>
 
 </form>

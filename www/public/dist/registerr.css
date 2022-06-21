@@ -6,19 +6,17 @@ body {
     font-weight: 400;
 }
 
-main {
-    padding-top: 6%;
-    text-align: center;
+.logo__register {
+    display: flex;
     margin: auto;
 }
 
-.title {
-    text-align: center;
-    margin-bottom: 1em;
-    cursor: pointer;
+#formRegister .logo__text {
+    display: flex;
 }
 
-form {
+#formRegister {
+    margin-top: 2% !important;
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
     font-size: 20px;
     margin: auto;
@@ -31,13 +29,7 @@ form {
     color: #2A4365;
 }
 
-.encare {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-form input {
+#formRegister input {
     position: relative;
     width: 100%;
     height: 60px;
@@ -47,15 +39,12 @@ form input {
     font-size: 24px;
 }
 
-label {
+#formRegister label {
     margin-left: 0.5em;
 }
 
-.ligne {
-    margin-top: 1em;
-}
 
-button {
+#formRegister button {
     font-size: 20px;
     margin: auto;
     width: 35%;
@@ -69,21 +58,36 @@ button {
     cursor: pointer;
 }
 
-.link {
-    text-decoration: none;
+.link_register{
+    margin: auto;
+    margin-bottom: 1rem;
+}
+
+#formRegister input[type="submit"]{
+    font-size: 20px;
+    margin: auto;
+    width: 35%;
+    margin-top: 2.5em;
+    margin-bottom: 1em;
+    background: #2A4365;
+    color: white;
+    height: 60px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 600px) {
-    form {
+    #formRegister {
         font-size: 14px;
         margin: auto;
         width: 300px;
     }
-    form input {
+    #formRegister form input {
         height: 50px;
         font-size: 20px;
     }
-    button {
+    #formRegister button {
         font-size: 16px;
         height: 50px;
     }
