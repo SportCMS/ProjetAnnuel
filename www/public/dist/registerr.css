@@ -39,25 +39,6 @@ body {
     font-size: 24px;
 }
 
-#formRegister label {
-    margin-left: 0.5em;
-}
-
-
-#formRegister button {
-    font-size: 20px;
-    margin: auto;
-    width: 35%;
-    margin-top: 2.5em;
-    margin-bottom: 1em;
-    background: #2A4365;
-    color: white;
-    height: 60px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
 .link_register{
     margin: auto;
     margin-bottom: 1rem;
@@ -87,7 +68,7 @@ body {
         height: 50px;
         font-size: 20px;
     }
-    #formRegister button {
+    #formRegister input[type="submit"] {
         font-size: 16px;
         height: 50px;
     }

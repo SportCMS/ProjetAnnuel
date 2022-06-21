@@ -34,34 +34,23 @@
                 ?>
                 <div class="logo__text">
                     <img class="logo" src="../public/assets/images/mail.png" alt="logo SPORT-CMS">
-                    <p>Email</p>
+                    <label><?= $input["label"] ?></label>
                 </div>
                 <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
                 <?php break; 
                 ?>
-
 
                 <?php
             case 'password': 
                  ?>
                 <div class="logo__text">
                 <img class="logo" src="../public/assets/images/lock.png" alt="logo SPORT-CMS">
-                <p>Mot de passe</p>
+                <label><?= $input["label"] ?></label>
                 </div>
                 <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
                 <?php break; 
                 ?>
 
-                <?php
-            case 'passwordConfirm': 
-                 ?>
-                <div class="logo__text">
-                <img class="logo" src="../public/assets/images/lock.png" alt="logo SPORT-CMS">
-                <p>Confirmation du mot de passe</p>
-                </div>
-                <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
-                <?php break; 
-                ?>
             <?php
             case "select": //csd
             ?>
@@ -84,6 +73,19 @@
                 <?php break; ?>
 
 
+                <?php
+            case "text": //ctd
+                ?>
+                <?php if($_SERVER['REQUEST_URI'] == '/register') :?>
+                    <div class="logo__text">
+                        <img class="logo" src="../public/assets/images/user.png" alt="logo SPORT-CMS">
+                        <label><?= $input["label"] ?></label>
+                    </div>
+                    <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
+                <?php endif?>
+
+                <?php break; //ctf
+                ?>
 
             <?php
             case "textarea": //ctd
