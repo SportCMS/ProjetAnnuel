@@ -160,6 +160,11 @@
   action: getStatConnexion
   role: [public]
 
+/user-profile:
+  controller: admin
+  action: getUserProfile
+  role: [public]
+
 /gerer-mes-messages:
   controller: admin
   action: indexContact

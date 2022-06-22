@@ -248,4 +248,76 @@
                 ]
             ];
         }
+
+        public function getUserProfileForm(){
+            return [
+
+                "config" => [
+                    "method" => "POST",
+                    "action" => "",
+                    "id" => "form_userprofile",
+                    "class" => "form_userprofile",
+                    "submit" => "Valider"
+                ],
+                "inputs" => [
+                    "firstname" => [
+                        "type" => "text",
+                        "label" => "Votre prénom",
+                        "id" => "firstname",
+                        "class" => "form_input",
+                        "placeholder" => "Natasha",
+                        "value" => $this->firstname ?? "",
+                        "disabled" => 'disabled'
+                    ],
+                    "lastname" => [
+                        "type" => "text",
+                        "label" => "Votre nom",
+                        "id" => "lastname",
+                        "class" => "form_input",
+                        "placeholder" => "Palabre",
+                        "value" => $this->lastname ?? "",
+                        "disabled" => 'disabled'
+                    ],
+                    "email" => [
+                        "type" => "email",
+                        "label" => "Votre email (inchangeable)",
+                        "id" => "email",
+                        "class" => "form_input",
+                        "placeholder" => "nom@gmail.com",
+                        "value" => $this->getEmail() ?? '',
+                        "error" => "Votre email doit faire entre 8 et 320 caractères",
+                        "required" => true,
+                        "disabled" => 'disabled'
+                    ],
+                    "oldPassword" => [
+                        "type" => "password",
+                        "label" => "Votre mot de passe actuel",
+                        "id" => "pwd",
+                        "class" => "form_input",
+                        "placeholder" => "",
+                        "error" => "Votre mot de passe doit faire au minimum 8 caractères",
+                        "required" => false
+                    ],
+                    "password" => [
+                        "label" => "Votre nouveau mot de passe",
+                        "type" => "password",
+                        "id" => "pwd",
+                        "class" => "form_input",
+                        "placeholder" => "",
+                        "error" => "Votre mot de passe doit faire au minimum 8 caractères",
+                        "required" => false
+                    ],
+                    "passwordConfirm" => [
+                        "label" => "Confirmation",
+                        "type" => "password",
+                        "confirm" => "pwd",
+                        "id" => "passwordConfirm",
+                        "class" => "form_input",
+                        "placeholder" => "",
+                        "error" => "Votre mot de mot de passe de confirmation ne correspond pas",
+                        "required" => false
+                    ],
+                ]
+            ];
+        }
     }

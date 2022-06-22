@@ -28,6 +28,12 @@
         Router::render('admin/home.view.php');
         }
 
+        public function getUserProfile(): void
+        {
+            $user = new UserModel();
+            Router::render('admin/user/user_profile.view.php', ["user" => $user]);
+        }
+        
         public function indexArticle()
     	{
         $article = new ArticleModel();
