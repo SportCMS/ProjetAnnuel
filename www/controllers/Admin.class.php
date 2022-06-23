@@ -1,43 +1,40 @@
 <?php
 
     namespace App\controllers;
-    use App\core\View;
-    use App\models\User as UserModel;
+
     use App\models\Report as ReportModel;
     use App\models\MenuItem as MenuItemsModel;
-    use App\core\Router;
     use App\models\Theme as ThemeModel;
     use App\models\Page as PageModel;
     use App\models\Article as ArticleModel;
     
     use App\core\Sql;
-
-
+    use App\core\Router;
 
     class Admin extends Sql
     {
         public function dashboard(): void
         {
-        // session en dur pour les tests
-        // a setter au login si role du user = 'admin
-        $_SESSION['role'] = 'admin';
+            // session en dur pour les tests
+            // a setter au login si role du user = 'admin
+            $_SESSION['role'] = 'admin';
 
-        $reportManager = new ReportModel();
-        $reports = $reportManager->getReportNotifications();
-        $_SESSION['report'] = count($reports);
-        Router::render('admin/home.view.php');
+            $reportManager = new ReportModel();
+            $reports = $reportManager->getReportNotifications();
+            $_SESSION['report'] = count($reports);
+            Router::render('admin/home.view.php');
         }
 
         public function indexArticle()
     	{
-        $article = new ArticleModel();
+            $article = new ArticleModel();
 
-        $all_article = $article->getAll();
+            $all_article = $article->getAll();
 
-        Router::render("admin/article/articles.view.php", [
-            "all_article" => $all_article,
-            
-        ]);
+            Router::render("admin/article/articles.view.php", [
+                "all_article" => $all_article,
+                
+            ]);
     	}
 
         public function addPage(): void
@@ -130,8 +127,6 @@
             $content .= $output[$i];
         }
         file_put_contents('routes.yml', $content);
-
-       
     }
 
     // gestion menu 
