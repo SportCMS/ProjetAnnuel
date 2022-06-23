@@ -101,27 +101,6 @@
   role: [public]
 ###### comments/like ########
 
-<<<<<<< HEAD
-
-
-
-##### adminmember #####
-
-/adminmember:
- controller: admin
- action: memberview
- role: [admin, super_admin]
-
-/deleteUser:
-  controller: admin
-  action: deleteUser
-  role: [admin, super_admin]
-
-/editUserRole:
-  controller: admin
-  action: editUserRole
-  role: [admin, super_admin]
-=======
 ###### articles ########
 /article:
   controller: article
@@ -322,4 +301,18 @@
   controller: categories
   action: categoryPage
   role: [public]
->>>>>>> c41697cf182a3bab3c282093b1aaea649afd160f
+
+/adminmember:
+ controller: admin
+ action: memberview
+ role: [public]
+
+/deleteUser:
+  controller: admin
+  action: deleteUser
+  role: [public]
+
+/editUserRole:
+  controller: admin
+  action: editUserRole
+  role: [public]
