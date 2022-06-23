@@ -7,6 +7,7 @@
     use App\models\Theme as ThemeModel;
     use App\models\Page as PageModel;
     use App\models\Article as ArticleModel;
+    use App\models\User as UserModel;
     
     use App\core\Sql;
     use App\core\Router;
