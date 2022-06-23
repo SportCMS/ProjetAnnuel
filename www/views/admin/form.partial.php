@@ -73,20 +73,6 @@
                 <?php break; ?>
 
 
-                <?php
-            case "text": //ctd
-                ?>
-                <?php if($_SERVER['REQUEST_URI'] == '/register') :?>
-                    <div class="logo__text">
-                        <img class="logo" src="../public/assets/images/user.png" alt="logo SPORT-CMS">
-                        <label><?= $input["label"] ?? "" ?></label>
-                    </div>
-                    <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
-                <?php endif?>
-
-                <?php break; //ctf
-                ?>
-
             <?php
             case "textarea": //ctd
             ?>
@@ -122,6 +108,11 @@
                 ?>
             <?php
             default: ?>
+                <?php if($_SERVER['REQUEST_URI'] == '/register') :?>
+                <div class="logo__text">
+                    <label><?= $input["label"] ?? "" ?></label>
+                </div>
+                <?php endif?>
                 <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
         <?php endswitch; ?>
     <?php endforeach; ?>
