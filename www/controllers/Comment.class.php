@@ -2,17 +2,13 @@
 
 namespace App\controllers;
 
-
-use App\core\Sql;
-use PDOException;
-use App\core\View;
-use App\core\Session;
 use App\models\Comment as CommentModel;
 use App\models\User as UserModel;
-use App\core\verificator\VerificatorComment;
 use App\models\Report as ReportModel;
-use App\core\verificator\VerificatorReport;
 
+use App\core\verificator\VerificatorReport;
+use App\core\Sql;
+use App\core\Router;
 
 class Comment extends Sql
 {
@@ -92,7 +88,6 @@ class Comment extends Sql
 
 	public function reportComment()
     {
-        $view = new View("report", "empty");
         $reportManager = new ReportModel();
         $commentManager = new CommentModel();
         $userManager = new UserModel();
@@ -109,7 +104,7 @@ class Comment extends Sql
             $result = VerificatorReport::validate($reportManager->getReportForm(), $_POST);
 
             if ($result && count($result) > 0) {
-                $view->assign([
+                Router::render('admin/reports/reports.view.php',[
                     'result' => $result,
                     "reportManager" => $reportManager,
                     "comment" => $comment,
@@ -122,14 +117,14 @@ class Comment extends Sql
             $report->setCommentId($_GET['id']);
             $report->setEmail($email);
             $report->setMessage($message);
-	    $report->setHasRead(0);
+	    	$report->setHasRead(0);
             $report->setCreatedAt((new \Datetime('now'))->format('Y-m-d H:i:s'));
             $report->save();
 
             header('Location:/articles');
         }
 
-        $view->assign([
+        Router::render('admin/reports/reports.view.php',[
             "reportManager" => $reportManager,
             "comment" => $comment,
             "author" => $user
@@ -138,7 +133,6 @@ class Comment extends Sql
 
     public function getReports()
     {
-        $view = new View("reports", "empty");
         $reportManager = new ReportModel();
         $reports = $reportManager->getBy(['has_read' => 0]);
 
@@ -150,6 +144,6 @@ class Comment extends Sql
         }
 
 
-        $view->assign(['reports' => $reports]);
+        Router::render('admin/reports/reports.view.php', ['reports' => $reports]);
     }
 }

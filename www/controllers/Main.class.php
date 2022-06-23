@@ -1,5 +1,7 @@
 <?php
+
     namespace App\controllers;
+    
     use App\core\Router;
 
     class Main {

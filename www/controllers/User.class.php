@@ -1,13 +1,14 @@
 <?php
+
     namespace App\controllers;
-    use App\core\User as Us;
-    use App\core\Router;
+
     use App\models\User as UserModel;
     use App\models\Password_reset as PswdRst;
+
     use App\core\verificator\Verificator;
-    use App\core\Sql;
     use App\core\Session;
     use App\core\Mail;
+    use App\core\Router;
 
     class User {
         /* Session test*/
@@ -113,6 +114,7 @@
             $pswdRst->save();
             echo "Vous allez recevoir un mail pour modifier votre mail";
         }
+
         //formulaire changement du mot de passeEmail envoyé
         public function changePswd(){
             $pswdRst = new PswdRst();
@@ -128,6 +130,7 @@
             $session->set("token", $pswdRst->getToken());
             Router::render('front/security/changepswd.view.php',["user" => $user]);
         }
+
         //confirm changement mot de passe
         public function confirmChng(){
             $user = new UserModel();
@@ -150,6 +153,7 @@
             $user->save();
             echo "Mot de passe changé";
         }
+        
         /*****REGISTER*****/
         public function register(){
             $user = new UserModel();

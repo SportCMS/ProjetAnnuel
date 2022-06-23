@@ -2,19 +2,16 @@
 
 namespace App\controllers;
 
-use App\core\Router;
-use App\core\View;
 use App\models\Article as ArticleModel;
-use App\core\verificator\VerificatorArticle;
 use App\models\Categorie as CategorieModel;
 use App\models\Comment as CommentModel;
 use App\models\Like as LikeModel;
 
+use App\core\verificator\VerificatorArticle;
+use App\core\Router;
 
-//tester le drag and drop
-use App\models\User as UserModel;
 use App\core\Sql;
-use App\core\Session;
+
 use App\helpers\Slugger;
 
 class Article extends Sql
