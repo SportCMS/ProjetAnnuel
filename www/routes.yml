@@ -1,9 +1,8 @@
-#roles mis en place
+##########################################
+##############  FRONT   ##################
+##########################################
 
-/:
-  controller: main
-  action: home
-  role: [public]
+### SECURITY ###
 
 /login:
   controller: user
@@ -13,28 +12,17 @@
 /logout:
   controller: user
   action: logout
-  role: [user, admin, super_admin]
-    
+  role: [public]
+
 /register:
   controller: user
   action: register
   role: [public]
 
-/confirmaccount:
-  controller: user
-  action: confirmaccount
-  role: [public]
-
-/dashboard:
-  controller: admin
-  action: home
-  role: [admin, super_admin]
-
 /mail:
   controller: mail
   action: main
-  role: [user, admin, super_admin]
-
+  role: [public]
 
 /forgetPassword:
   controller: user
@@ -49,66 +37,71 @@
 /changePassword:
   controller: user
   action: changePswd
-  role: [user, admin, super_admin]
+  role: [public]
 
 /confirmChange:
   controller: user
   action: confirmChng
-  role: [user, admin, super_admin]
+  role: [public]
 
 /redi:
   controller: user
   action: redi
-  role: [user, admin, super_admin]
+  role: [public]
 
+### SECURITY ###
 
-# ajout 
-# routes CRUD articles
-/createArticle:
-  controller: article
-  action: articleCreate
-  role: [admin, super_admin]
+### HOME ###
+/:
+  controller: main
+  action: home
+  role: [public]
 
-/detailsArticle:
-  controller: article
-  action: detailsArticle
-  role: [user, admin, super_admin]
+/home:
+  controller: main
+  action: home
+  role: [public]
 
-/updateArticle:
-  controller: article
-  action: updateArticle
-  role: [admin, super_admin]
+### HOME ###
 
-/deleteArticle:
-  controller: article
-  action: deleteArticle
-  role: [admin, super_admin]
+/about:
+  controller: about
+  action: index
+  role: [public]
 
-/articles:
-  controller: article
-  action: allArticle
-  role: [user, admin, super_admin]
- 
+/contact:
+  controller: contact
+  action: index
+  role: [public]
+
+/presentation:
+  controller: presentation
+  action: index
+  role: [public]
 
 ###### comments/like ########
 /comment:
   controller: comment
   action: commentCreate
-  role: [user, admin, super_admin]
+  role: [public]
 
 /replyComment:
   controller: comment
   action: replyComment
+  role: [public]
 
 /createLike:
   controller: like
   action: createLike
+  role: [public]
 
 /getLikes:
   controller: like
   action: getLikes
+  role: [public]
 ###### comments/like ########
 
+<<<<<<< HEAD
 
 
 
@@ -128,3 +121,205 @@
   controller: admin
   action: editUserRole
   role: [admin, super_admin]
+=======
+###### articles ########
+/article:
+  controller: article
+  action: showArticle
+  role: [public]
+
+/articles:
+  controller: article
+  action: indexArticle
+  role: [public]
+
+###### articles ########
+
+###### report ########
+
+/reportComment:
+  controller: comment
+  action: reportComment
+  role: [public]
+
+###### report ########
+
+###### errors ########
+
+/page-non-trouvee:
+  controller: error
+  action: notFoundError
+  role: [public]
+
+/non-autorise:
+  controller: error
+  action: unauthorizedError
+  role: [public]
+
+/probleme-technique:
+  controller: error
+  action: serverError
+  role: [public]
+
+###### errors ########
+
+##########################################
+##############  FRONT   ##################
+##########################################
+
+##########################################
+##############  ADMIN   ##################
+##########################################
+
+/dashboard:
+  controller: admin
+  action: dashboard
+  role: [public]
+
+/getStatConnexion:
+  controller: admin
+  action: getStatConnexion
+  role: [public]
+
+/gerer-mes-messages:
+  controller: admin
+  action: indexContact
+  role: [public]
+
+/deleteContact:
+  controller: admin
+  action: deleteContact
+  role: [public]
+
+/devFixtures:
+  controller: admin
+  action: loadFixtures
+  role: [public]
+
+###### articles ########
+# C #
+/ecrire-un-article:
+  controller: article
+  action: articleCreate
+  role: [public]
+
+# U #
+/editer-un-article:
+  controller: article
+  action: updateArticle
+  role: [public]
+
+/gerer-mes-articles:
+  controller: admin
+  action: indexArticle
+  role: [public]
+
+/deleteArticle:
+  controller: article
+  action: deleteArticle
+  role: [public]
+
+###### articles ########
+
+###### report ########
+
+/reports:
+  controller: comment
+  action: getReports
+  role: [public]
+
+###### report ########
+
+###### categories ########
+/gerer-mes-categories:
+  controller: categories
+  action: indexCategories
+  role: [public]
+
+/crer-une-categorie:
+  controller: categories
+  action: addCategory
+  role: [public]
+
+/deleteCategory:
+  controller: categories
+  acion: deleteCategory
+  role: [public]
+
+###### categories ########
+
+###### pages ########
+
+/gerer-mes-pages:
+  controller: admin
+  action: addPage
+  role: [public]
+
+/editPage:
+  controller: admin
+  action: editPage
+  role: [public]
+
+/deletePage:
+  controller: admin
+  action: deletePageAdmin
+  role: [public]
+
+###### pages ########
+
+###### Menu ########
+/gerer-mon-menu:
+  controller: admin
+  action: editMenu
+  role: [public]
+
+/moveItemPosition:
+  controller: admin
+  action: moveItemPosition
+  role: [public]
+
+/addItem:
+  controller: admin
+  action: addItem
+  role: [public]
+
+###### Menu ########
+
+##########################################
+##############  ADMIN   ##################
+##########################################
+
+##########################################
+##########  FRONT DYNAMIQUE   ############
+##########################################
+
+/actus:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-1:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/ligue-2:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/foot-feminin:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/champions-league:
+  controller: categories
+  action: categoryPage
+  role: [public]
+
+/psg:
+  controller: categories
+  action: categoryPage
+  role: [public]
+>>>>>>> c41697cf182a3bab3c282093b1aaea649afd160f
