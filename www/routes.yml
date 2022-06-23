@@ -189,3 +189,8 @@
   controller: admin
   action: addItem
   role: [public]
+
+/test:
+  controller: presentation
+  action: indexPresentation
+  role: [public]
