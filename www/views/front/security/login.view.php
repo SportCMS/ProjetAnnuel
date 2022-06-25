@@ -1,7 +1,7 @@
 <?php ob_start();
 use App\core\Router; ?>
 
-<h1>Login</h1>
+<img class="logo__login" src="../public/assets/images/SportCMS.png" alt="logo SPORT-CMS">
 
 <?php if(!empty($result)): ?>
 	<div class="">
@@ -11,4 +11,8 @@ use App\core\Router; ?>
 	</div>
 <?php endif ?>
 
+
+
 <?php  Router::includePartial("form", $user->getLoginForm(null)) ?>
+<?php $base = ob_get_clean(); ?>
+<?php require('./views/front/base/base.php'); ?>
