@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="../public/dist/login.css">
-
 <form method="<?= $config["config"]["method"] ?? "POST" ?>" action="<?= $config["config"]["action"] ?? "" ?>" id="<?= $config["config"]["id"] ?? "" ?>" class="<?= $config["config"]["class"] ?? "" ?>">
 
     <?php foreach ($config["inputs"] as $name => $input) :
@@ -18,9 +16,6 @@
                 break; //crf
                 ?>
 
-
-                
-
                 <?php
             case "checkbox": //ccd
                 /**********************************
@@ -34,7 +29,27 @@
                 endforeach;
                 break; //ccf
                 ?>
+                <?php
+            case 'email': //ccd
+                ?>
+                <div class="logo__text">
+                    <img class="logo" src="../public/assets/images/mail.png" alt="logo SPORT-CMS">
+                    <label><?= $input["label"] ?? "" ?></label>
+                </div>
+                <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
+                <?php break; 
+                ?>
 
+                <?php
+            case 'password': 
+                 ?>
+                <div class="logo__text">
+                <img class="logo" src="../public/assets/images/lock.png" alt="logo SPORT-CMS">
+                <label><?= $input["label"] ?? "" ?></label>
+                </div>
+                <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
+                <?php break; 
+                ?>
 
             <?php
             case "select": //csd
@@ -56,7 +71,6 @@
                 </select>
                 <br>
                 <?php break; ?>
-
 
 
             <?php
@@ -92,47 +106,25 @@
                 <div class="g-recaptcha" data-sitekey="<?= CAPTCHASITEKEY ?>"></div>
                 <?php break; //ccf
                 ?>
-
-            <?php
-            case 'email': //ccd
-            ?>
-            <div class="logo__text">
-                <img class="logo" src="../public/assets/images/mail.png" alt="logo SPORT-CMS">
-                <p>Email</p>
-            </div>
-                <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
-                <?php break; 
-                ?>
-
-
-            <?php
-            case 'password': 
-            ?>
-                <div class="logo__text">
-                <img class="logo" src="../public/assets/images/lock.png" alt="logo SPORT-CMS">
-                <p>Password</p>
-                </div>
-                <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
-                <?php break; 
-                ?>
-
             <?php
             default: ?>
-
-            
+                <?php if($_SERVER['REQUEST_URI'] == '/register') :?>
+                <div class="logo__text">
+                    <label><?= $input["label"] ?? "" ?></label>
+                </div>
+                <?php endif?>
                 <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
         <?php endswitch; ?>
     <?php endforeach; ?>
 
-    <?php if($_SERVER['REQUEST_URI'] == '/login') :?>
-        <a class="forget" href="/forgetPassword">Mot de passe oublié</a>
-        <?php endif?>
-
     <input type="submit" value="<?= $config["config"]["submit"] ?? "Envoyer" ?>">
 
+    <?php if($_SERVER['REQUEST_URI'] == '/register') :?>
+        <p class="link_register">Déjà un compte ? <a href="/login">Connectez-vous !</a></p> 
+        <?php endif?>
 
-    <?php if($_SERVER['REQUEST_URI'] == '/login') :?>
-        <p class="link_register">Pas de compte ?<a href="/register">Créer un compte</a></p> 
+        <?php if($_SERVER['REQUEST_URI'] == '/login') :?>
+        <p class="link_register">Déjà un compte ? <a href="/login">Connectez-vous !</a></p> 
         <?php endif?>
 
 </form>

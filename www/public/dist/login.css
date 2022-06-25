@@ -1,27 +1,56 @@
-#formLogin{
-    margin-top: 2%;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;900&display=swap');
+body {
+    background-color: #F7FAFC;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 400;
 }
 
-.logo__login{
+.logo__login {
     display: flex;
     margin: auto;
 }
 
-.formLogin{
-    margin: 1rem auto 1rem auto;
+#formLogin .logo__text {
+    display: flex;
+    margin-bottom: 0.5rem;
 }
 
-.error__login{
-    text-align: center;
-    color: red;
-    font-weight: bold;
+#formLogin {
+    margin-top: 2% !important;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    font-size: 20px;
+    margin: auto;
+    width: 550px;
+    padding: 3rem;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    color: #2A4365;
+    margin-bottom: 1rem;
 }
 
-input[type="submit"]{
+#formLogin input {
+    position: relative;
+    width: 100%;
+    height: 60px;
+    background-color: #EDF2F7;
+    border-radius: 5px;
+    border: none;
+    font-size: 20px;
+    margin-bottom: 1.2rem;
+}
+
+.link_register{
+    margin: auto;
+}
+
+#formLogin input[type="submit"]{
     font-size: 20px;
     margin: auto;
     width: 35%;
-    margin-top: 2.5em;
+    margin-top: 1em;
     margin-bottom: 1em;
     background: #2A4365;
     color: white;
@@ -31,11 +60,18 @@ input[type="submit"]{
     cursor: pointer;
 }
 
-.link_register{
-    margin: auto;
-    margin-bottom: 1rem;
-}
-
-.logo__text{
-    display: flex;
+@media screen and (max-width: 600px) {
+    #formLogin {
+        font-size: 14px;
+        margin: auto;
+        width: 300px;
+    }
+    #formLogin form input {
+        height: 50px;
+        font-size: 20px;
+    }
+    #formLogin input[type="submit"] {
+        font-size: 16px;
+        height: 50px;
+    }
 }
