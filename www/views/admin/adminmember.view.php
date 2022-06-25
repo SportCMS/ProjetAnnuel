@@ -1,5 +1,10 @@
-<h1>Gestion des membres</h1>
+<?php ob_start(); 
+use App\core\Router;
+?>
 
+
+<h1>Gestion des membres</h1>
+<section id="gestionmember">
 <table>
 
     <tr>
@@ -9,7 +14,8 @@
         <th>Status</th>
         <th>Date Update</th>
         <th>Update role</th>
-        <th>Action</th>
+        <th>Envoyer</th>
+        <th>Supprimer</th>
 	</tr>
     <?php foreach($users as $user): ?>
     <tr>
@@ -23,24 +29,32 @@
             
         <form action="/editUserRole" method="POST">
         <select id="role" name="role">
-            <option value="<?= $user["role"] ?>"><?=$user["role"]?></option>
-            <option value="super_admin">Entraineur</option>
-            <option value="admin">Abonné</option>
-            <option value="user">Membre</option>
+            <option value="<?= $user["role"] ?>"><?=$user["role"]?> </option> 
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+            <option value="public">Public</option>
         </select>
     </td>
     <td>
-        <span style="margin:0 20px;padding:4px;background:lightgrey">
-                <button type="submit" style="font-size:11px;text-decoration:none;color:blue" onclick="confirm('Confirmer la modification du rôle ?')">Update</button>
+        <div class="updatebutton">
+            <button type="submit" onclick="confirm('Confirmer la modification du rôle ?')">Update</button>
+        </div>
                 <input type="hidden" name="id" value="<?= $user['id'] ?>">
-        </span>
+                
         </form>
     </td>
     <td>
-        <span style="margin:0 20px;padding:4px;background:lightgrey">
-                <a href="/deleteUser?id=<?= $user['id'] ?>" style="font-size:11px;text-decoration:none;color:blue" onclick="confirm('Confirmer la suppression ?')">Supprimer</a>
-        </span>
+        <div class="supprimebutton">
+                <a href="/deleteUser?id=<?= $user['id'] ?>"  onclick="confirm('Confirmer la suppression ?')">Supprimer</a>
+    </div>
     </td>
     </tr>
         <?php endforeach; ?>
       </table>
+
+      </section>
+
+
+
+      <?php $content = ob_get_clean(); ?>   
+        <?php include('./views/admin/base/base.php'); ?>
