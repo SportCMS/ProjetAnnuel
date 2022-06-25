@@ -11,7 +11,7 @@
     <hr><br>
 <?php endforeach ?>
 <?php else :?>
-    <p>tu es une merde</p>
+    <p>il n'y pas de signalements</p>
 <?php endif; ?>
 
 <?php $content = ob_get_clean(); ?>
