@@ -41,6 +41,8 @@
             }
             $session = new Session();
             $session->set('email', $_POST['email']);
+            $_SESSION['email'] = $_POST['email'];
+            $_SESSION['password'] = $_POST['password'];
             header("Location: dashboard");
         }
         public function logout()
@@ -216,6 +218,55 @@
                 $user->save();
             }
             header('Location: /login');
+        }
+
+
+        public function changePwd(){
+            $user = new UserModel();
+            //VUE
+            Router::render('admin/user/user_profilPwd.view.php', ["user" => $user]);
+            //Récupérer les infos du USER grâce à la session
+
+            
+
+            $user = $user->getOneBy(['email' => $_SESSION['email']])[0];
+            $status = $user->getStatus();
+            
+
+            
+
+            //Ancien mot de passe
+
+            if(password_verify($_POST['oldPassword'], $user->getPassword()) && $status == 1){
+
+
+                if ($_POST['password'] !== $_POST['oldPassword'] ){
+
+                    //Vérification du nouveau password
+                    if($_POST['password'] === $_POST['passwordConfirm'] ) {
+                        $user->setPassword($_POST['password']);
+                        $user->save();
+                        echo "Votre mot de passe a été modifié";
+
+                    }
+                    else{
+                        echo "Vos mots de passe ne correspondent pas !!!";
+                        die();
+                    }
+                
+                }else
+                {
+                    echo "Le nouveau mot de passe ne doit pas être similaire à l'ancien";
+                }
+                
+            }else
+            {
+                echo "Ancien mot de passe n'est pas bon";
+                die();
+            }
+            
+            
+
         }
 
         // /* Gestion des rôles */ 

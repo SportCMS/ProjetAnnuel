@@ -9,6 +9,8 @@
         <?= $base ?>
     </main>
     <?php include_once './views/front/partials/footer.php' ?>
+
+    
 </body>
 
 </html>

@@ -5,4 +5,10 @@ use App\core\Router; ?>
 
 <?php  Router::includePartial("form", $user->getUserProfileForm(null)) ?>
 <?php $base = ob_get_clean(); ?>
+
+
+<a class="" href="/user-profilePwd">Changer le mot de passe</a>
+        
+
 <?php require('./views/front/base/base.php'); ?>
+

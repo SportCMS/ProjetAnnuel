@@ -289,6 +289,23 @@
                         "required" => true,
                         "disabled" => 'disabled'
                     ],
+                ]
+            ];
+        }
+
+
+        public function getUserPwdForm(){
+            return [
+
+                "config" => [
+                    "method" => "POST",
+                    "action" => "",
+                    "id" => "form_userprofile",
+                    "class" => "form_userprofile",
+                    "submit" => "Valider"
+                ],
+                "inputs" => [
+                    
                     "oldPassword" => [
                         "type" => "password",
                         "label" => "Votre mot de passe actuel",
