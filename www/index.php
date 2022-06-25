@@ -18,7 +18,7 @@
 		if(file_exists($class)){
 			include $class;//On utilise include car plus rapide, et on a déjà vérifier son existance
 		}else{
-			ini_get('display_errors') == 0 ? die('404 not found : la classe n\'existe pas') : header('Location:/page-non-trouvee');
+			ini_get('display_errors') == 1 ? die('404 not found : la classe n\'existe pas') : header('Location:/page-non-trouvee');
 
 		}
 	} 
@@ -29,15 +29,15 @@
 	if (file_exists($path)) {
 		$routes = yaml_parse_file($path);
 	} else {
-		ini_get('display_errors')  == 0 ? die('404 not found') : header('Location:/page-non-trouvee');
+		ini_get('display_errors')  == 1 ? die('404 not found') : header('Location:/page-non-trouvee');
 	}
 
 	$uri = strtok($_SERVER['REQUEST_URI'], "?");//J'ai ajouté strtok afin de gérer les requetes get
 	if(empty($routes[$uri]) || empty($routes[$uri]['controller']) || empty($routes[$uri]['action'])){
-		ini_get('display_errors') == 0 ? die('404 not found') : header('Location:/page-non-trouvee');
+		ini_get('display_errors') == 1 ? die('404 not found') : header('Location:/page-non-trouvee');
 	}
 	if(!Security::checkRoute($uri)){
-		ini_get('display_errors') == 0 ? die('404 not found : La route n\'est pas trouvée') : header('Location:/page-non-trouvee');
+		ini_get('display_errors') == 1 ? die('404 not found : La route n\'est pas trouvée') : header('Location:/page-non-trouvee');
 	}
 	$controller =  'App\\controllers\\' . ucfirst(strtolower($routes[$uri]['controller']));
 	$action = strtolower($routes[$uri]['action']);
@@ -57,7 +57,7 @@
 
 	$objectController = new $controller();
 	if(!method_exists($objectController, $action)){
-		ini_get('display_errors') == 0 ? die('404 not found') : header('Location:/page-non-trouvee');
+		ini_get('display_errors') == 1 ? die('404 not found') : header('Location:/page-non-trouvee');
 	}
 	$objectController->$action();
 ?>
