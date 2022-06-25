@@ -124,7 +124,7 @@ class Comment extends Sql
             header('Location:/articles');
         }
 
-        Router::render('admin/reports/reports.view.php',[
+        Router::render('front/report/report.view.php',[
             "reportManager" => $reportManager,
             "comment" => $comment,
             "author" => $user
@@ -144,6 +144,6 @@ class Comment extends Sql
         }
 
 
-        Router::render('admin/reports/reports.view.php', ['reports' => $reports]);
+        Router::render('admin/report/reports.view.php', ['reports' => $reports]);
     }
 }
