@@ -1,15 +1,15 @@
 <?php ob_start();
 use App\core\Router; ?>
-
-<img class="logo__login" src="../public/assets/images/SportCMS.png" alt="logo SPORT-CMS">
-
-<?php if(!empty($result)): ?>
+<?php if(!empty($errors)): ?>
 	<div class="">
-		<?php foreach($result as $uneErreur): ?>
-			<p> <?=$uneErreur?> </p>
+		<?php foreach($errors as $error): ?>
+			<p> <?=$error?> </p>
 		<?php endforeach ?>
 	</div>
 <?php endif ?>
+<img class="logo__login" src="../public/assets/images/SportCMS.png" alt="logo SPORT-CMS">
+
+
 
 
 

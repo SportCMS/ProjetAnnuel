@@ -15,35 +15,57 @@
         public function login()
         {
             $user = new UserModel();
-            Router::render('front/security/login.view.php',["user" => $user]);
-            if(empty($_POST)){
-                die();
-            }
-            $errors = Verificator::checkForm($user->getLoginForm(), $_POST);
-            if(!empty($errors)){
-                Router::render('front/security/login.view.php',['errors' => $errors]);
-                die();
-            }
-            if(!isset($user->getOneBy(['email' => $_POST['email']])[0])){
-                Router::render('front/security/login.view.php',['errors' => ["Votre email ou mot de passe est invalide"]]);
-                die();
-            }
-            $user = $user->getOneBy(['email' => $_POST['email']])[0];
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        
+                $errors = Verificator::checkForm($user->getLoginForm(), $_POST);
+                if(count($errors) > 0){
+                    Router::render('front/security/login.view.php',["user" => $user, 'errors' => $errors]);
+                    return;
+                }
+                if(!isset($user->getOneBy(['email' => $_POST['email']])[0])){
+                    $errors = [];
+                    $errors[] = "Les informations sont incorrectes !";
+                    Router::render('front/security/login.view.php',["user" => $user, 'errors' => $errors]);
+                    return;
+                }
+                $user = $user->getOneBy(['email' => $_POST['email']])[0];
 
-            if(!password_verify($_POST['password'], $user->getPassword())){
-                Router::render('front/security/login.view.php',['errors' => ["Votre email ou mot de passe est invalide"]]);
-                die();
+                if(!password_verify($_POST['password'], $user->getPassword())){
+                    Router::render('front/security/login.view.php',["user" => $user,'errors' => $errors]);
+                    return;
+                }
+                $status = $user->getStatus();
+                
+                if($status == 0){
+                    $errors = [];
+                    $errors[] = "Veuillez activer votre compte via l'email que vous avez reçu !";
+                    Router::render('front/security/login.view.php',["user" => $user, 'errors' => $errors]);
+                    return;
+                }
+
+                $_SESSION['email'] = $_POST['email'];
+                $_SESSION['firstname'] = $_POST['firstname'];
+                $_SESSION['lastname'] = $_POST['lastname'];
+                $_SESSION['id'] = $_POST['id'];
+                $_SESSION['role'] = $user->getRole();
+
+                //Si user, on redirige vers home
+                if ($_SESSION['role'] == 'user') {
+                    header("Location: /home");
+                }
+                //Tant que le statut != 2, on rediride vers installation
+                if ($_SESSION['role'] == 'admin' && $user->getStatus() == 1) {
+                    header("Location: /installation");
+                }
+
+                if ($_SESSION['role'] == 'admin' && $user->getStatus() == 2) {
+                    header("Location: /dashboard");
+                }
+
             }
-            $status = $user->getStatus();
-            
-            if($status == 0){
-                Router::render('front/security/login.view.php',['errors' => ["Votre compte n'est pas encore actif"]]);
-                die();
-            }
-            $session = new Session();
-            $session->set('email', $_POST['email']);
-            header("Location: dashboard");
+            Router::render('front/security/login.view.php',["user" => $user]);
         }
+
         public function logout()
         {
 
@@ -225,7 +247,7 @@
                 
                 if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
                     $errors = [];
-                    $errors['errors'] = "l'utilisateur exites déjà"; 
+                    $errors[] = "l'utilisateur exites déjà"; 
                     Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
                 }
 
@@ -233,7 +255,7 @@
                 $passwordConfirm = strip_tags($_POST['passwordConfirm']);
 
                 if ($password !== $passwordConfirm) {
-                    $errors['badPassword'] = "Les mots de passe doivent correspondre";
+                    $errors[] = "Les mots de passe doivent correspondre";
                     // *user permet de réafficher le formulaire
                     Router::render('front/security/register.view.php', ["user" => $user, "errors" => $errors]);
                 }
