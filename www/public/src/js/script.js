@@ -1,3 +1,4 @@
+console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
 const showMenu = (toggleId, navbarId, bodyId)=>{
     const toggle = document.getElementById(toggleId),
     navbar = document.getElementById(navbarId),
@@ -37,6 +38,7 @@ const showMenu = (toggleId, navbarId, bodyId)=>{
 // Dash
 
 var ctxU = document.getElementById('chartU').getContext('2d');
+console.log(ctxU);
 var gradient = ctxU.createLinearGradient(0, 0, 0, 450);
 gradient.addColorStop(0, 'rgba(255, 255,255, 0.5)');
 gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');

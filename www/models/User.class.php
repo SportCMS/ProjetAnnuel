@@ -11,6 +11,7 @@
         protected $status = 0;// int (int)
         protected $password;// string (string)
         protected $token = null;// ?string (?string)
+        protected $updated_at;// ?string (?string)
         //Créer getter / setter
         public function __construct(){
             //echo 'créa user';
@@ -91,6 +92,15 @@
         {
             parent::save();
         }
+  
+        public function getUpdatedAt():string
+        {
+            return $this->updated_at;
+        }
+        public function setUpdatedAt(string $updated_at):void
+        {
+            $this->updated_at = $updated_at;
+        }
         public function getRegisterForm(): array
         {
             return [
@@ -103,6 +113,7 @@
                 ],
                 "inputs"=>[
                     "firstname"=>[
+                        "label"=>"Prénom",
                         "placeholder"=>"Votre prénom ...",
                         "type"=>"text",
                         "id"=>"firstnameRegister",
@@ -112,6 +123,7 @@
                         "error"=>" Votre prénom doit faire entre 2 et 25 caractères",
                     ],
                     "lastname"=>[
+                        "label"=>"Nom",
                         "placeholder"=>"Votre nom ...",
                         "type"=>"text",
                         "id"=>"lastnameRegister",
@@ -121,6 +133,7 @@
                         "error"=>" Votre nom doit faire entre 2 et 100 caractères",
                     ],
                     "email"=>[
+                        "label"=>"Email",
                         "placeholder"=>"Votre email ...",
                         "type"=>"email",
                         "id"=>"emailRegister",
@@ -131,6 +144,7 @@
                         "errorUnicity"=>"Un compte existe déjà avec cet email"
                     ],
                     "password"=>[
+                        "label"=>"Mot de passe",
                         "placeholder"=>"Votre mot de passe ...",
                         "type"=>"password",
                         "id"=>"pwdRegister",
@@ -139,6 +153,7 @@
                         "error"=>"Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
                     ],
                     "passwordConfirm"=>[
+                        "label"=>"Confirmation du mot de passe",
                         "placeholder"=>"Confirmation ...",
                         "type"=>"password",
                         "id"=>"pwdConfirmRegister",
@@ -206,15 +221,15 @@
         }
 
 
-        public function getLogoutBtn(){
-            return ["config"=>[
-                "method"=>"POST",
-                "action"=>"/logout",
-                "id"=>"logou__btn",
-                "class"=>"logout",
-                "submit"=>"Se déconnecter"
-            ]];
-        }
+        // public function getLogoutBtn(){
+        //     return ["config"=>[
+        //         "method"=>"POST",
+        //         "action"=>"/logout",
+        //         "id"=>"logou__btn",
+        //         "class"=>"logout",
+        //         "submit"=>"Se déconnecter"
+        //     ]];
+        // }
         public function getChangePswdForm(){
             return ["config"=>[
                 "method"=>"POST",

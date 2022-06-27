@@ -1,5 +1,4 @@
 // reply un commentaire
-
 document.querySelectorAll(".reply").forEach(function (reply) {
     reply.addEventListener('click', function () {
         textarea = document.createElement('textarea')
@@ -27,6 +26,7 @@ document.querySelectorAll(".reply").forEach(function (reply) {
             let parentId = reply.dataset.parentid
             let articleId = reply.dataset.article
 
+
             $.ajax({
                 type: "POST",
                 url: 'http://localhost:81/replyComment?',
@@ -37,7 +37,9 @@ document.querySelectorAll(".reply").forEach(function (reply) {
                 success: function (rep) {
                     let response = JSON.parse(rep)
                     let parentBlock = document.getElementById('replyComment' + parentId)
-
+                    
+                    $('#textareaReply').html('');
+                    $('#textareaReply').fadeOut();
 
                     $go = `
                         <br>
@@ -102,6 +104,8 @@ $('#postComment').on('click', () => {
                 $('#titleComment').val('');
                 $('#contentComment').val('');
 
+              
+
 
                 $('.comments').append(
                     `
@@ -126,4 +130,3 @@ $('#postComment').on('click', () => {
         });
     })
 });
-

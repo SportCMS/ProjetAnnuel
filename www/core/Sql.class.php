@@ -34,7 +34,7 @@
             }
             $this->pdo->prp($sql, $colums);
         }
-        ////////////////////////////////////////
+        
 
 
         public function getOneBy($entrie)
@@ -185,6 +185,7 @@
             return $queryPrp->fetch();
         }
 
+<<<<<<< HEAD
         public function countAllFavoritesByArticle($article_id)
         {
             $sql = "SELECT count(f.id) as 'favorites' FROM `bgfb_favorite` as f
@@ -193,5 +194,55 @@
             AND a.id = ?";
             $queryPrp = $this->pdo->prp($sql, [$article_id]);
             return $queryPrp->fetch();
+=======
+
+        // requete recupération des notifications pour la modération
+        public function getReportNotifications()
+        {
+            $sql = "SELECT * FROM " . $this->table . " as r WHERE r.has_read = 0 ";
+            $queryPrp = $this->pdo->prp($sql, []);
+            return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        // requete appelé dans admin
+        public function deletePage($page)
+        {
+        $sql = "DELETE FROM {$this->table} WHERE title = ?";
+        $this->pdo->prp($sql, [$page]);
+        }
+
+        public function deleteBlock($page)
+        {
+            $sql = "DELETE FROM {$this->table} WHERE page_id = ?";
+            $this->pdo->prp($sql, [$page]);
+        }   
+        
+        public function deleteComments($id)
+        {
+            $sql = "DELETE FROM {$this->table} WHERE article_id = ?";
+            $this->pdo->prp($sql, [$id]);
+        }
+
+        // geestion de positions
+        public function getAllByPosition()
+        {
+            $sql = 'SELECT * FROM ' . $this->table . ' ORDER BY position ';
+            $queryPrp = $this->pdo->prp($sql);
+
+            return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function updateItemPosition($position, $block_id)
+        {
+            $sql = "UPDATE " . $this->table . " SET position = ?  WHERE id= ?";
+            $queryPrp = $this->pdo->prp($sql, [$block_id, $position]);
+        }
+
+        // fixtures
+        public function truncate($table)
+        {
+            $sql = "TRUNCATE TABLE bgfb_" . $table;
+            $queryPrp = $this->pdo->prp($sql, []);
+>>>>>>> 75daf0a866af3631545813788cb07800d7f4f4ec
         }
     }

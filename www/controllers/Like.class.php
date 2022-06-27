@@ -2,11 +2,11 @@
 
 namespace App\controllers;
 
-
-use App\core\Sql;
 use PDOException;
+
 use App\models\Like as LikeModel;
 
+use App\core\Sql;
 
 class Like extends Sql
 {

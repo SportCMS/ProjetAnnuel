@@ -14,6 +14,7 @@ class Article extends sql
     protected $position;
     protected $created_at;
     protected $updated_at;
+    protected $slug;
 
     public function __construct()
     {
@@ -87,6 +88,15 @@ class Article extends sql
         return $this->position;
     }
 
+    public function setSlug($slug): void
+    {
+        $this->slug = $slug;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
 
     public function getArticleForm($params = null): array
     {

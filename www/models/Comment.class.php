@@ -13,6 +13,7 @@ class Comment extends Sql
     protected $article_id;
     protected $title;
     protected $content;
+  
     protected $created_at;
 
     public function __construct()
@@ -75,10 +76,14 @@ class Comment extends Sql
         $this->content = $content;
     }
 
+  
+
     public function getCreatedAt(): ?string
     {
         return $this->created_At;
     }
+
+    
 
     public function setCreatedAt($created_At): void
     {

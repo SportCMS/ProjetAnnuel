@@ -18,25 +18,26 @@
 		if(file_exists($class)){
 			include $class;//On utilise include car plus rapide, et on a déjà vérifier son existance
 		}else{
-			die('la classe existe pas : ' . $class);
+			ini_get('display_errors') == 1 ? die('404 not found : la classe n\'existe pas') : header('Location:/page-non-trouvee');
+
 		}
-	}
+	} 
 
 	spl_autoload_register('App\myAutoloader');
 
 	$path = 'routes.yml';
-	if(file_exists($path)){
+	if (file_exists($path)) {
 		$routes = yaml_parse_file($path);
-	}else{
-		die("fichier existe pas");
+	} else {
+		ini_get('display_errors')  == 1 ? die('404 not found') : header('Location:/page-non-trouvee');
 	}
 
 	$uri = strtok($_SERVER['REQUEST_URI'], "?");//J'ai ajouté strtok afin de gérer les requetes get
 	if(empty($routes[$uri]) || empty($routes[$uri]['controller']) || empty($routes[$uri]['action'])){
-		die("Page 404");
+		ini_get('display_errors') == 1 ? die('404 not found') : header('Location:/page-non-trouvee');
 	}
 	if(!Security::checkRoute($uri)){
-		die('Root n\'existe pas');
+		ini_get('display_errors') == 1 ? die('404 not found : La route n\'est pas trouvée') : header('Location:/page-non-trouvee');
 	}
 	$controller =  'App\\controllers\\' . ucfirst(strtolower($routes[$uri]['controller']));
 	$action = strtolower($routes[$uri]['action']);
@@ -56,7 +57,7 @@
 
 	$objectController = new $controller();
 	if(!method_exists($objectController, $action)){
-		die('la method nexiste pas');
+		ini_get('display_errors') == 1 ? die('404 not found') : header('Location:/page-non-trouvee');
 	}
 	$objectController->$action();
 ?>
