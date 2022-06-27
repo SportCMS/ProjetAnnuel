@@ -155,57 +155,148 @@
         }
         
         /*****REGISTER*****/
-        public function register(){
-            $user = new UserModel();
-            Router::render('front/security/register.view.php',["user" => $user]);
-            /* Si post vide alors on affiche le formulaire */
-            if(empty($_POST)){
-                die();
-            }
+        // public function register(){
+        //     $user = new UserModel();
+        //     //Router::render('front/security/register.view.php',["user" => $user]);
+        //     /* Si post vide alors on affiche le formulaire */
+        //     if(empty($_POST)){
+        //         die();
+        //     }
     
-            $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
-            /* si des erreurs sont présentes on renvois sur la vue avec les erreurs */
-            if(!empty($errors)){
-                Router::render('front/security/register.view.php',["errors" => $errors]);
-                die();
-            }
-            $firstname = strip_tags($_POST['firstname']);
-            $lastname = strip_tags($_POST['lastname']);
-            /* si l'email est trouvé en base retour vue avec erreur */
-            if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
-                Router::render('front/security/register.view.php',["errors" => ["L'utilisateur existe"]]);
-                die();
-            }
+        //     $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
+        //     /* si des erreurs sont présentes on renvois sur la vue avec les erreurs */
+        //     if(!empty($errors)){
+        //         Router::render('front/security/register.view.php',["errors" => $errors]);
+        //         die();
+        //     }
+        //     $firstname = strip_tags($_POST['firstname']);
+        //     $lastname = strip_tags($_POST['lastname']);
+        //     /* si l'email est trouvé en base retour vue avec erreur */
+        //     if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
+        //         Router::render('front/security/register.view.php',["errors" => ["L'utilisateur existe"]]);
+        //         die();
+        //     }
 
-            if($_POST['password'] !== $_POST['passwordConfirm']) {
-                echo "Vos mots de passe ne correspondent pas !!!";
-                die();
-            }
+        //     if($_POST['password'] !== $_POST['passwordConfirm']) {
+        //         echo "Vos mots de passe ne correspondent pas !!!";
+        //         die();
+        //     }
     
-            $user->setFirstname($firstname);
-            $user->setLastname($lastname);
-            $user->setEmail($_POST['email']);
-            $user->setPassword($_POST['password']);
-            $user->generateToken();
+        //     $user->setFirstname($firstname);
+        //     $user->setLastname($lastname);
+        //     $user->setEmail($_POST['email']);
+        //     $user->setPassword($_POST['password']);
+        //     $user->generateToken();
             
-            $user->setRole('User');
+        //     $user->setRole('User');
 
-            $user->save();
+        //     $user->save();
 
-            $mail = new Mail();
-            $mail->sendTo($_POST['email']);
-            $mail->subject("Confirmation inscription SportCMS");
-            $mail->message("
-            Bonjour " . $user->getFirstname() .
-            " <br><br>Nous avons bien reçu vos informations. <br>
-            Afin de valider votre compte merci de cliquer sur le lien suivant <a href='http://localhost:81/confirmaccount?token=".$user->getToken()."'>Ici</a> <br><br>
-            Cordialement,<br>
-            <a href=''>L'Equipe de SportCMS</a>");
-            if(!$mail->send()){
-                die("Vous rencontrer une erreur lors de l'envoie de mail");
-            }
-            Router::render('front/security/register.view.php',["success" => "Un e-mail de confirmation vous a été envoyé pour valider votre compte !"]);
+        //     $mail = new Mail();
+        //     $mail->sendTo($_POST['email']);
+        //     $mail->subject("Confirmation inscription SportCMS");
+        //     $mail->message("
+        //     Bonjour " . $user->getFirstname() .
+        //     " <br><br>Nous avons bien reçu vos informations. <br>
+        //     Afin de valider votre compte merci de cliquer sur le lien suivant <a href='http://localhost:81/confirmaccount?token=".$user->getToken()."'>Ici</a> <br><br>
+        //     Cordialement,<br>
+        //     <a href=''>L'Equipe de SportCMS</a>");
+        //     if(!$mail->send()){
+        //         die("Vous rencontrer une erreur lors de l'envoie de mail");
+        //     }
+        //     Router::render('front/security/register.view.php',["success" => "Un e-mail de confirmation vous a été envoyé pour valider votre compte !"]);
+        // }
+        
+        public function register (){
+            $user = new UserModel();
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
+                
+                if(count($errors) > 0){
+                    Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
+                     
+                }
+                
+                $firstname = strip_tags($_POST['firstname']);
+                $lastname = strip_tags($_POST['lastname']);
+                $email = strip_tags($_POST['email']);
+                
+                
+                
+                if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
+                    $errors = [];
+                    $errors['errors'] = "l'utilisateur exites déjà"; 
+                    Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
+                }
+
+                $password = strip_tags($_POST['password']);
+                $passwordConfirm = strip_tags($_POST['passwordConfirm']);
+
+                if ($password !== $passwordConfirm) {
+                    $errors['badPassword'] = "Les mots de passe doivent correspondre";
+                    // *user permet de réafficher le formulaire
+                    Router::render('front/security/register.view.php', ["user" => $user, "errors" => $errors]);
+                }
+
+                $user->setFirstname($firstname);
+                $user->setLastname($lastname);
+                $user->setEmail($email);
+                $user->setPassword($password);
+                $user->generateToken();
+            
+                //if form user register, assign role and create user email template
+                if ($_SERVER['REQUEST_URI'] == '/inscription') {
+
+                $user->setRole('user');
+                
+                $user->save();
+                
+                $mailBody = "
+                        Bonjour {$user->getFirstname()} <br><br>Validez votre compte<br>
+                        Afin de valider votre compte merci de cliquer sur le lien suivant <a href='http://localhost:81/confirmation-inscription?token=" . $user->getToken() . "'>Ici</a> <br><br>
+                        Cordialement,<br> <a href=''>L'Equipe de SportCMS</a>";
+                }
+
+                // if admin register assign admin role and create admin email template
+                if ($_SERVER['REQUEST_URI'] == '/admin-inscription') {
+                
+                $user->setRole('admin');
+                
+                $user->save();
+
+                $mailBody = "
+                        Bonjour {$user->getFirstname()}<br><br>Validez votre compte admin<br>
+                        Afin de valider votre compte administrateur merci de cliquer sur le lien suivant <a href='http://localhost:81/confirmation-inscription?token=" . $user->getToken() . "'>Ici</a> <br><br>
+                        Cordialement,<br> <a href=''>L'Equipe de SportCMS</a>";
+                }
+
+                // send email
+                $mail = new Mail();
+                $mail->sendTo($_POST['email']);
+                $mail->subject("Confirmation inscription SportCMS");
+                $mail->message($mailBody);
+                
+                if (!$mail->send()) {
+                    // pas de die svp
+                    die("Vous rencontrer une erreur lors de l'envoie de mail");
+                }
+                
+                $_SESSION['success'] = "Un e-mail de confirmation vous a été envoyé pour valider votre compte !";
+                header('Location:' . $_SERVER['REQUEST_URI']);
+                
+                }
+                // quand tu arrive pour la premier fois pas de POST
+                Router::render('front/security/register.view.php', ["user" => $user]);
         }
+
+
+
+
+                           
+                
+
+
+    
 
         public function confirmaccount() {
             $user = new UserModel();
