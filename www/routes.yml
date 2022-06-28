@@ -4,6 +4,17 @@
 
 ### SECURITY ###
 
+## admin inscription
+/admin-inscription:
+  controller: user
+  action: register
+  role: [public]
+
+/confirmation-inscription:
+  controller: user
+  action: confirmaccount
+  role: [public]
+
 /login:
   controller: user
   action: login
@@ -14,10 +25,15 @@
   action: logout
   role: [public]
 
-/register:
+# /register:
+#   controller: user
+#   action: register
+#   role: [public]
+
+# inscription user
+/inscription:
   controller: user
   action: register
-  role: [public]
 
 /mail:
   controller: mail
@@ -272,15 +288,13 @@
   action: addItem
   role: [public]
 
-###### Menu ########
 
-##########################################
-##############  ADMIN   ##################
-##########################################
 
-##########################################
-##########  FRONT DYNAMIQUE   ############
-##########################################
+
+
+
+
+
 
 /actus:
   controller: categories
@@ -310,4 +324,19 @@
 /psg:
   controller: categories
   action: categoryPage
+  role: [public]
+
+/adminmember:
+ controller: admin
+ action: memberview
+ role: [public]
+
+/deleteUser:
+  controller: admin
+  action: deleteUser
+  role: [public]
+
+/editUserRole:
+  controller: admin
+  action: editUserRole
   role: [public]

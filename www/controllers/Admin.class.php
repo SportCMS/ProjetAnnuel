@@ -1,31 +1,26 @@
 <?php
 
     namespace App\controllers;
-    use App\core\View;
-    use App\models\User as UserModel;
+
     use App\models\Report as ReportModel;
     use App\models\MenuItem as MenuItemsModel;
-    use App\core\Router;
-    use App\models\Theme as ThemeModel;
     use App\models\Page as PageModel;
     use App\models\Article as ArticleModel;
+    use App\models\User as UserModel;
     
     use App\core\Sql;
+    use App\core\Router;
 
-
+    use App\Helpers\Fixture;
 
     class Admin extends Sql
     {
         public function dashboard(): void
         {
-        // session en dur pour les tests
-        // a setter au login si role du user = 'admin
-        $_SESSION['role'] = 'admin';
-
-        $reportManager = new ReportModel();
-        $reports = $reportManager->getReportNotifications();
-        $_SESSION['report'] = count($reports);
-        Router::render('admin/home.view.php');
+            $reportManager = new ReportModel();
+            $reports = $reportManager->getReportNotifications();
+            $_SESSION['report'] = count($reports);
+            Router::render('admin/home.view.php');
         }
 
         public function getUserProfile(): void
@@ -36,19 +31,20 @@
         
         public function indexArticle()
     	{
-        $article = new ArticleModel();
+            $article = new ArticleModel();
 
-        $all_article = $article->getAll();
+            $all_article = $article->getAll();
 
-        Router::render("admin/article/articles.view.php", [
-            "all_article" => $all_article,
-            
-        ]);
+            Router::render("admin/article/articles.view.php", [
+                "all_article" => $all_article,
+                
+            ]);
     	}
 
+        // virer théme 
         public function addPage(): void
         {
-        $themeManager = new ThemeModel();
+        //$themeManager = new ThemeModel();
         $pageManager = new PageModel();
         $pages = $pageManager->getAll();
 
@@ -79,7 +75,7 @@
             $pageManager->setTitle($params['route']);
             $pageManager->setType($params['model']);
             $pageManager->setLink('/' . $params['route']);
-            $pageManager->setThemeId(1); // remplacer par la suite par l'id_theme en SESSION
+            //$pageManager->setThemeId(1); // remplacer par la suite par l'id_theme en SESSION
             $pageManager->save();
 
             $pageData = $pageManager->getOneBy(['title' => $pageManager->getTitle()]);
@@ -136,8 +132,6 @@
             $content .= $output[$i];
         }
         file_put_contents('routes.yml', $content);
-
-       
     }
 
     // gestion menu 
@@ -155,27 +149,70 @@
         ]);
     }
 
-        public function addItem()
-        {
-            $item = new MenuItemsModel();
-            $count = count($item->getAllByPosition());
+    public function addItem()
+    {
+        $item = new MenuItemsModel();
+        $count = count($item->getAllByPosition());
 
-            $item->setLink("/{$_POST['route']}");
-            $item->setName($_POST['name']);
-            $item->setPosition($count + 1);
-            $item->save();
+        $item->setLink("/{$_POST['route']}");
+        $item->setName($_POST['name']);
+        $item->setPosition($count + 1);
+        $item->save();
 
-            echo json_encode(['id' => $count + 1]);
-        }
+        echo json_encode(['id' => $count + 1]);
+    }
+    
+    public function moveItemPosition(): void
+    {
+        $blockManager = new MenuItemsModel();
+        var_dump($blockManager);
         
-        public function moveItemPosition(): void
-        {
-            $blockManager = new MenuItemsModel();
-            var_dump($blockManager);
-            
-            foreach ($_POST as $key => $value) {
-                $blockManager->updateItemPosition($key, $value);
-            }
-            echo json_encode(['data' => $_POST, 'objet' => $blockManager]);
+        foreach($_POST as $key => $value) {
+            $blockManager->updateItemPosition($key, $value);
         }
+        echo json_encode(['data' => $_POST, 'objet' => $blockManager]);
+    }
+
+        public function memberview()
+        {
+            $user = new UserModel();
+
+            $users = $user->getAll();
+
+            Router::render('admin/adminmember.view.php', ["users"=> $users]);
+        }
+
+        public function deleteUser()
+        {
+            $user = new UserModel();
+            $user->delete($_GET['id']);
+    
+            header('Location: /adminmember');
+        }
+
+        public function editUserRole()
+        {
+            $usermanager = new UserModel(); // instancier le manager
+
+            $userdatas = $usermanager->getOneBy(['id' => $_POST['id'] ]); // on récupère les données de l'utilisateur
+            $selectedRole = $_POST['role']; // on récupère le role sélectionné
+            $user = $userdatas[0]; // on récupère l'utilisateur
+            $user->setRole($selectedRole); // on change le role de l'utilisateur
+            $user->setUpdatedAt((new \DateTime('now'))->format('Y-m-d H:i:s')); // on change la date de modification
+            $user->save(); // on sauvegarde l'utilisateur
+
+            header('Location: /adminmember');
+        }
+    
+
+    public function loadFixtures()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $fixtures = new Fixture();
+            $fixtures->generateFixtures();
+            $message = 'fixtures enregistrées';
+            return Router::render('admin/fixture.view.php', ['message', $message]);
+        }
+        Router::render('admin/fixture.view.php');
+    }
 }

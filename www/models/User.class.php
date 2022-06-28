@@ -11,6 +11,7 @@
         protected $status = 0;// int (int)
         protected $password;// string (string)
         protected $token = null;// ?string (?string)
+        protected $updated_at;// ?string (?string)
         //Créer getter / setter
         public function __construct(){
             //echo 'créa user';
@@ -91,12 +92,21 @@
         {
             parent::save();
         }
+  
+        public function getUpdatedAt():string
+        {
+            return $this->updated_at;
+        }
+        public function setUpdatedAt(string $updated_at):void
+        {
+            $this->updated_at = $updated_at;
+        }
         public function getRegisterForm(): array
         {
             return [
                 "config"=>[
                     "method"=>"POST",
-                    "action"=>"/register",
+                    "action"=>"",
                     "id"=>"formRegister",
                     "class"=>"formRegister",
                     "submit"=>"S'inscrire"

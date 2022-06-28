@@ -2,9 +2,7 @@
 
 namespace App\controllers;
 
-use App\core\Sql;
 use App\core\Router;
-
 
 class Error
 {

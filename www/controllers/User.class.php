@@ -1,50 +1,71 @@
 <?php
+
     namespace App\controllers;
-    use App\core\User as Us;
-    use App\core\Router;
+
     use App\models\User as UserModel;
     use App\models\Password_reset as PswdRst;
+
     use App\core\verificator\Verificator;
-    use App\core\Sql;
     use App\core\Session;
     use App\core\Mail;
+    use App\core\Router;
 
     class User {
         /* Session test*/
         public function login()
         {
             $user = new UserModel();
-            Router::render('front/security/login.view.php',["user" => $user]);
-            if(empty($_POST)){
-                die();
-            }
-            $errors = Verificator::checkForm($user->getLoginForm(), $_POST);
-            if(!empty($errors)){
-                Router::render('front/security/login.view.php',['errors' => $errors]);
-                die();
-            }
-            if(!isset($user->getOneBy(['email' => $_POST['email']])[0])){
-                Router::render('front/security/login.view.php',['errors' => ["Votre email ou mot de passe est invalide"]]);
-                die();
-            }
-            $user = $user->getOneBy(['email' => $_POST['email']])[0];
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        
+                $errors = Verificator::checkForm($user->getLoginForm(), $_POST);
+                if(count($errors) > 0){
+                    Router::render('front/security/login.view.php',["user" => $user, 'errors' => $errors]);
+                    return;
+                }
+                if(!isset($user->getOneBy(['email' => $_POST['email']])[0])){
+                    $errors = [];
+                    $errors[] = "Les informations sont incorrectes !";
+                    Router::render('front/security/login.view.php',["user" => $user, 'errors' => $errors]);
+                    return;
+                }
+                $user = $user->getOneBy(['email' => $_POST['email']])[0];
 
-            if(!password_verify($_POST['password'], $user->getPassword())){
-                Router::render('front/security/login.view.php',['errors' => ["Votre email ou mot de passe est invalide"]]);
-                die();
+                if(!password_verify($_POST['password'], $user->getPassword())){
+                    Router::render('front/security/login.view.php',["user" => $user,'errors' => $errors]);
+                    return;
+                }
+                $status = $user->getStatus();
+                
+                if($status == 0){
+                    $errors = [];
+                    $errors[] = "Veuillez activer votre compte via l'email que vous avez reçu !";
+                    Router::render('front/security/login.view.php',["user" => $user, 'errors' => $errors]);
+                    return;
+                }
+
+                $_SESSION['email'] = $_POST['email'];
+                $_SESSION['firstname'] = $_POST['firstname'];
+                $_SESSION['lastname'] = $_POST['lastname'];
+                $_SESSION['id'] = $_POST['id'];
+                $_SESSION['role'] = $user->getRole();
+
+                //Si user, on redirige vers home
+                if ($_SESSION['role'] == 'user') {
+                    header("Location: /home");
+                }
+                //Tant que le statut != 2, on rediride vers installation
+                if ($_SESSION['role'] == 'admin' && $user->getStatus() == 1) {
+                    header("Location: /installation");
+                }
+
+                if ($_SESSION['role'] == 'admin' && $user->getStatus() == 2) {
+                    header("Location: /dashboard");
+                }
+
             }
-            $status = $user->getStatus();
-            
-            if($status == 0){
-                Router::render('front/security/login.view.php',['errors' => ["Votre compte n'est pas encore actif"]]);
-                die();
-            }
-            $session = new Session();
-            $session->set('email', $_POST['email']);
-            $_SESSION['email'] = $_POST['email'];
-            $_SESSION['password'] = $_POST['password'];
-            header("Location: dashboard");
+            Router::render('front/security/login.view.php',["user" => $user]);
         }
+
         public function logout()
         {
 
@@ -115,6 +136,7 @@
             $pswdRst->save();
             echo "Vous allez recevoir un mail pour modifier votre mail";
         }
+
         //formulaire changement du mot de passeEmail envoyé
         public function changePswd(){
             $pswdRst = new PswdRst();
@@ -130,6 +152,7 @@
             $session->set("token", $pswdRst->getToken());
             Router::render('front/security/changepswd.view.php',["user" => $user]);
         }
+
         //confirm changement mot de passe
         public function confirmChng(){
             $user = new UserModel();
@@ -152,58 +175,150 @@
             $user->save();
             echo "Mot de passe changé";
         }
+        
         /*****REGISTER*****/
-        public function register(){
-            $user = new UserModel();
-            Router::render('front/security/register.view.php',["user" => $user]);
-            /* Si post vide alors on affiche le formulaire */
-            if(empty($_POST)){
-                die();
-            }
+        // public function register(){
+        //     $user = new UserModel();
+        //     //Router::render('front/security/register.view.php',["user" => $user]);
+        //     /* Si post vide alors on affiche le formulaire */
+        //     if(empty($_POST)){
+        //         die();
+        //     }
     
-            $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
-            /* si des erreurs sont présentes on renvois sur la vue avec les erreurs */
-            if(!empty($errors)){
-                Router::render('front/security/register.view.php',["errors" => $errors]);
-                die();
-            }
-            $firstname = strip_tags($_POST['firstname']);
-            $lastname = strip_tags($_POST['lastname']);
-            /* si l'email est trouvé en base retour vue avec erreur */
-            if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
-                Router::render('front/security/register.view.php',["errors" => ["L'utilisateur existe"]]);
-                die();
-            }
+        //     $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
+        //     /* si des erreurs sont présentes on renvois sur la vue avec les erreurs */
+        //     if(!empty($errors)){
+        //         Router::render('front/security/register.view.php',["errors" => $errors]);
+        //         die();
+        //     }
+        //     $firstname = strip_tags($_POST['firstname']);
+        //     $lastname = strip_tags($_POST['lastname']);
+        //     /* si l'email est trouvé en base retour vue avec erreur */
+        //     if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
+        //         Router::render('front/security/register.view.php',["errors" => ["L'utilisateur existe"]]);
+        //         die();
+        //     }
 
-            if($_POST['password'] !== $_POST['passwordConfirm']) {
-                echo "Vos mots de passe ne correspondent pas !!!";
-                die();
-            }
+        //     if($_POST['password'] !== $_POST['passwordConfirm']) {
+        //         echo "Vos mots de passe ne correspondent pas !!!";
+        //         die();
+        //     }
     
-            $user->setFirstname($firstname);
-            $user->setLastname($lastname);
-            $user->setEmail($_POST['email']);
-            $user->setPassword($_POST['password']);
-            $user->generateToken();
+        //     $user->setFirstname($firstname);
+        //     $user->setLastname($lastname);
+        //     $user->setEmail($_POST['email']);
+        //     $user->setPassword($_POST['password']);
+        //     $user->generateToken();
             
-            $user->setRole('User');
+        //     $user->setRole('User');
 
-            $user->save();
+        //     $user->save();
 
-            $mail = new Mail();
-            $mail->sendTo($_POST['email']);
-            $mail->subject("Confirmation inscription SportCMS");
-            $mail->message("
-            Bonjour " . $user->getFirstname() .
-            " <br><br>Nous avons bien reçu vos informations. <br>
-            Afin de valider votre compte merci de cliquer sur le lien suivant <a href='http://localhost:81/confirmaccount?token=".$user->getToken()."'>Ici</a> <br><br>
-            Cordialement,<br>
-            <a href=''>L'Equipe de SportCMS</a>");
-            if(!$mail->send()){
-                die("Vous rencontrer une erreur lors de l'envoie de mail");
-            }
-            Router::render('front/security/register.view.php',["success" => "Un e-mail de confirmation vous a été envoyé pour valider votre compte !"]);
+        //     $mail = new Mail();
+        //     $mail->sendTo($_POST['email']);
+        //     $mail->subject("Confirmation inscription SportCMS");
+        //     $mail->message("
+        //     Bonjour " . $user->getFirstname() .
+        //     " <br><br>Nous avons bien reçu vos informations. <br>
+        //     Afin de valider votre compte merci de cliquer sur le lien suivant <a href='http://localhost:81/confirmaccount?token=".$user->getToken()."'>Ici</a> <br><br>
+        //     Cordialement,<br>
+        //     <a href=''>L'Equipe de SportCMS</a>");
+        //     if(!$mail->send()){
+        //         die("Vous rencontrer une erreur lors de l'envoie de mail");
+        //     }
+        //     Router::render('front/security/register.view.php',["success" => "Un e-mail de confirmation vous a été envoyé pour valider votre compte !"]);
+        // }
+        
+        public function register (){
+            $user = new UserModel();
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
+                
+                if(count($errors) > 0){
+                    Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
+                     
+                }
+                
+                $firstname = strip_tags($_POST['firstname']);
+                $lastname = strip_tags($_POST['lastname']);
+                $email = strip_tags($_POST['email']);
+                
+                
+                
+                if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
+                    $errors = [];
+                    $errors[] = "l'utilisateur exites déjà"; 
+                    Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
+                }
+
+                $password = strip_tags($_POST['password']);
+                $passwordConfirm = strip_tags($_POST['passwordConfirm']);
+
+                if ($password !== $passwordConfirm) {
+                    $errors[] = "Les mots de passe doivent correspondre";
+                    // *user permet de réafficher le formulaire
+                    Router::render('front/security/register.view.php', ["user" => $user, "errors" => $errors]);
+                }
+
+                $user->setFirstname($firstname);
+                $user->setLastname($lastname);
+                $user->setEmail($email);
+                $user->setPassword($password);
+                $user->generateToken();
+            
+                //if form user register, assign role and create user email template
+                if ($_SERVER['REQUEST_URI'] == '/inscription') {
+
+                $user->setRole('user');
+                
+                $user->save();
+                
+                $mailBody = "
+                        Bonjour {$user->getFirstname()} <br><br>Validez votre compte<br>
+                        Afin de valider votre compte merci de cliquer sur le lien suivant <a href='http://localhost:81/confirmation-inscription?token=" . $user->getToken() . "'>Ici</a> <br><br>
+                        Cordialement,<br> <a href=''>L'Equipe de SportCMS</a>";
+                }
+
+                // if admin register assign admin role and create admin email template
+                if ($_SERVER['REQUEST_URI'] == '/admin-inscription') {
+                
+                $user->setRole('admin');
+                
+                $user->save();
+
+                $mailBody = "
+                        Bonjour {$user->getFirstname()}<br><br>Validez votre compte admin<br>
+                        Afin de valider votre compte administrateur merci de cliquer sur le lien suivant <a href='http://localhost:81/confirmation-inscription?token=" . $user->getToken() . "'>Ici</a> <br><br>
+                        Cordialement,<br> <a href=''>L'Equipe de SportCMS</a>";
+                }
+
+                // send email
+                $mail = new Mail();
+                $mail->sendTo($_POST['email']);
+                $mail->subject("Confirmation inscription SportCMS");
+                $mail->message($mailBody);
+                
+                if (!$mail->send()) {
+                    // pas de die svp
+                    die("Vous rencontrer une erreur lors de l'envoie de mail");
+                }
+                
+                $_SESSION['success'] = "Un e-mail de confirmation vous a été envoyé pour valider votre compte !";
+                header('Location:' . $_SERVER['REQUEST_URI']);
+                
+                }
+                // quand tu arrive pour la premier fois pas de POST
+                Router::render('front/security/register.view.php', ["user" => $user]);
         }
+
+
+
+
+                           
+                
+
+
+    
 
         public function confirmaccount() {
             $user = new UserModel();

@@ -1,0 +1,103 @@
+/* table,
+th,
+td {
+    border: 1px solid black;
+}
+
+table {
+    display: flex;
+    justify-content: center;
+} */
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid grey;
+    margin: 0;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    background: white;
+}
+
+thead,
+tbody,
+table {
+    border-collapse: collapse;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    padding: 10px 0;
+    margin: 10px auto;
+}
+
+.pagination .page-link {
+    padding: 8px;
+    background: white;
+    text-decoration: none;
+    color: black;
+}
+
+.activeLink {
+    padding: 8px;
+    text-decoration: none;
+    color: purple;
+    background: lightgrey;
+}
+
+.updatebutton button {
+    color: #2A4365;
+    background: white;
+    border: 1px solid #2A4365;
+    border-radius: 5px;
+    padding: 6px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    transition: 0.5s;
+}
+
+.updatebutton button:hover {
+    background: #2A4365;
+    color: white;
+    transition: 0.5s;
+}
+
+.supprimebutton a {
+    font-size: 16px;
+    font-weight: 400;
+    color: #ED203F;
+    background: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.5s;
+    border: 1px solid #ED203F;
+}
+
+.supprimebutton a:hover {
+    background: #ED203F;
+    color: white;
+    transition: 0.5s;
+}
+
+#gestionmember table select {
+    padding: 4px;
+    border-radius: 5px;
+    border: 1px solid #000000;
+    color: #000000;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+}
