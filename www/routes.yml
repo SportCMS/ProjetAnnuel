@@ -347,3 +347,15 @@
   action: indexPresentation
   role: [user]
 
+######## INSTALLEUR #######
+
+/installation:
+  controller: installation
+  action: completeRegistration
+  role: [admin]
+
+/loading:
+  controller: installation
+  action: loading
+  role: [admin]
+
