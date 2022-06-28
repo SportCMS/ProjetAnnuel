@@ -384,6 +384,29 @@
 
         }
 
+        public function getUserProfile(){
+            $user = new UserModel();
+            if(isset($_SESSION['email'])){
+                $user = $user->getOneBy(['email' => $_SESSION['email']])[0];
+            }
+            
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $firstname = strip_tags($_POST['firstname']);
+                $lastname = strip_tags($_POST['lastname']);
+
+                $user->setFirstname($firstname);
+                $user->setLastname($lastname);
+
+                $user->save();
+
+                $_SESSION['succes'] = "Vos données ont bien été pris en compte !";
+                header('Location:' . $_SERVER['REQUEST_URI']);
+            }
+
+            // quand tu arrive pour la premier fois pas de POST
+            Router::render('admin/user/user_profile.view.php', ["user" => $user]);
+        }
+
         // /* Gestion des rôles */ 
         // public function isAdmin(){
         //     $user = new UserModel();

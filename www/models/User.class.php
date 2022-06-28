@@ -267,7 +267,7 @@
                     "action" => "",
                     "id" => "form_userprofile",
                     "class" => "form_userprofile",
-                    "submit" => "Valider"
+                    "submit" => "Sauvegarder"
                 ],
                 "inputs" => [
                     "firstname" => [
@@ -275,18 +275,16 @@
                         "label" => "Votre prénom",
                         "id" => "firstname",
                         "class" => "form_input",
-                        "placeholder" => "Natasha",
-                        "value" => $this->firstname ?? "",
-                        "disabled" => 'disabled'
+                        "placeholder" => "Saisissez un prénom..",
+                        "value" => $this->getFirstname() ?? "",
                     ],
                     "lastname" => [
                         "type" => "text",
                         "label" => "Votre nom",
                         "id" => "lastname",
                         "class" => "form_input",
-                        "placeholder" => "Palabre",
-                        "value" => $this->lastname ?? "",
-                        "disabled" => 'disabled'
+                        "placeholder" => "Saisissez un nom..",
+                        "value" => $this->getLastname() ?? "",
                     ],
                     "email" => [
                         "type" => "email",
