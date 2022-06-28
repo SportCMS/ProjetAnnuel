@@ -7,11 +7,14 @@
     use App\models\Page as PageModel;
     use App\models\Article as ArticleModel;
     use App\models\User as UserModel;
+    use App\models\Block as BlockModel;
+    use App\models\Theme as ThemeModel;
     
     use App\core\Sql;
     use App\core\Router;
 
     use App\Helpers\Fixture;
+    use App\Helpers\Slugger;
 
     class Admin extends Sql
     {
@@ -40,68 +43,6 @@
                 
             ]);
     	}
-
-        // virer théme 
-        public function addPage(): void
-        {
-        //$themeManager = new ThemeModel();
-        $pageManager = new PageModel();
-        $pages = $pageManager->getAll();
-
-        $params = [];
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-            if (!$_POST['page_title'] || !$_POST['page_role'] || !$_POST['type']) {
-                throw new \Exception('missing parameters');
-            }
-
-            $params['route'] = strtolower($_POST['page_title']) ?? null;
-            $params['role'] = strtolower($_POST['page_role']) ?? null;
-            $params['model'] = strtolower($_POST['type']) ?? null;
-            $params['action'] = 'index' .  ucfirst($params['model']) ?? null;
-
-            $pageManager = new PageModel();
-
-            $currentPages = $pageManager->getAll();
-
-            foreach ($currentPages as $currentPage) {
-                if ($currentPage['type'] == $params['model']) {
-                    $message = 'Page déja existante';
-                    Router::render('admin/addPage.view.php', ["message" => $message]);
-                }
-            }
-
-            $pageManager->setTitle($params['route']);
-            $pageManager->setType($params['model']);
-            $pageManager->setLink('/' . $params['route']);
-            //$pageManager->setThemeId(1); // remplacer par la suite par l'id_theme en SESSION
-            $pageManager->save();
-
-            $pageData = $pageManager->getOneBy(['title' => $pageManager->getTitle()]);
-            $page = $pageData[0];
-
-          
-            $this->writeRoute($params);
-
-            header('Location: /dashboard');
-        }
-        Router::render('admin/addPage.view.php', ['pages' => $pages]);
-    }
-
-
-
-    # delete a page 
-    public function deletePageAdmin(): void
-    {
-        $page = new PageModel();
-        
-
-        $page->deletePage($_GET['page']);
-        $this->eraseRoute($_GET['page']);
-
-        header('Location: /gerer-mes-pages');
-    }
 
     # write route in route.yaml
     private function writeRoute(array $params): void
@@ -214,5 +155,97 @@
             return Router::render('admin/fixture.view.php', ['message', $message]);
         }
         Router::render('admin/fixture.view.php');
+    }
+
+    public function editPage()
+    {
+        $pageModel = new PageModel();
+        $block = new BlockModel();
+
+        $data = $pageModel->getOneBy(['title' => $_GET['page']]);
+        $page = $data[0];
+
+        $blocksPage = $block->getBlockByPosition($page->getId());
+
+        $positionBlocks = count($blocksPage);
+        $position = $positionBlocks + 1;
+
+        if (!$page) {
+            header('Location: /gerer-mes-pages');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            $block->createBlock($position, 'untitled', $page->getId());
+
+            header('Location: /editPage?page=' . $_GET['page']);
+        }
+        Router::render('admin/page/editPage.view.php', ['blocksPage' => $blocksPage]);
+    }
+
+    public function deletePageAdmin(): void
+    {
+        $page = new PageModel();
+        $menuItem = new MenuItemsModel();
+        $item = $menuItem->getOneBy(['link' => '/' . $_GET['page']])[0] ?? null;
+
+        if ($item != null) {
+            $item->delete($item->getId());
+        }
+            $page->deletePage($_GET['page']);
+            $this->eraseRoute($_GET['page']);
+        
+
+        header('Location: /gerer-mes-pages');
+    }
+
+    public function addPage(): void
+    {
+        $themeManager = new ThemeModel();
+        $pageManager = new PageModel();
+        $pages = $pageManager->getAll();
+
+        $params = [];
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            if (!$_POST['page_title'] || !$_POST['page_role'] || !$_POST['type']) {
+                throw new \Exception('missing parameters');
+            }
+            $params['route'] = Slugger::sluggify(($_POST['page_title'])) ?? null;
+            $params['role'] = strtolower($_POST['page_role']) ?? null;
+            $params['model'] = strtolower($_POST['type']) ?? null;
+            $params['action'] = 'index' .  ucfirst($params['model']) ?? null;
+
+            $pageManager = new PageModel();
+
+            foreach ($pages as $currentPage) {
+                if ($currentPage['type'] == $params['model']) {
+                    $_SESSION['flash'] = "Page existante !";
+                    header('Location:' . $_SERVER['REQUEST_URI']);
+                }
+
+            }
+
+            $pageManager->setTitle($params['route']);
+            $pageManager->setType($params['model']);
+            $pageManager->setLink('/' . Slugger::sluggify($params['route']));
+            $pageManager->setThemeId(1); // remplacer par la suite par l'id_theme en SESSION
+            $pageManager->save();
+
+            $pageData = $pageManager->getOneBy(['title' => $pageManager->getTitle()]);
+            $page = $pageData[0];
+
+            $block = new BlockModel();
+            $block->setPageId($page->getId());
+            $block->setPosition(1); // create a default position
+            $block->setTitle($_POST['page_title']);
+            $block->save();
+
+            $this->writeRoute($params);
+
+            Router::render('admin/page/addPage.view.php');
+        }
+        Router::render('admin/page/addPage.view.php', ['pages' => $pages]);
     }
 }

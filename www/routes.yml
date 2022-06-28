@@ -1,10 +1,3 @@
-##########################################
-##############  FRONT   ##################
-##########################################
-
-### SECURITY ###
-
-## admin inscription
 /admin-inscription:
   controller: user
   action: register
@@ -294,8 +287,6 @@
 
 
 
-
-
 /actus:
   controller: categories
   action: categoryPage
@@ -340,3 +331,41 @@
   controller: admin
   action: editUserRole
   role: [public]
+
+
+
+
+/tets:
+  controller: presentation
+  action: indexPresentation
+  role: [ admin]
+
+
+
+/tets:
+  controller: contact
+  action: indexContact
+  role: [ admin]
+
+/kkl:
+  controller: presentation
+  action: indexPresentation
+  role: [ admin]
+
+/jkbc:
+  controller: presentation
+  action: indexPresentation
+  role: [user]
+
+######## INSTALLEUR #######
+
+/installation:
+  controller: installation
+  action: completeRegistration
+  role: [admin]
+
+/loading:
+  controller: installation
+  action: loading
+  role: [admin]
+

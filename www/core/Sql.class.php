@@ -6,11 +6,15 @@
     abstract class Sql{
         private $pdo;
         private $table;
-        public function __construct(){
-            $this->pdo = Db::connect();
-            $getCalledClass = explode('\\', strtolower(get_called_class()));//Récupérer la classe appelé, (Pour insert dans la bonne base)
-            $this->table = DBPREFIXE . end($getCalledClass);//création du nom de la table avec son préfix
+        private $prefix = DBPREFIXE;
+        
+        public function __construct()
+        {
+            $this->pdo = Db::connect(); // singleton
+            $getCalledClass = explode('\\', strtolower(get_called_class())); //Récupérer la classe appelé, (Pour insert dans la bonne base)
+            $this->table = $this->prefix . end($getCalledClass); //création du nom de la table avec son préfix
         }
+
         public function setId(?int $id):self
         {
             $sql = 'SELECT * FROM ' . $this->table . ' WHERE id=:id';
@@ -170,8 +174,8 @@
         // requete appelé dans admin
         public function deletePage($page)
         {
-        $sql = "DELETE FROM {$this->table} WHERE title = ?";
-        $this->pdo->prp($sql, [$page]);
+            $sql = "DELETE FROM {$this->table} WHERE title = ?";
+            $this->pdo->prp($sql, [$page]);
         }
 
         public function deleteBlock($page)
@@ -206,5 +210,24 @@
         {
             $sql = "TRUNCATE TABLE bgfb_" . $table;
             $queryPrp = $this->pdo->prp($sql, []);
+        }
+
+        public function getBlockByPosition($pageId)
+        {
+            $sql = "SELECT b.id as blockId, f.id as formId, b.position, b.title, b.page_id, s.id as textId, s.block_id, s.content, f.title  as formTitle
+                    FROM {$this->prefix}blocks as b 
+                    LEFT JOIN {$this->prefix}texts as s ON s.block_id = b.id
+                    LEFT JOIN {$this->prefix}forms as f ON f.block_id = b.id
+                    WHERE page_id = ? 
+                    ORDER BY position";
+            $queryPrp = $this->pdo->prp($sql, [$pageId]);
+
+            return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function createBlock($position, $title, $page_id)
+        {
+            $sql = "INSERT INTO {$this->table} (position, title, page_id) VALUES (?, ?, ?)";
+            $this->pdo->prp($sql, [$position, $title, $page_id]);
         }
     }
