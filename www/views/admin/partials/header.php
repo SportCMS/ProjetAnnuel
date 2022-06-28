@@ -42,7 +42,7 @@
                         <span class="nav__name">Gérer mon menu</span>
                     </a>
                     <a href="/gerer-mes-pages" class="nav__link <?= $_SERVER['REQUEST_URI'] == '/gerer-mes-pages' ? 'active-link' : '' ?>">
-                        <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
+                        <ion-icon name="document-outline" class="nav__icon"></ion-icon>
                         <span class="nav__name">Gérer mes pages</span>
                     </a>
 
