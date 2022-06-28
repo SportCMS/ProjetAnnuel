@@ -43,8 +43,7 @@
     <br>
     <button type="submit" name="submit_add_page">valider</button>
 </form>
-<span><?= isset($message) ? $message : '' ?></span>
-
+<p><span> <?= isset($_SESSION['flash'])? $_SESSION['flash'] : '' ?></span></p>
 
 <?php $content = ob_get_clean(); ?>
 <?php require('./views/admin/base/base.php'); ?>

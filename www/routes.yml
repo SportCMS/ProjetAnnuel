@@ -1,5 +1,3 @@
-
-## admin inscription
 /admin-inscription:
   controller: user
   action: register
@@ -325,17 +323,27 @@
   role: [public]
 
 
-/momo:
-  controller: presentation
-  action: indexPresentation
-  role: [user]
 
-/hey:
+
+/tets:
   controller: presentation
   action: indexPresentation
   role: [ admin]
 
-/chabern:
+
+
+/tets:
+  controller: contact
+  action: indexContact
+  role: [ admin]
+
+/kkl:
+  controller: presentation
+  action: indexPresentation
+  role: [ admin]
+
+/jkbc:
   controller: presentation
   action: indexPresentation
   role: [user]
+

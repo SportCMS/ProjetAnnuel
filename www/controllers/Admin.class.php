@@ -181,11 +181,14 @@
     {
         $page = new PageModel();
         $menuItem = new MenuItemsModel();
-        $item = $menuItem->getOneBy(['link' => '/' . $_GET['page']])[0];
+        $item = $menuItem->getOneBy(['link' => '/' . $_GET['page']])[0] ?? null;
 
-        $item->delete($item->getId());
-        $page->deletePage($_GET['page']);
-        $this->eraseRoute($_GET['page']);
+        if ($item != null) {
+            $item->delete($item->getId());
+        }
+            $page->deletePage($_GET['page']);
+            $this->eraseRoute($_GET['page']);
+        
 
         header('Location: /gerer-mes-pages');
     }
@@ -210,13 +213,12 @@
 
             $pageManager = new PageModel();
 
-            $currentPages = $pageManager->getAll();
-
-            foreach ($currentPages as $currentPage) {
+            foreach ($pages as $currentPage) {
                 if ($currentPage['type'] == $params['model']) {
-                    $message = 'Page déja existante';
-                    Router::render('admin/addPage.view.php', ['pages' => $pages, "message" => $message]);
+                    $_SESSION['flash'] = "Page existante !";
+                    header('Location:' . $_SERVER['REQUEST_URI']);
                 }
+
             }
 
             $pageManager->setTitle($params['route']);
