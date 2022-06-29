@@ -20,6 +20,15 @@
     {
         public function dashboard(): void
         {
+             //scenario installeur
+            //1 - creer base mvcdocker2
+            //2 - créer tables
+             //$this->createtablesDevTestDatas();
+            //3 - fixtures
+             $fixtures = new Fixture();
+             $fixtures->loadThemeTwentyFoot();
+            //4 - aller sur l'installation : /installation
+            //5 - valider le formulaire
             $reportManager = new ReportModel();
             $reports = $reportManager->getReportNotifications();
             $_SESSION['report'] = count($reports);
@@ -140,16 +149,7 @@
         }
     
 
-    public function loadFixtures()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $fixtures = new Fixture();
-            $fixtures->generateFixtures();
-            $message = 'fixtures enregistrées';
-            return Router::render('admin/fixture.view.php', ['message', $message]);
-        }
-        Router::render('admin/fixture.view.php');
-    }
+    
 
     public function editPage()
     {

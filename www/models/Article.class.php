@@ -15,6 +15,7 @@ class Article extends sql
     protected $created_at;
     protected $updated_at;
     protected $slug;
+    protected $image;
 
     public function __construct()
     {
@@ -96,6 +97,16 @@ class Article extends sql
     public function getSlug(): ?string
     {
         return $this->slug;
+    }
+
+    public function setImage($image): void
+    {
+        $this->image = $image;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
     }
 
     public function getArticleForm($params = null): array
