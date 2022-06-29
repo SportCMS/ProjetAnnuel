@@ -215,9 +215,9 @@
         public function getBlockByPosition($pageId)
         {
             $sql = "SELECT b.id as blockId, f.id as formId, b.position, b.title, b.page_id, s.id as textId, s.block_id, s.content, f.title  as formTitle
-                    FROM {$this->prefix}blocks as b 
-                    LEFT JOIN {$this->prefix}texts as s ON s.block_id = b.id
-                    LEFT JOIN {$this->prefix}forms as f ON f.block_id = b.id
+                    FROM {$this->prefix}block as b 
+                    LEFT JOIN {$this->prefix}text as s ON s.block_id = b.id
+                    LEFT JOIN {$this->prefix}form as f ON f.block_id = b.id
                     WHERE page_id = ? 
                     ORDER BY position";
             $queryPrp = $this->pdo->prp($sql, [$pageId]);
@@ -229,5 +229,15 @@
         {
             $sql = "INSERT INTO {$this->table} (position, title, page_id) VALUES (?, ?, ?)";
             $this->pdo->prp($sql, [$position, $title, $page_id]);
+        }
+
+        public function getFormInputs($formId)
+        {
+            $sql = "SELECT * FROM {$this->prefix}input as i
+                    LEFT JOIN {$this->prefix}form as f ON i.form_id = f.id
+                    WHERE form_id = ?";
+            $queryPrp = $this->pdo->prp($sql, [$formId]);
+
+            return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
         }
     }

@@ -75,12 +75,12 @@
 
 /about:
   controller: about
-  action: index
+  action: indexAbout
   role: [public]
 
 /contact:
   controller: contact
-  action: index
+  action: indexContact
   role: [public]
 
 /presentation:
@@ -331,23 +331,10 @@
   role: [ admin]
 
 
-
-/tets:
-  controller: contact
-  action: indexContact
-  role: [ admin]
-
 /kkl:
   controller: presentation
   action: indexPresentation
   role: [ admin]
-
-/jkbc:
-  controller: presentation
-  action: indexPresentation
-  role: [user]
-
-######## INSTALLEUR #######
 
 /installation:
   controller: installation

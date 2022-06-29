@@ -193,12 +193,11 @@
         header('Location: /gerer-mes-pages');
     }
 
-    public function addPage(): void
+    public function addPage()
     {
         $themeManager = new ThemeModel();
         $pageManager = new PageModel();
         $pages = $pageManager->getAll();
-
         $params = [];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -213,14 +212,14 @@
 
             $pageManager = new PageModel();
 
-            foreach ($pages as $currentPage) {
+            $currentPages = $pageManager->getAll();
+            foreach ($currentPages as $currentPage) {
                 if ($currentPage['type'] == $params['model']) {
-                    $_SESSION['flash'] = "Page existante !";
-                    header('Location:' . $_SERVER['REQUEST_URI']);
+                    $message = 'Page déja existante';
+                    Router::render('admin/page/addPage.view.php', ['pages' => $pages, "message" => $message]);
+                    return false;
                 }
-
             }
-
             $pageManager->setTitle($params['route']);
             $pageManager->setType($params['model']);
             $pageManager->setLink('/' . Slugger::sluggify($params['route']));
@@ -232,13 +231,14 @@
 
             $block = new BlockModel();
             $block->setPageId($page->getId());
-            $block->setPosition(1); // create a default position
+            $block->setPosition(1);
             $block->setTitle($_POST['page_title']);
             $block->save();
 
             $this->writeRoute($params);
 
-            Router::render('admin/page/addPage.view.php');
+            unset($_SESSION['flash']);
+            header('Location: /gerer-mes-pages');
         }
         Router::render('admin/page/addPage.view.php', ['pages' => $pages]);
     }
