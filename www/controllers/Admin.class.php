@@ -20,6 +20,15 @@
     {
         public function dashboard(): void
         {
+             //scenario installeur
+            //1 - creer base mvcdocker2
+            //2 - créer tables
+             //$this->createtablesDevTestDatas();
+            //3 - fixtures
+             $fixtures = new Fixture();
+             $fixtures->loadThemeTwentyFoot();
+            //4 - aller sur l'installation : /installation
+            //5 - valider le formulaire
             $reportManager = new ReportModel();
             $reports = $reportManager->getReportNotifications();
             $_SESSION['report'] = count($reports);
@@ -146,16 +155,7 @@
         }
     
 
-    public function loadFixtures()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $fixtures = new Fixture();
-            $fixtures->generateFixtures();
-            $message = 'fixtures enregistrées';
-            return Router::render('admin/fixture.view.php', ['message', $message]);
-        }
-        Router::render('admin/fixture.view.php');
-    }
+    
 
     public function editPage()
     {
@@ -199,12 +199,11 @@
         header('Location: /gerer-mes-pages');
     }
 
-    public function addPage(): void
+    public function addPage()
     {
         $themeManager = new ThemeModel();
         $pageManager = new PageModel();
         $pages = $pageManager->getAll();
-
         $params = [];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -219,14 +218,14 @@
 
             $pageManager = new PageModel();
 
-            foreach ($pages as $currentPage) {
+            $currentPages = $pageManager->getAll();
+            foreach ($currentPages as $currentPage) {
                 if ($currentPage['type'] == $params['model']) {
-                    $_SESSION['flash'] = "Page existante !";
-                    header('Location:' . $_SERVER['REQUEST_URI']);
+                    $message = 'Page déja existante';
+                    Router::render('admin/page/addPage.view.php', ['pages' => $pages, "message" => $message]);
+                    return false;
                 }
-
             }
-
             $pageManager->setTitle($params['route']);
             $pageManager->setType($params['model']);
             $pageManager->setLink('/' . Slugger::sluggify($params['route']));
@@ -238,13 +237,14 @@
 
             $block = new BlockModel();
             $block->setPageId($page->getId());
-            $block->setPosition(1); // create a default position
+            $block->setPosition(1);
             $block->setTitle($_POST['page_title']);
             $block->save();
 
             $this->writeRoute($params);
 
-            Router::render('admin/page/addPage.view.php');
+            unset($_SESSION['flash']);
+            header('Location: /gerer-mes-pages');
         }
         Router::render('admin/page/addPage.view.php', ['pages' => $pages]);
     }

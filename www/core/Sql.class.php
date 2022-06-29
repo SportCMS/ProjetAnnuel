@@ -7,6 +7,7 @@
         private $pdo;
         private $table;
         private $prefix = DBPREFIXE;
+        private $base = DBNAME;
         
         public function __construct()
         {
@@ -210,14 +211,15 @@
         {
             $sql = "TRUNCATE TABLE bgfb_" . $table;
             $queryPrp = $this->pdo->prp($sql, []);
+
         }
 
         public function getBlockByPosition($pageId)
         {
             $sql = "SELECT b.id as blockId, f.id as formId, b.position, b.title, b.page_id, s.id as textId, s.block_id, s.content, f.title  as formTitle
-                    FROM {$this->prefix}blocks as b 
-                    LEFT JOIN {$this->prefix}texts as s ON s.block_id = b.id
-                    LEFT JOIN {$this->prefix}forms as f ON f.block_id = b.id
+                    FROM {$this->prefix}block as b 
+                    LEFT JOIN {$this->prefix}text as s ON s.block_id = b.id
+                    LEFT JOIN {$this->prefix}form as f ON f.block_id = b.id
                     WHERE page_id = ? 
                     ORDER BY position";
             $queryPrp = $this->pdo->prp($sql, [$pageId]);
@@ -230,4 +232,71 @@
             $sql = "INSERT INTO {$this->table} (position, title, page_id) VALUES (?, ?, ?)";
             $this->pdo->prp($sql, [$position, $title, $page_id]);
         }
+
+        public function getFormInputs($formId)
+        {
+            $sql = "SELECT * FROM {$this->prefix}input as i
+                    LEFT JOIN {$this->prefix}form as f ON i.form_id = f.id
+                    WHERE form_id = ?";
+            $queryPrp = $this->pdo->prp($sql, [$formId]);
+
+            return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
+        }
+        public function dropDatabase(): void
+    {
+        $sql = "DROP DATABASE {$this->base};";
+        $queryPrp = $this->pdo->prp($sql);
     }
+
+    public function createDatabase()
+    {
+        $sql = "CREATE DATABASE {$_SESSION['temp_dbName']} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
+        $queryPrp = $this->pdo->prp($sql);
+    }
+    public function createDatabaseTestDatas()
+    {
+        $sql = "CREATE DATABASE `mvcdocker2` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
+        $queryPrp = $this->pdo->prp($sql);
+    }
+    public function createtablesDevTestDatas()
+    {
+        $sql = "CREATE TABLE {$this->prefix}article (id int(11) NOT NULL AUTO_INCREMENT,block_id int(11) DEFAULT NULL,category_id int(11) NOT NULL,title varchar(255) NOT NULL,slug varchar(255) NOT NULL,content text NOT NULL,position int(11) DEFAULT NULL,image varchar(255) NULL, created_at datetime DEFAULT CURRENT_TIMESTAMP,updated_at datetime DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}block` (`id` int(11) NOT NULL AUTO_INCREMENT,`position` int(11) NOT NULL,`title` varchar(255) CHARACTER SET utf8 NOT NULL,`page_id` int(11) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}card` (`id` int(11) NOT NULL AUTO_INCREMENT,`block_id` int(11) NOT NULL,`title` varchar(255) NOT NULL,`content` text NOT NULL,`image` varchar(255) NOT NULL,`link` varchar(255) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}categorie` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) NOT NULL,`description` text,`image` varchar(255) DEFAULT NULL,`slug` varchar(255) NOT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` datetime DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}comment` (`id` int(11) NOT NULL AUTO_INCREMENT,`parent_id` int(11) DEFAULT NULL,`author_id` int(11) NOT NULL,`article_id` int(11) NOT NULL,`title` varchar(255) DEFAULT NULL,`content` text NOT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}connexion` (`id` int(11) NOT NULL AUTO_INCREMENT,`ip` varchar(255) NOT NULL,`user_id` int(11) DEFAULT NULL,`date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}contact` (`id` int(11) NOT NULL AUTO_INCREMENT,`message` text NOT NULL,`email` varchar(255) NOT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}form` (`id` int(11) NOT NULL AUTO_INCREMENT,`block_id` int(11) NOT NULL,`title` varchar(255) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}input` (`id` int(11) NOT NULL AUTO_INCREMENT,`type` varchar(255) NOT NULL,`js_id` varchar(255) DEFAULT NULL,`js_class` varchar(255) DEFAULT NULL,`placeholder` varchar(255) DEFAULT NULL, `name` varchar(255) DEFAULT NULL,`value` varchar(255) DEFAULT NULL,`label` varchar(255) DEFAULT NULL,`form_id` int(11) DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}like` (`id` int(11) NOT NULL AUTO_INCREMENT,`user_id` int(11) NOT NULL,`article_id` int(11) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}menuitem` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) NOT NULL,`link` varchar(255) NOT NULL,`js_class` varchar(255) DEFAULT NULL,`js_id` varchar(255) DEFAULT NULL,`position` int(11) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}page` (`id` int(11) NOT NULL AUTO_INCREMENT,`theme_id` int(11) DEFAULT NULL,`title` varchar(255) NOT NULL,`link` varchar(255) NOT NULL,`active` tinyint(1) DEFAULT NULL,`type` varchar(255) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}report` (`id` int(11) NOT NULL AUTO_INCREMENT,`comment_id` int(11) NOT NULL,`message` text NOT NULL,`email` varchar(255) NOT NULL,`has_read` tinyint(1) NOT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}text` (`id` int(11) NOT NULL AUTO_INCREMENT,`block_id` int(11) NOT NULL,`content` text NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}theme` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) NOT NULL,`description` text NOT NULL,`domain` varchar(255) NOT NULL,`image` varchar(255) NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}user` ( `id` int(11) NOT NULL AUTO_INCREMENT,`firstname` varchar(255) DEFAULT NULL,`lastname` varchar(255) DEFAULT NULL,`email` varchar(255) NOT NULL,`status` int(11) NOT NULL,`password` varchar(255) NOT NULL,`role` varchar(255) DEFAULT NULL, `token` varchar(255) DEFAULT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` datetime DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $queryPrp = $this->pdo->prp($sql);
+    }
+    public function createTables()
+    {
+        $sql = "CREATE TABLE {$_SESSION['temp_prefix']}article (id int(11) NOT NULL AUTO_INCREMENT,block_id int(11) DEFAULT NULL,category_id int(11) NOT NULL,title varchar(255) NOT NULL,slug varchar(255) NOT NULL,content text NOT NULL,position int(11) DEFAULT NULL,image varchar(255) NULL, created_at datetime DEFAULT CURRENT_TIMESTAMP,updated_at datetime DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}block` (`id` int(11) NOT NULL AUTO_INCREMENT,`position` int(11) NOT NULL,`title` varchar(255) CHARACTER SET utf8 NOT NULL,`page_id` int(11) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}card` (`id` int(11) NOT NULL AUTO_INCREMENT,`block_id` int(11) NOT NULL,`title` varchar(255) NOT NULL,`content` text NOT NULL,`image` varchar(255) NOT NULL,`link` varchar(255) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}categorie` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) NOT NULL,`description` text,`image` varchar(255) DEFAULT NULL,`slug` varchar(255) NOT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` datetime DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}comment` (`id` int(11) NOT NULL AUTO_INCREMENT,`parent_id` int(11) DEFAULT NULL,`author_id` int(11) NOT NULL,`article_id` int(11) NOT NULL,`title` varchar(255) DEFAULT NULL,`content` text NOT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}connexion` (`id` int(11) NOT NULL AUTO_INCREMENT,`ip` varchar(255) NOT NULL,`user_id` int(11) DEFAULT NULL,`date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}contact` (`id` int(11) NOT NULL AUTO_INCREMENT,`message` text NOT NULL,`email` varchar(255) NOT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}form` (`id` int(11) NOT NULL AUTO_INCREMENT,`block_id` int(11) NOT NULL,`title` varchar(255) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}input` (`id` int(11) NOT NULL AUTO_INCREMENT,`type` varchar(255) NOT NULL,`js_id` varchar(255) DEFAULT NULL,`js_class` varchar(255) DEFAULT NULL,`placeholder` varchar(255) DEFAULT NULL, `name` varchar(255) DEFAULT NULL,`value` varchar(255) DEFAULT NULL,`label` varchar(255) DEFAULT NULL,`form_id` int(11) DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}like` (`id` int(11) NOT NULL AUTO_INCREMENT,`user_id` int(11) NOT NULL,`article_id` int(11) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}menuitem` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) NOT NULL,`link` varchar(255) NOT NULL,`js_class` varchar(255) DEFAULT NULL,`js_id` varchar(255) DEFAULT NULL,`position` int(11) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}page` (`id` int(11) NOT NULL AUTO_INCREMENT,`theme_id` int(11) DEFAULT NULL,`title` varchar(255) NOT NULL,`link` varchar(255) NOT NULL,`active` tinyint(1) DEFAULT NULL,`type` varchar(255) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}report` (`id` int(11) NOT NULL AUTO_INCREMENT,`comment_id` int(11) NOT NULL,`message` text NOT NULL,`email` varchar(255) NOT NULL,`has_read` tinyint(1) NOT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}text` (`id` int(11) NOT NULL AUTO_INCREMENT,`block_id` int(11) NOT NULL,`content` text NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}theme` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) NOT NULL,`description` text NOT NULL,`domain` varchar(255) NOT NULL,`image` varchar(255) NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}user` ( `id` int(11) NOT NULL AUTO_INCREMENT,`firstname` varchar(255) DEFAULT NULL,`lastname` varchar(255) DEFAULT NULL,`email` varchar(255) NOT NULL,`status` int(11) NOT NULL,`password` varchar(255) NOT NULL,`role` varchar(255) DEFAULT NULL, `token` varchar(255) DEFAULT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` datetime DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $queryPrp = $this->pdo->prp($sql);
+    }
+
+}
