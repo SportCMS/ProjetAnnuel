@@ -321,7 +321,7 @@
                         "class" => "form_input",
                         "placeholder" => "",
                         "error" => "Votre mot de passe doit faire au minimum 8 caractères",
-                        "required" => false
+                        "required" => true
                     ],
                     "password" => [
                         "label" => "Votre nouveau mot de passe",
@@ -330,7 +330,7 @@
                         "class" => "form_input",
                         "placeholder" => "",
                         "error" => "Votre mot de passe doit faire au minimum 8 caractères",
-                        "required" => false
+                        "required" => true
                     ],
                     "passwordConfirm" => [
                         "label" => "Confirmation",
@@ -340,7 +340,7 @@
                         "class" => "form_input",
                         "placeholder" => "",
                         "error" => "Votre mot de mot de passe de confirmation ne correspond pas",
-                        "required" => false
+                        "required" => true
                     ],
                 ]
             ];

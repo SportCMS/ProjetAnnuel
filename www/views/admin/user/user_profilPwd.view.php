@@ -7,5 +7,12 @@ use App\core\Router; ?>
 <h1> Mot de passe </h1>
 
 <?php  Router::includePartial("form", $user->getUserPwdForm(null)) ?>
-<?php $base = ob_get_clean(); ?>
-<?php require('./views/front/base/base.php'); ?>
+<?php if(isset($errors)) : ?>
+	<?php foreach ($errors as $error): ?>
+
+		<p><?= $error ?></p>
+	
+	<?php endforeach; ?>
+<?php endif; ?>	
+
+

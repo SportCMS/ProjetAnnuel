@@ -338,50 +338,77 @@
 
         public function changePwd(){
             $user = new UserModel();
-            //VUE
             Router::render('admin/user/user_profilPwd.view.php', ["user" => $user]);
             //Récupérer les infos du USER grâce à la session
 
             
 
-            $user = $user->getOneBy(['email' => $_SESSION['email']])[0];
+            if (isset($_SESSION['email'])){
+                $user = $user->getOneBy(['email' => $_SESSION['email']])[0];
+            }else{
+                header('Location:/non-autorise');
+            }
+
             $status = $user->getStatus();
             
-
-            
-
-            //Ancien mot de passe
-
-            if(password_verify($_POST['oldPassword'], $user->getPassword()) && $status == 1){
-
-
-                if ($_POST['password'] !== $_POST['oldPassword'] ){
-
-                    //Vérification du nouveau password
-                    if($_POST['password'] === $_POST['passwordConfirm'] ) {
-                        $user->setPassword($_POST['password']);
-                        $user->save();
-                        echo "Votre mot de passe a été modifié";
-
-                    }
-                    else{
-                        echo "Vos mots de passe ne correspondent pas !!!";
-                        die();
-                    }
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 
+            //Vérification Ancien mot de passe
+
+            $password = strip_tags($_POST['password']);
+            $passwordConfirm = strip_tags($_POST['passwordConfirm']);
+            $oldPassword = strip_tags($_POST['oldPassword']);
+                if(password_verify($oldPassword, $user->getPassword()) && $status == 1){
+
+
+                    if ($password !== $oldPassword){
+
+                        //Vérification du nouveau password
+                        if($password === $passwordConfirm) {
+                            $user->setPassword($password);
+                            $user->save();
+                            echo "Votre mot de passe a été modifié";
+                            $errors=[];
+                            $errors[] = "Votre mot de passe a été modifié";
+                            Router::render('admin/user/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
+
+                        }
+                        else{
+
+                            echo "Vos mots de passe ne correspondent pas !!!";
+                            
+                            $errors=[];
+                            $errors[] = "Vos mots de passe ne correspondent pas !!!";
+                            Router::render('admin/user/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
+                            
+                            
+                        }
+                        
+                        
+                    
+                    }else
+                    {
+                        echo "Le nouveau mot de passe ne doit pas être similaire à l'ancien";
+                        $errors=[];
+                        $errors[] = "Le nouveau mot de passe ne doit pas être similaire à l'ancien";
+                        Router::render('admin/user/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
+                        
+
+                    }
+                    return;
+                    
                 }else
                 {
-                    echo "Le nouveau mot de passe ne doit pas être similaire à l'ancien";
-                }
-                
-            }else
-            {
-                echo "Ancien mot de passe n'est pas bon";
-                die();
-            }
-            
-            
+                    echo "Ancien mot de passe n'est pas bon";
 
+                    $errors=[];
+                    $errors[] = "Ancien mot de passe n'est pas bon";
+                    Router::render('admin/user/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
+                }
+            
+                return;
+
+            }
         }
 
         public function getUserProfile(){
