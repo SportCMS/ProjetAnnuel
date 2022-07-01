@@ -339,7 +339,7 @@
         public function changePwd(){
             $user = new UserModel();
             //VUE
-            Router::render('admin/user/user_profilPwd.view.php', ["user" => $user]);
+            Router::render('front/security/user_profilPwd.view.php', ["user" => $user]);
             //Récupérer les infos du USER grâce à la session
 
             
@@ -391,20 +391,15 @@
             }
             
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                $firstname = strip_tags($_POST['firstname']);
-                $lastname = strip_tags($_POST['lastname']);
-
-                $user->setFirstname($firstname);
-                $user->setLastname($lastname);
-
+                
+                $user->setFirstname(htmlspecialchars($_POST['firstname']));
+                $user->setLastname(htmlspecialchars($_POST['lastname']));
                 $user->save();
 
-                $_SESSION['succes'] = "Vos données ont bien été pris en compte !";
                 header('Location:' . $_SERVER['REQUEST_URI']);
             }
-
             // quand tu arrive pour la premier fois pas de POST
-            Router::render('admin/user/user_profile.view.php', ["user" => $user]);
+            Router::render('front/security/user_profile.view.php', ["user" => $user]);
         }
 
         // /* Gestion des rôles */ 

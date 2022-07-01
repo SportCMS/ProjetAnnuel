@@ -23,22 +23,16 @@
              //scenario installeur
             //1 - creer base mvcdocker2
             //2 - créer tables
-             //$this->createtablesDevTestDatas();
+            //$this->createtablesDevTestDatas();
             //3 - fixtures
-             $fixtures = new Fixture();
-             $fixtures->loadThemeTwentyFoot();
+            //$fixtures = new Fixture();
+            //$fixtures->loadThemeTwentyFoot();
             //4 - aller sur l'installation : /installation
             //5 - valider le formulaire
             $reportManager = new ReportModel();
             $reports = $reportManager->getReportNotifications();
             $_SESSION['report'] = count($reports);
             Router::render('admin/home.view.php');
-        }
-
-        public function getUserProfile(): void
-        {
-            $user = new UserModel();
-            Router::render('admin/user/user_profile.view.php', ["user" => $user]);
         }
         
         public function indexArticle()
