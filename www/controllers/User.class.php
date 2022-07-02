@@ -417,14 +417,31 @@
             if(isset($_SESSION['email'])){
                 $user = $user->getOneBy(['email' => $_SESSION['email']])[0];
             }
+            else{
+                header('Location:/non-autorise');
+            }
             
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                
-                $user->setFirstname(htmlspecialchars($_POST['firstname']));
-                $user->setLastname(htmlspecialchars($_POST['lastname']));
-                $user->save();
+                if(isset($_POST['email']) && $_POST['email'] != $user->getEmail()){
+                    $errors[]="Tentative de changement d'email !";
+                    return Router::render('front/security/user_profile.view.php', ["user" => $user, "infos" => $errors]);
+                }
+                if($_POST['firstname'] != $user->getFirstname()){
+                    $user->setFirstname(htmlspecialchars($_POST['firstname']));
+                    $user->save();
 
-                header('Location:' . $_SERVER['REQUEST_URI']);
+                    $infos[] = "Votre prénom a bien été modifié !";
+                }
+
+                if($_POST['lastname'] != $user->getLastname()){
+                    $user->setLastname(htmlspecialchars($_POST['lastname']));
+                    $user->save();
+
+                    $infos[] = "Votre nom a bien été modifié !";
+                }
+                if(isset($infos)){
+                    return Router::render('front/security/user_profile.view.php', ["user" => $user, "infos" => $infos]);
+                }
             }
             // quand tu arrive pour la premier fois pas de POST
             Router::render('front/security/user_profile.view.php', ["user" => $user]);
