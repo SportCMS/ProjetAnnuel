@@ -299,4 +299,16 @@
         $queryPrp = $this->pdo->prp($sql);
     }
 
+    public function getConnexionByDate(string $date, string $startRange)
+    {
+        $year = (new \DateTime($date))->format('Y');
+        $month = (new \DateTime($date))->format('m');
+        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}connexion
+        WHERE date_format(date, '%Y') = {$year}
+        AND date_format(date, '%m') = {$month}
+        AND date_format(date, '%d') = {$startRange}";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetch();
+    }
+
 }

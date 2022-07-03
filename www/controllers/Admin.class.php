@@ -9,6 +9,7 @@
     use App\models\User as UserModel;
     use App\models\Block as BlockModel;
     use App\models\Theme as ThemeModel;
+    use App\models\Connexion as ConnexionModel;
     
     use App\core\Sql;
     use App\core\Router;
@@ -29,8 +30,26 @@
             $reportManager = new ReportModel();
             $reports = $reportManager->getReportNotifications();
             $_SESSION['report'] = count($reports);
-            Router::render('admin/home.view.php');
+
+            $connexionManager = new ConnexionModel();
+            $connexionData = [
+                '01' => $connexionManager->getConnexionByDate(date('Y-m-d'), '1'),
+                '03' => $connexionManager->getConnexionByDate(date('Y-m-d'), '3'),
+                '05' => $connexionManager->getConnexionByDate(date('Y-m-d'), '5'),
+                '07' => $connexionManager->getConnexionByDate(date('Y-m-d'), '7'),
+                '10' => $connexionManager->getConnexionByDate(date('Y-m-d'), '10'),
+                '15' => $connexionManager->getConnexionByDate(date('Y-m-d'), '15'),
+                '18' => $connexionManager->getConnexionByDate(date('Y-m-d'), '18'),
+                '20' => $connexionManager->getConnexionByDate(date('Y-m-d'), '20'),
+                '23' => $connexionManager->getConnexionByDate(date('Y-m-d'), '23'),
+                '25' => $connexionManager->getConnexionByDate(date('Y-m-d'), '25'),
+                '27' => $connexionManager->getConnexionByDate(date('Y-m-d'), '27'),
+                '30' => $connexionManager->getConnexionByDate(date('Y-m-d'), '30')
+            ];
+
+            Router::render('admin/home.view.php', ['connexionData' => $connexionData]);
         }
+    
 
         public function indexArticle()
     	{
