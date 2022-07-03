@@ -47,6 +47,13 @@ ob_start(); ?>
                 <p>Aujourd'hui: <?= isset($todayUsers['count'])?$todayUsers['count']:0 ?></p>
             </div>
         </div>
+        <div>
+            <!--2nd chart-->
+            <h2 class=" titleCmpn">Inscriptions : <?= DateHelper::dateConverter('monthDate') ?></h2>
+            <div class="card-grey">
+                <canvas id="chartL"></canvas>
+            </div>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
@@ -113,6 +120,68 @@ ob_start(); ?>
             }
         }
     });
+
+    var ctxL = document.getElementById('chartL').getContext('2d');
+    var gradient = ctxL.createLinearGradient(0, 0, 0, 450);
+    gradient.addColorStop(0, 'rgba(255, 255,255, 0.5)');
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    var myChart = new Chart(ctxL, {
+        type: 'line',
+        label: "periodes du mois en cours",
+        data: {
+            labels: [
+                <?php foreach ($inscriptionData as $data => $value) : ?>
+                    <?= $data  ?> + month,
+                <?php endforeach ?>
+            ], //Axes abscisses
+            datasets: [{
+                label: "Inscriptions en nbre",
+                data: [
+                    <?php foreach ($inscriptionData as $data => $value) : ?>
+                        <?= $value['count'] ?>,
+                    <?php endforeach ?>
+                ], //Axes abscisses
+                lineTension: 0,
+                backgroundColor: gradient,
+                pointBackgroundColor: '#FFF',
+                borderWidth: 2,
+                borderColor: '#FFF'
+            }]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        fontColor: "#FFF",
+                        beginAtZero: true,
+                        tickLength: 10
+                    },
+                    gridLines: {
+                        color: "#FFF",
+                        drawOnChartArea: false
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        fontColor: "#FFF",
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        color: "#FFF",
+                        drawOnChartArea: false
+                    }
+                }]
+            },
+            tooltips: {
+                titleFontColor: '#6FA7FF',
+            }
+        }
+    });
+
 </script>
 
 <div>

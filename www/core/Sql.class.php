@@ -342,4 +342,16 @@
         return $queryPrp->fetch();
     }
 
+    public function getInscriptionByDate(string $date, string $startRange, string $endRange)
+    {
+        $year = (new \DateTime($date))->format('Y');
+        $month = (new \DateTime($date))->format('m');
+        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}users
+        WHERE date_format(created_at, '%Y') = {$year}
+        AND date_format(created_at, '%m') = {$month}
+        AND date_format(created_at, '%d') BETWEEN {$startRange} AND {$endRange}";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetch();
+    }
+
 }

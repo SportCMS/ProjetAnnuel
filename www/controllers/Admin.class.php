@@ -23,8 +23,8 @@
         {
           //---------------------
             // $this->createtablesDevTestDatas();
-            $fixtures = new Fixture();
-            $fixtures->loadThemeTwentyFoot();
+            //$fixtures = new Fixture();
+            //$fixtures->loadThemeTwentyFoot();
 
 
             $reportManager = new ReportModel();
@@ -53,8 +53,17 @@
             $countWeekUsers = $userManager->countWeekUsers();
             $todayUsers = $userManager->countTodayUsers();
             var_dump($countWeekUsers);
+
+            $inscriptionData = [
+                '01' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '1', '5'),
+                '05' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '5', '10'),
+                '10' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '10', '15'),
+                '15' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '15', '20'),
+                '20' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '20', '25'),
+                '25' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '25', '30'),
+            ];
             
-            Router::render('admin/home.view.php', ['connexionData' => $connexionData,'userStat' => count($users), 'monthUsers' => $monthUsers, 'countWeekUsers' => $countWeekUsers, 'todayUsers' => $todayUsers]);
+            Router::render('admin/home.view.php', ['connexionData' => $connexionData,'userStat' => count($users), 'monthUsers' => $monthUsers, 'countWeekUsers' => $countWeekUsers, 'todayUsers' => $todayUsers, 'inscriptionData' => $inscriptionData]);
         }
     
 
