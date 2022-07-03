@@ -311,4 +311,35 @@
         return $queryPrp->fetch();
     }
 
+    public function countMonthUsers()
+    {
+        $date = (new \DateTime('now'))->format('Y-m');
+        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}user
+        WHERE created_at BETWEEN '{$date}-1' AND '{$date}-31' ";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetch();
+    }
+
+    public function countWeekUsers()
+    {
+        $week = date('W');
+        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}user
+        WHERE WEEK(created_at) = {$week}";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetch();
+    }
+
+    public function countTodayUsers()
+    {
+        $year = (new \DateTime('now'))->format('Y');
+        $month = (new \DateTime('now'))->format('m');
+        $day = (new \DateTime('now'))->format('d');
+        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}user
+        WHERE date_format(created_at, '%Y') = {$year}
+        AND date_format(created_at, '%m') = {$month}
+        AND date_format(created_at, '%d') = {$day}";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetch();
+    }
+
 }

@@ -23,8 +23,8 @@
         {
           //---------------------
             // $this->createtablesDevTestDatas();
-            // $fixtures = new Fixture();
-            // $fixtures->loadThemeTwentyFoot();
+            $fixtures = new Fixture();
+            $fixtures->loadThemeTwentyFoot();
 
 
             $reportManager = new ReportModel();
@@ -47,7 +47,14 @@
                 '30' => $connexionManager->getConnexionByDate(date('Y-m-d'), '30')
             ];
 
-            Router::render('admin/home.view.php', ['connexionData' => $connexionData]);
+            $userManager = new UserModel();
+            $users = $userManager->getAll();
+            $monthUsers = $userManager->countMonthUsers();
+            $countWeekUsers = $userManager->countWeekUsers();
+            $todayUsers = $userManager->countTodayUsers();
+            var_dump($countWeekUsers);
+            
+            Router::render('admin/home.view.php', ['connexionData' => $connexionData,'userStat' => count($users), 'monthUsers' => $monthUsers, 'countWeekUsers' => $countWeekUsers, 'todayUsers' => $todayUsers]);
         }
     
 

@@ -114,7 +114,7 @@ class Installation extends Sql
      */
     private function writeDatabaseGlobals()
     {
-        $content = file_get_contents('.env');
+        $content = file_get_contents('conf.inc.php');
         $content = explode('define', $content);
 
         $arrayOutput = [];
@@ -144,6 +144,6 @@ class Installation extends Sql
             $content .= "\ndefine( {$new[0]}, {$new[1]} );";
         }
 
-        $content = file_put_contents('.env', $content);
+        $content = file_put_contents('conf.inc.php', $content);
     }
 }

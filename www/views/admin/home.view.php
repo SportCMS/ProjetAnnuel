@@ -36,6 +36,17 @@ ob_start(); ?>
                 <canvas id="chartU"></canvas>
             </div>
         </div>
+        <div>
+                    <!--1er chart-->
+                    <h2 class="titleCmpn">Nombre d'utilisateurs inscrits</h2>
+            <div class="card-white">
+                <p>Total : <?= $userStat ?></p><br>
+                <p>Ce mois-ci : <?= isset($monthUsers['count'])?$monthUsers['count']:0 ?></p><br>
+                <p>Cette semaine: <?= $countWeekUsers['count'] ?></p><br>
+                <?= var_dump($countWeekUsers['count']) ?>
+                <p>Aujourd'hui: <?= isset($todayUsers['count'])?$todayUsers['count']:0 ?></p>
+            </div>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
@@ -103,6 +114,9 @@ ob_start(); ?>
         }
     });
 </script>
+
+<div>
+
 
 <?php $content = ob_get_clean(); ?>
 <?php require('./views/admin/base/base.php'); ?>
