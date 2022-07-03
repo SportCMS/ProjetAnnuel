@@ -65,14 +65,40 @@
             ];
 
             $contact = new ContactModel();
-        $contacts = $contact->getAll();
-        $lastsContacts = $contact->getLastContacts();
+            //Récuperation des contacts
+            $contacts = $contact->getAll();
+            $_SESSION['contact'] = count($contacts);
 
-        $lastUsers = $userManager->getLastInscriptions();
-        // var_dump($lastUsers);
+            $lastsContacts = $contact->getLastContacts();
+
+            $lastUsers = $userManager->getLastInscriptions();
+            // var_dump($lastUsers);
+
+            
             
             Router::render('admin/home.view.php', ['connexionData' => $connexionData,'userStat' => count($users), 'monthUsers' => $monthUsers, 'countWeekUsers' => $countWeekUsers, 'todayUsers' => $todayUsers, 'inscriptionData' => $inscriptionData, 'lastUsers' => $lastUsers, 'lastsContacts' => $lastsContacts]);
         }
+
+        //Pour la barre de recherche
+        public function searchUser()
+        {
+            if ($_POST['user'] == null) {
+                echo json_encode(['status' => 'error', 'message' => 'probleme']);
+                return;
+            }
+            $userManager = new UserModel();
+            $users = $userManager->searchUsers($_POST['user']);
+            echo json_encode(['status' => 'success', 'message' => 'success', 'res' => $users]);
+        }
+
+        public function memberview()
+    {
+        $user = new UserModel();
+
+        $users = $user->getAll();
+
+        Router::render('admin/users/users.view.php', ["users" => $users]);
+    }
     
 
         public function indexArticle()
@@ -156,15 +182,6 @@
         }
         echo json_encode(['data' => $_POST, 'objet' => $blockManager]);
     }
-
-        public function memberview()
-        {
-            $user = new UserModel();
-
-            $users = $user->getAll();
-
-            Router::render('admin/adminmember.view.php', ["users"=> $users]);
-        }
 
         public function deleteUser()
         {

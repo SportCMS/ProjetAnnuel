@@ -368,4 +368,12 @@
         return $queryPrp->fetchAll();
     }
 
+    public function searchUsers($search)
+    {
+        $sql = "SELECT * from {$this->prefix}user WHERE firstname LIKE ? OR lastname LIKE ?
+        ORDER BY lastname ASC";
+        $queryPrp = $this->pdo->prp($sql, ['%' . $search . '%', '%' . $search . '%']);
+        return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
