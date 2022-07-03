@@ -320,7 +320,7 @@
                         "id" => "pwd",
                         "class" => "form_input",
                         "placeholder" => "",
-                        "error" => "Votre mot de passe doit faire au minimum 8 caractères",
+                        "error" => "L'ancien mot de passe est incorrecte",
                         "required" => true
                     ],
                     "password" => [
@@ -329,7 +329,7 @@
                         "id" => "pwd",
                         "class" => "form_input",
                         "placeholder" => "",
-                        "error" => "Votre mot de passe doit faire au minimum 8 caractères",
+                        "error" => "Votre mot de passe doit faire au minimum 8 caractères et doit contenir minimum un chiffre et une majuscule",
                         "required" => true
                     ],
                     "passwordConfirm" => [

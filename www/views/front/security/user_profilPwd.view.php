@@ -13,6 +13,17 @@ use App\core\Router; ?>
 		<p><?= $error ?></p>
 	
 	<?php endforeach; ?>
-<?php endif; ?>	
+<?php endif;
+
+if ($user->getRole() == 'admin'){
+    $content = ob_get_clean();
+    require('./views/admin/base/base.php');
+}
+
+if ($user->getRole() == 'user'){
+    $base = ob_get_clean();
+    require('./views/front/base/base.php');
+}
+
 
 

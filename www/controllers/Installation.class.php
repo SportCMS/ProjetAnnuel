@@ -13,7 +13,6 @@ class Installation extends Sql
     public function completeRegistration()
     {
 
-        $_SESSION['email'] = 'admin@gmail.com';
         // if ($_SESSION['role'] != 'admin') {
         //     header('Location: /home');
         // }
