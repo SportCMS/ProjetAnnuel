@@ -46,9 +46,9 @@
                 }
 
                 $_SESSION['email'] = $_POST['email'];
-                $_SESSION['firstname'] = $_POST['firstname'];
-                $_SESSION['lastname'] = $_POST['lastname'];
-                $_SESSION['id'] = $_POST['id'];
+                $_SESSION['firstname'] = $user->getFirstname();
+                $_SESSION['lastname'] = $user->getLastname();
+                $_SESSION['id'] = $user->getId();
                 $_SESSION['role'] = $user->getRole();
 
                 //Si user, on redirige vers home
@@ -361,9 +361,9 @@
 
                 //Vérification Ancien mot de passe
 
-                $password = strip_tags($_POST['password']);
-                $passwordConfirm = strip_tags($_POST['passwordConfirm']);
-                $oldPassword = strip_tags($_POST['oldPassword']);
+                $password = htmlspecialchars($_POST['password']);
+                $passwordConfirm = htmlspecialchars($_POST['passwordConfirm']);
+                $oldPassword = htmlspecialchars($_POST['oldPassword']);
                 if(!password_verify($oldPassword, $user->getPassword()) && $status == 1){
                     $errors=[];
                     $errors[] = "Ancien mot de passe n'est pas bon";
@@ -378,22 +378,23 @@
                     Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
                     return;
                 }
-                //Vérification du nouveau password
-                if($password === $passwordConfirm) {
-                    $user->setPassword($password);
-                    $user->save();
-                    $errors=[];
-                    $errors[] = "Votre mot de passe a été modifié";
-                    Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
-                    return;
-                }
-                
+
+
                 if($password !== $passwordConfirm){
                     $errors=[];
                     $errors[] = "Vos mots de passe ne correspondent pas !!!";
                     Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
                     return;
                 }
+
+                //Vérification du nouveau password
+                    $user->setPassword($password);
+                    $user->save();
+                    $errors=[];
+                    $errors[] = "Votre mot de passe a été modifié";
+                    Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
+                    return;
+                
             }
             Router::render('front/security/user_profilPwd.view.php', ["user" => $user]);
         }

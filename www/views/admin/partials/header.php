@@ -8,7 +8,11 @@
         <a href=""><img src="assets/images/Vector.png" alt="Mail"> <span class="t-contact">Contact</span></a>
         <span class="line"></span>
         <a href="">
-            <p>Natasha Palabre</p>
+            <?php if(isset($_SESSION['email'])):?>
+                <span style="padding: 10px; background-color: red; color: white; border: solid 1px grey; border-radius: 50%;">
+                    <?= ucfirst(substr($_SESSION['firstname'],0,1)).ucfirst(substr($_SESSION['lastname'],0,1));?>
+                </span>
+                <?php endif;?>
             <img src="assets/images/unsplash_dcZsxUAAJXs.png" alt="Photo Profil">
         </a>
     </div>
