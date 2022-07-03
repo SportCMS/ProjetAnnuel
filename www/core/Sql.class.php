@@ -92,7 +92,7 @@
         {
             $sql = "SELECT c.id as 'idComment', c.parent_id as 'parent', c.author_id as 'author', c.title, c.content, c.created_at,u.firstname, u.lastname, u.id as 'idUser'
             FROM {$this->table} as c
-            JOIN `bgfb_user`as u
+            JOIN `{$this->prefix}user`as u
             ON u.id = c.author_id
             WHERE c.article_id = ?
             AND c.parent_id IS NULL
@@ -115,7 +115,7 @@
         {
             $sql = "SELECT c.id as 'idComment', c.parent_id as 'parent', c.author_id as 'author', c.title, c.content, c.created_at,u.firstname, u.lastname, u.id as 'idUser'
             FROM {$this->table} as c
-            JOIN `bgfb_user`as u
+            JOIN `{$this->prefix}user`as u
             ON u.id = c.author_id
             WHERE c.article_id = ?
             AND c.parent_id IS NOT NULL
@@ -127,10 +127,10 @@
 
         public function getUserLikeByArticle($user_id, $article_id)
         {
-            $sql = "SELECT l.id as 'like' FROM `bgfb_like` as l
-            JOIN `bgfb_user`as u
+            $sql = "SELECT l.id as 'like' FROM `{$this->prefix}like` as l
+            JOIN `{$this->prefix}user`as u
             ON l.user_id = u.id
-            JOIN `bgfb_article`as a
+            JOIN `{$this->prefix}article`as a
             ON l.article_id = a.id
             WHERE u.id = ?
             AND a.id = ?";
@@ -145,7 +145,7 @@
     
     
             if (count($likes) == 0) {
-                $sql = "INSERT INTO bgfb_like (user_id, article_id) VALUES (?, ?)";
+                $sql = "INSERT INTO {$this->prefix}like (user_id, article_id) VALUES (?, ?)";
                 $this->pdo->prp($sql, [$user_id, $article_id]);
             } else {
                 $sql = "DELETE FROM {$this->table} WHERE user_id = ? AND article_id = ?";
@@ -155,8 +155,8 @@
 
         public function countAllLikesByArticle($article_id)
         {
-        $sql = "SELECT count(l.id) as 'likes' FROM `bgfb_like` as l
-        JOIN `bgfb_article`as a
+        $sql = "SELECT count(l.id) as 'likes' FROM `{$this->prefix}like` as l
+        JOIN `{$this->prefix}article`as a
         ON l.article_id = a.id
         AND a.id = ?";
         $queryPrp = $this->pdo->prp($sql, [$article_id]);
@@ -209,7 +209,7 @@
         // fixtures
         public function truncate($table)
         {
-            $sql = "TRUNCATE TABLE bgfb_" . $table;
+            $sql = "TRUNCATE TABLE {$this->prefix}" . $table;
             $queryPrp = $this->pdo->prp($sql, []);
 
         }

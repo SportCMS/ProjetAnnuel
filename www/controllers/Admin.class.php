@@ -20,15 +20,12 @@
     {
         public function dashboard(): void
         {
-             //scenario installeur
-            //1 - creer base mvcdocker2
-            //2 - créer tables
-             //$this->createtablesDevTestDatas();
-            //3 - fixtures
-             $fixtures = new Fixture();
-             $fixtures->loadThemeTwentyFoot();
-            //4 - aller sur l'installation : /installation
-            //5 - valider le formulaire
+          //---------------------
+            // $this->createtablesDevTestDatas();
+            // $fixtures = new Fixture();
+            // $fixtures->loadThemeTwentyFoot();
+
+
             $reportManager = new ReportModel();
             $reports = $reportManager->getReportNotifications();
             $_SESSION['report'] = count($reports);
