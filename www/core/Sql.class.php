@@ -346,12 +346,26 @@
     {
         $year = (new \DateTime($date))->format('Y');
         $month = (new \DateTime($date))->format('m');
-        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}users
+        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}user
         WHERE date_format(created_at, '%Y') = {$year}
         AND date_format(created_at, '%m') = {$month}
         AND date_format(created_at, '%d') BETWEEN {$startRange} AND {$endRange}";
         $queryPrp = $this->pdo->prp($sql, []);
         return $queryPrp->fetch();
+    }
+
+    public function getLastInscriptions()
+    {
+        $sql = "SELECT * FROM {$this->prefix}user ORDER BY created_at DESC LIMIT 5";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetchAll();
+    }
+
+    public function getLastContacts()
+    {
+        $sql = "SELECT * FROM {$this->prefix}contact ORDER BY created_at DESC LIMIT 3";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetchAll();
     }
 
 }

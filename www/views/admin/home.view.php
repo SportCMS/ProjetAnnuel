@@ -54,7 +54,35 @@ ob_start(); ?>
                 <canvas id="chartL"></canvas>
             </div>
         </div>
+    
     </div>
+    <div class="containerDshb" style="margin-top:40px;display:flex;justify-content:space-between">
+    <!--2eme partie dashboard msg, agenda, dernier iscrit-->
+    <div class="card-white" style="width:45%">
+        <h2 class="titleCmpn">Derniers inscrits</h2><br>
+        <div>
+            <?php foreach ($lastUsers as $user) :  ?>
+                <span style="padding: 8px 3px; border-bottom:1px solid lightgrey;display:block"> <?= $user['firstname'] ?> <?= $user['lastname'] ?> inscrit le <?= (new \Datetime($user['created_at']))->format('d/m/Y') ?></span><br>
+            <?php endforeach ?>
+        </div>
+    </div>
+    <div class=" card-grey" style="width:45%">
+        <h2 class="titleCmpn">Derniers messages</h2><br>
+        <div>
+            <?php if (count($lastsContacts) > 0) : ?>
+                <?php foreach ($lastsContacts as $lastContact) :  ?>
+                    <div style="padding: 8px 3px; border-bottom:1px solid black;">
+                        <small><?= $lastContact['message'] ?></small><br>
+                        <small style="font-style:italic;font-weight:bold">Envoyé par <?= $lastContact['email'] ?>, le <?= (new \Datetime($lastContact['created_at']))->format('d/m/Y') ?></small><br>
+                    </div>
+                <?php endforeach ?>
+            <?php else : ?>
+                <small>Vous n'avez pas encore reçu de message</small>
+            <?php endif ?>
+
+        </div>
+    </div>
+</div>
 </div>
 <script type="text/javascript">
         let month = `/<?= date('m') ?>`;

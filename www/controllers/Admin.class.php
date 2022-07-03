@@ -10,6 +10,7 @@
     use App\models\Block as BlockModel;
     use App\models\Theme as ThemeModel;
     use App\models\Connexion as ConnexionModel;
+    use App\models\Contact as ContactModel;
     
     use App\core\Sql;
     use App\core\Router;
@@ -62,8 +63,15 @@
                 '20' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '20', '25'),
                 '25' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '25', '30'),
             ];
+
+            $contact = new ContactModel();
+        $contacts = $contact->getAll();
+        $lastsContacts = $contact->getLastContacts();
+
+        $lastUsers = $userManager->getLastInscriptions();
+        // var_dump($lastUsers);
             
-            Router::render('admin/home.view.php', ['connexionData' => $connexionData,'userStat' => count($users), 'monthUsers' => $monthUsers, 'countWeekUsers' => $countWeekUsers, 'todayUsers' => $todayUsers, 'inscriptionData' => $inscriptionData]);
+            Router::render('admin/home.view.php', ['connexionData' => $connexionData,'userStat' => count($users), 'monthUsers' => $monthUsers, 'countWeekUsers' => $countWeekUsers, 'todayUsers' => $todayUsers, 'inscriptionData' => $inscriptionData, 'lastUsers' => $lastUsers, 'lastsContacts' => $lastsContacts]);
         }
     
 
