@@ -343,9 +343,6 @@
         public function changePwd(){
             $user = new UserModel();
             //Récupérer les infos du USER grâce à la session
-
-            
-
             if (isset($_SESSION['email'])){
                 $user = $user->getOneBy(['email' => $_SESSION['email']])[0];
             }else{
@@ -356,14 +353,13 @@
             
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                
                 $errors = VerificatorPwd::checkForm($user->getUserPwdForm(), $_POST);
                 if(count($errors) > 0){
                     Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
                     return;
                 }
 
-            //Vérification Ancien mot de passe
+                //Vérification Ancien mot de passe
 
                 $password = strip_tags($_POST['password']);
                 $passwordConfirm = strip_tags($_POST['passwordConfirm']);
@@ -373,67 +369,66 @@
                     $errors[] = "Ancien mot de passe n'est pas bon";
                     Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
                     return;
+                }   
+
+                if ($password === $oldPassword){
+
+                    $errors=[];
+                    $errors[] = "Le nouveau mot de passe ne doit pas être similaire à l'ancien";
+                    Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
+                    return;
                 }
-                    
-
-
+                //Vérification du nouveau password
+                if($password === $passwordConfirm) {
+                    $user->setPassword($password);
+                    $user->save();
+                    $errors=[];
+                    $errors[] = "Votre mot de passe a été modifié";
+                    Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
+                    return;
+                }
                 
-
-
-                    if ($password === $oldPassword){
-
-                        $errors=[];
-                        $errors[] = "Le nouveau mot de passe ne doit pas être similaire à l'ancien";
-                        Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
-                        return;
-                    }
-
-                        //Vérification du nouveau password
-                        if($password === $passwordConfirm) {
-                            $user->setPassword($password);
-                            $user->save();
-                            $errors=[];
-                            $errors[] = "Votre mot de passe a été modifié";
-                            Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
-                            return;
-
-                        }
-                        if($password !== $passwordConfirm){
-
-                            
-                            $errors=[];
-                            $errors[] = "Vos mots de passe ne correspondent pas !!!";
-                            Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
-                            return;
-                            
-                        }
-
-                       
-                    
-                    }
-                    
-                
-
-            
-
-            
+                if($password !== $passwordConfirm){
+                    $errors=[];
+                    $errors[] = "Vos mots de passe ne correspondent pas !!!";
+                    Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
+                    return;
+                }
+            }
             Router::render('front/security/user_profilPwd.view.php', ["user" => $user]);
-
         }
 
         public function getUserProfile(){
             $user = new UserModel();
             if(isset($_SESSION['email'])){
                 $user = $user->getOneBy(['email' => $_SESSION['email']])[0];
+            }else{
+                header('Location:/non-autorise');
             }
             
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                
-                $user->setFirstname(htmlspecialchars($_POST['firstname']));
-                $user->setLastname(htmlspecialchars($_POST['lastname']));
-                $user->save();
+                //Sécurité sur le champs email
+                if(isset($_POST['email']) && $_POST['email'] != $user->getEmail()){
+                    $errors[]="Tentative de changement d'email !";
+                    return Router::render('front/security/user_profile.view.php', ["user" => $user, "infos" => $errors]);
+                }
+                //Changement du prénom
+                if($_POST['firstname'] != $user->getFirstname()){
+                    $user->setFirstname(htmlspecialchars($_POST['firstname']));
+                    $user->save();
 
-                header('Location:' . $_SERVER['REQUEST_URI']);
+                    $infos[] = "Votre prénom a bien été modifié !";
+                }
+                //Changement du nom
+                if($_POST['lastname'] != $user->getLastname()){
+                    $user->setLastname(htmlspecialchars($_POST['lastname']));
+                    $user->save();
+
+                    $infos[] = "Votre nom a bien été modifié !";
+                }
+                if(isset($infos)){
+                    return Router::render('front/security/user_profile.view.php', ["user" => $user, "infos" => $infos]);
+                }
             }
             // quand tu arrive pour la premier fois pas de POST
             Router::render('front/security/user_profile.view.php', ["user" => $user]);
