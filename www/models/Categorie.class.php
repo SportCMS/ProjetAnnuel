@@ -12,8 +12,8 @@ class Categorie extends Sql
     protected $description;
     protected $image;
     protected $slug;
-
-   
+    protected $created_at;
+    protected $updated_at;
 
     public function __construct()
     {
@@ -64,6 +64,20 @@ class Categorie extends Sql
     {
         return $this->slug;
     }
-
-
+    public function setCreatedAt($created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+    public function getCreatedAt(): ?string
+    {
+        return $this->created_at;
+    }
+    public function setUpdatedAt($updated_at): void
+    {
+        $this->updated_at = $updated_at;
+    }
+    public function getUpdatedAt(): ?string
+    {
+        return $this->updated_at;
+    }
 }

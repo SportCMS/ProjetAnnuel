@@ -66,7 +66,7 @@
 
             $.ajax({
                 type: "POST",
-                url: 'http://localhost:8143/moveItemPosition?',
+                url: 'http://localhost:81/moveItemPosition?',
                 headers: {
                     "Access-Control-Allow-Origin": "*"
                 },
@@ -95,7 +95,7 @@
 
         $.ajax({
             type: "POST",
-            url: 'http://localhost:8143/addItem?',
+            url: 'http://localhost:81/addItem?',
             headers: {
                 "Access-Control-Allow-Origin": "*"
             },

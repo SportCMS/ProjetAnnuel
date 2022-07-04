@@ -13,7 +13,7 @@ use App\models\MenuItem;
         <nav id="site-nav">
             <ul>
                 <?php foreach ((new MenuItem())->getAllByPosition() as $link) : ?>
-                    <li><a href="<?= $link['link'] ?>"><?= $link['name'] ?></a></li>
+                    <li><a href="<?= strtolower($link['link']) ?>"><?= $link['name'] ?></a></li>
                 <?php endforeach ?>
                 <li id="se_connecter"><a href="" class="button">Se connecter</a></li>
             </ul>

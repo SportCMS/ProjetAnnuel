@@ -1,97 +1,100 @@
 <?php
 
-    namespace App\controllers;
+namespace App\controllers;
 
-    use App\models\Report as ReportModel;
-    use App\models\MenuItem as MenuItemsModel;
-    use App\models\Page as PageModel;
-    use App\models\Article as ArticleModel;
-    use App\models\User as UserModel;
-    use App\models\Block as BlockModel;
-    use App\models\Theme as ThemeModel;
-    use App\models\Connexion as ConnexionModel;
-    use App\models\Contact as ContactModel;
-    
-    use App\core\Sql;
-    use App\core\Router;
+use App\models\Report as ReportModel;
+use App\models\MenuItem as MenuItemsModel;
+use App\models\Page as PageModel;
+use App\models\Article as ArticleModel;
+use App\models\User as UserModel;
+use App\models\Block as BlockModel;
+use App\models\Theme as ThemeModel;
+use App\models\Connexion as ConnexionModel;
+use App\models\Contact as ContactModel;
+use App\models\Input as InputModel;
+use App\models\Text as TextModel;
+use App\models\Form as FormModel;
 
-    use App\Helpers\Fixture;
-    use App\Helpers\Slugger;
+use App\core\Sql;
+use App\core\Router;
 
-    class Admin extends Sql
+use App\Helpers\Fixture;
+use App\Helpers\Slugger;
+
+class Admin extends Sql
+{
+    public function dashboard(): void
     {
-        public function dashboard(): void
-        {
-          //---------------------
-            // $this->createtablesDevTestDatas();
-            //$fixtures = new Fixture();
-            //$fixtures->loadThemeTwentyFoot();
+        //---------------------
+        // $this->createtablesDevTestDatas();
+        //$fixtures = new Fixture();
+        //$fixtures->loadThemeTwentyFoot();
 
 
-            $reportManager = new ReportModel();
-            $reports = $reportManager->getReportNotifications();
-            $_SESSION['report'] = count($reports);
+        $reportManager = new ReportModel();
+        $reports = $reportManager->getReportNotifications();
+        $_SESSION['report'] = count($reports);
 
-            $connexionManager = new ConnexionModel();
-            $connexionData = [
-                '01' => $connexionManager->getConnexionByDate(date('Y-m-d'), '1'),
-                '03' => $connexionManager->getConnexionByDate(date('Y-m-d'), '3'),
-                '05' => $connexionManager->getConnexionByDate(date('Y-m-d'), '5'),
-                '07' => $connexionManager->getConnexionByDate(date('Y-m-d'), '7'),
-                '10' => $connexionManager->getConnexionByDate(date('Y-m-d'), '10'),
-                '15' => $connexionManager->getConnexionByDate(date('Y-m-d'), '15'),
-                '18' => $connexionManager->getConnexionByDate(date('Y-m-d'), '18'),
-                '20' => $connexionManager->getConnexionByDate(date('Y-m-d'), '20'),
-                '23' => $connexionManager->getConnexionByDate(date('Y-m-d'), '23'),
-                '25' => $connexionManager->getConnexionByDate(date('Y-m-d'), '25'),
-                '27' => $connexionManager->getConnexionByDate(date('Y-m-d'), '27'),
-                '30' => $connexionManager->getConnexionByDate(date('Y-m-d'), '30')
-            ];
+        $connexionManager = new ConnexionModel();
+        $connexionData = [
+            '01' => $connexionManager->getConnexionByDate(date('Y-m-d'), '1'),
+            '03' => $connexionManager->getConnexionByDate(date('Y-m-d'), '3'),
+            '05' => $connexionManager->getConnexionByDate(date('Y-m-d'), '5'),
+            '07' => $connexionManager->getConnexionByDate(date('Y-m-d'), '7'),
+            '10' => $connexionManager->getConnexionByDate(date('Y-m-d'), '10'),
+            '15' => $connexionManager->getConnexionByDate(date('Y-m-d'), '15'),
+            '18' => $connexionManager->getConnexionByDate(date('Y-m-d'), '18'),
+            '20' => $connexionManager->getConnexionByDate(date('Y-m-d'), '20'),
+            '23' => $connexionManager->getConnexionByDate(date('Y-m-d'), '23'),
+            '25' => $connexionManager->getConnexionByDate(date('Y-m-d'), '25'),
+            '27' => $connexionManager->getConnexionByDate(date('Y-m-d'), '27'),
+            '30' => $connexionManager->getConnexionByDate(date('Y-m-d'), '30')
+        ];
 
-            $userManager = new UserModel();
-            $users = $userManager->getAll();
-            $monthUsers = $userManager->countMonthUsers();
-            $countWeekUsers = $userManager->countWeekUsers();
-            $todayUsers = $userManager->countTodayUsers();
-            var_dump($countWeekUsers);
+        $userManager = new UserModel();
+        $users = $userManager->getAll();
+        $monthUsers = $userManager->countMonthUsers();
+        $countWeekUsers = $userManager->countWeekUsers();
+        $todayUsers = $userManager->countTodayUsers();
+        var_dump($countWeekUsers);
 
-            $inscriptionData = [
-                '01' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '1', '5'),
-                '05' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '5', '10'),
-                '10' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '10', '15'),
-                '15' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '15', '20'),
-                '20' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '20', '25'),
-                '25' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '25', '30'),
-            ];
+        $inscriptionData = [
+            '01' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '1', '5'),
+            '05' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '5', '10'),
+            '10' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '10', '15'),
+            '15' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '15', '20'),
+            '20' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '20', '25'),
+            '25' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '25', '30'),
+        ];
 
-            $contact = new ContactModel();
-            //Récuperation des contacts
-            $contacts = $contact->getAll();
-            $_SESSION['contact'] = count($contacts);
+        $contact = new ContactModel();
+        //Récuperation des contacts
+        $contacts = $contact->getAll();
+        $_SESSION['contact'] = count($contacts);
 
-            $lastsContacts = $contact->getLastContacts();
+        $lastsContacts = $contact->getLastContacts();
 
-            $lastUsers = $userManager->getLastInscriptions();
-            // var_dump($lastUsers);
+        $lastUsers = $userManager->getLastInscriptions();
+        // var_dump($lastUsers);
 
-            
-            
-            Router::render('admin/home.view.php', ['connexionData' => $connexionData,'userStat' => count($users), 'monthUsers' => $monthUsers, 'countWeekUsers' => $countWeekUsers, 'todayUsers' => $todayUsers, 'inscriptionData' => $inscriptionData, 'lastUsers' => $lastUsers, 'lastsContacts' => $lastsContacts]);
+        
+        
+        Router::render('admin/home.view.php', ['connexionData' => $connexionData,'userStat' => count($users), 'monthUsers' => $monthUsers, 'countWeekUsers' => $countWeekUsers, 'todayUsers' => $todayUsers, 'inscriptionData' => $inscriptionData, 'lastUsers' => $lastUsers, 'lastsContacts' => $lastsContacts]);
+    }
+
+    //Pour la barre de recherche
+    public function searchUser()
+    {
+        if ($_POST['user'] == null) {
+            echo json_encode(['status' => 'error', 'message' => 'probleme']);
+            return;
         }
+        $userManager = new UserModel();
+        $users = $userManager->searchUsers($_POST['user']);
+        echo json_encode(['status' => 'success', 'message' => 'success', 'res' => $users]);
+    }
 
-        //Pour la barre de recherche
-        public function searchUser()
-        {
-            if ($_POST['user'] == null) {
-                echo json_encode(['status' => 'error', 'message' => 'probleme']);
-                return;
-            }
-            $userManager = new UserModel();
-            $users = $userManager->searchUsers($_POST['user']);
-            echo json_encode(['status' => 'success', 'message' => 'success', 'res' => $users]);
-        }
-
-        public function memberview()
+    public function memberview()
     {
         $user = new UserModel();
 
@@ -99,19 +102,19 @@
 
         Router::render('admin/users/users.view.php', ["users" => $users]);
     }
-    
 
-        public function indexArticle()
-    	{
-            $article = new ArticleModel();
 
-            $all_article = $article->getAll();
+    public function indexArticle()
+    {
+        $article = new ArticleModel();
 
-            Router::render("admin/article/articles.view.php", [
-                "all_article" => $all_article,
-                
-            ]);
-    	}
+        $all_article = $article->getAll();
+
+        Router::render("admin/article/articles.view.php", [
+            "all_article" => $all_article,
+            
+        ]);
+    }
 
     # write route in route.yaml
     private function writeRoute(array $params): void
@@ -183,30 +186,27 @@
         echo json_encode(['data' => $_POST, 'objet' => $blockManager]);
     }
 
-        public function deleteUser()
-        {
-            $user = new UserModel();
-            $user->delete($_GET['id']);
-    
-            header('Location: /adminmember');
-        }
+    public function deleteUser()
+    {
+        $user = new UserModel();
+        $user->delete($_GET['id']);
 
-        public function editUserRole()
-        {
-            $usermanager = new UserModel(); // instancier le manager
+        header('Location: /adminmember');
+    }
 
-            $userdatas = $usermanager->getOneBy(['id' => $_POST['id'] ]); // on récupère les données de l'utilisateur
-            $selectedRole = $_POST['role']; // on récupère le role sélectionné
-            $user = $userdatas[0]; // on récupère l'utilisateur
-            $user->setRole($selectedRole); // on change le role de l'utilisateur
-            $user->setUpdatedAt((new \DateTime('now'))->format('Y-m-d H:i:s')); // on change la date de modification
-            $user->save(); // on sauvegarde l'utilisateur
+    public function editUserRole()
+    {
+        $usermanager = new UserModel(); // instancier le manager
 
-            header('Location: /adminmember');
-        }
-    
+        $userdatas = $usermanager->getOneBy(['id' => $_POST['id'] ]); // on récupère les données de l'utilisateur
+        $selectedRole = $_POST['role']; // on récupère le role sélectionné
+        $user = $userdatas[0]; // on récupère l'utilisateur
+        $user->setRole($selectedRole); // on change le role de l'utilisateur
+        $user->setUpdatedAt((new \DateTime('now'))->format('Y-m-d H:i:s')); // on change la date de modification
+        $user->save(); // on sauvegarde l'utilisateur
 
-    
+        header('Location: /adminmember');
+    }
 
     public function editPage()
     {
@@ -231,6 +231,10 @@
 
             header('Location: /editPage?page=' . $_GET['page']);
         }
+
+        $page->setUpdatedAt((new \Datetime('now'))->format('Y-m-d H:i:s'));
+        $page->save();
+
         Router::render('admin/page/editPage.view.php', ['blocksPage' => $blocksPage]);
     }
 
@@ -262,7 +266,7 @@
             if (!$_POST['page_title'] || !$_POST['page_role'] || !$_POST['type']) {
                 throw new \Exception('missing parameters');
             }
-            $params['route'] = Slugger::sluggify(($_POST['page_title'])) ?? null;
+            $params['route'] = Slugger::sluggify((strtolower($_POST['page_title']))) ?? null;
             $params['role'] = strtolower($_POST['page_role']) ?? null;
             $params['model'] = strtolower($_POST['type']) ?? null;
             $params['action'] = 'index' .  ucfirst($params['model']) ?? null;
@@ -298,5 +302,81 @@
             header('Location: /gerer-mes-pages');
         }
         Router::render('admin/page/addPage.view.php', ['pages' => $pages]);
+    }
+
+    public function createTextBlock()
+    {
+        $blockManager = new BlockModel();
+        $blockDatas = $blockManager->getOneBy(['id' => intval($_POST['block'])]);
+        $block = $blockDatas[0];
+        $block->setTitle('Text');
+        $block->save();
+
+        $text = new TextModel();
+        $text->setBlockId($_POST['block']);
+        $text->setContent($_POST['content']);
+        $text->save();
+
+        echo json_encode(['success' => 'Bloc de texte enregistré', 'content' => $_POST['content']]);
+    }
+
+    public function removeBlock()
+    {
+        $blockManager = new BlockModel();
+        $blockManager->delete($_GET['id']);
+        header('Location: /editPage?page=' . $_GET['page']);
+    }
+    public function createFormInput()
+    {
+        if (empty($_POST['block'])) {
+            echo json_encode(['status' => 'error', 'message' => 'Informations manquantes : block']);
+            return;
+        }
+        if (empty($_POST['type'])) {
+            echo json_encode(['status' => 'error', 'message' => 'Informations manquantes : type']);
+            return;
+        }
+        if (empty($_POST['name'])) {
+            echo json_encode(['status' => 'error', 'message' => 'Informations manquantes : name']);
+            return;
+        }
+        // create a new Form
+        $formManager = new FormModel();
+        $exist = $formManager->getOneBy(['block_id' => $_POST['block']])[0] ?? null;
+
+        foreach ($formManager->getAll() as $formCheck) {
+            if ($formCheck['title'] == $_POST['form']) {
+                echo json_encode(['status' => 'error', 'message' => 'Nom de formulaire deja existant']);
+                return;
+            }
+        }
+
+        if ($exist == null) {
+            $formManager->setBlockId($_POST['block']);
+            $formManager->setTitle($_POST['form']);
+            $formManager->save();
+        }
+
+        $form = $formManager->getOneBy(['title' => $_POST['form']])[0];
+
+        //update block
+        $blockManager = new BlockModel();
+        $blockDatas = $blockManager->getOneBy(['id' => intval($_POST['block'])]);
+        $block = $blockDatas[0];
+        $block->setTitle('Form');
+        $block->save();
+
+        $input = new InputModel();
+        $input->setLabel($_POST['label']);
+        $input->setFormId($form->getId());
+        $input->setJsId(null);
+        $input->setJsclass(null);
+        $input->setType($_POST['type']);
+        $input->setPlaceholder($_POST['placeholder']);
+        $input->setName($_POST['name']);
+        $input->setValue(null);
+        $input->save();
+
+        echo json_encode(['status' => 'success', 'message' => 'input enregistré']);
     }
 }

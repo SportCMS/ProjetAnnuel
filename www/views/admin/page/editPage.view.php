@@ -50,7 +50,6 @@
                 </form>
                 <form class="card-form" id="card-form" style="display:none">
 
-
                     <button type="button" class="submit-card-form button button--form">valider</button>
                 </form>
                 <form class="builder-form" id="builder-form" style="display:none">
@@ -155,7 +154,7 @@
 
                             $.ajax({
                                 type: "POST",
-                                url: 'http://localhost:8143/createTextBlock?',
+                                url: 'http://localhost:81/createTextBlock?',
                                 headers: {
                                     "Access-Control-Allow-Origin": "*",
                                 },
@@ -206,7 +205,7 @@
 
                                     $.ajax({
                                         type: "POST",
-                                        url: 'http://localhost:8143/createFormInput?',
+                                        url: 'http://localhost:81/createFormInput?',
                                         headers: {
                                             "Access-Control-Allow-Origin": "*",
                                         },

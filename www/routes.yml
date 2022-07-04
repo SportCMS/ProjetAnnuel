@@ -95,7 +95,7 @@
 
 /presentation:
   controller: presentation
-  action: index
+  action: indexPresentation
   role: [public]
 
 ###### comments/like ########
@@ -256,12 +256,27 @@
 /editPage:
   controller: admin
   action: editPage
-  role: [public]
+  role: [admin]
 
 /deletePage:
   controller: admin
   action: deletePageAdmin
   role: [public]
+
+/createTextBlock:
+  controller: admin
+  action: createTextBlock
+  role: [admin]
+
+/createFormInput:
+  controller: admin
+  action: createFormInput
+  role: [admin]
+
+/removeBlock:
+  controller: admin
+  action: removeBlock
+  role: [admin] 
 
 ###### pages ########
 
@@ -276,11 +291,11 @@
   action: moveItemPosition
   role: [public]
 
+
 /addItem:
   controller: admin
   action: addItem
   role: [public]
-
 
 
 
