@@ -24,8 +24,8 @@
         {
           //---------------------
             // $this->createtablesDevTestDatas();
-            //$fixtures = new Fixture();
-            //$fixtures->loadThemeTwentyFoot();
+            // $fixtures = new Fixture();
+            // $fixtures->loadThemeTwentyFoot();
 
 
             $reportManager = new ReportModel();

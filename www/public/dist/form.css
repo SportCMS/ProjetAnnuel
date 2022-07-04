@@ -3,7 +3,7 @@
     width: 50%;
 }
 
-.form_container h1{
+.form_container h1 {
     text-align: center;
 }
 
@@ -14,18 +14,18 @@
     flex-direction: column;
     background-color: white;
     padding: 5% 0;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.form_builder .logo__input{
+.form_builder .logo__input {
     margin: 0 15%;
 }
 
-.form_builder .link{
+.form_builder .link {
     text-align: center;
 }
 
-.form_container .logo__icon{
+.form_container .logo__icon {
     width: 20%;
     margin: 0 40%;
 }
@@ -49,8 +49,10 @@
     cursor: pointer;
     display: block;
     margin: 1rem auto;
+    transition: 0.5s;
 }
 
 .form_builder input[type=submit]:hover {
     background-color: #395b89;
-  }
+    transition: 0.5s;
+}

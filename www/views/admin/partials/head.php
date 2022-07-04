@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/public/dist/back.css">
     <link rel="stylesheet" href="/public/dist/main.css">
     <link rel="stylesheet" href="/public/dist/adminmember.css">
+    <link rel="stylesheet" href="/public/dist/form.css">
 
     <!--===== LINK SCRIPT =====-->
     <script src="/public/src/js/main.js" defer></script>

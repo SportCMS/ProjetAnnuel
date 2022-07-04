@@ -43,7 +43,6 @@ ob_start(); ?>
                 <p>Total : <?= $userStat ?></p><br>
                 <p>Ce mois-ci : <?= isset($monthUsers['count'])?$monthUsers['count']:0 ?></p><br>
                 <p>Cette semaine: <?= $countWeekUsers['count'] ?></p><br>
-                <?= var_dump($countWeekUsers['count']) ?>
                 <p>Aujourd'hui: <?= isset($todayUsers['count'])?$todayUsers['count']:0 ?></p>
             </div>
         </div>

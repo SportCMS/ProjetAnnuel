@@ -72,12 +72,12 @@ use App\Helpers\DateHelper;
                     </a>
 
                     <a href="/voir-les-utilisateurs" class="nav__link <?= $_SERVER['REQUEST_URI'] == 'voir-les-utilisateurs' ? 'active-link' : '' ?>">
-                        <ion-icon name="person-outline"></ion-icon>
+                        <ion-icon name="person-outline" class="nav__icon"></ion-icon>
                         <span class="nav__name">Gérer mes utilisateurs</span>
                     </a>
 
                     <a href="#" class="nav__link <?= $_SERVER['REQUEST_URI'] == '/' ? 'active-link' : '' ?>">
-                        <ion-icon name="settings-outline" class="nav__icon" style="font-size:14px;"></ion-icon>
+                        <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
                         <span class="nav__name">Paramètres</span>
                     </a>
                 </div>

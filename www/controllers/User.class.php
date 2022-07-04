@@ -95,24 +95,24 @@
                 die();
             }
             $user = new UserModel();
-            Router::render('front/security/forgetpwsd.view.php',["user" => $user]);
+            Router::render('front/security/forgetpswd.view.php',["user" => $user]);
         }
         //envoie mail utilisateur ou redirection vers formulaire 
         public function sendPswdRst(){
             $user = new UserModel();
-            Router::render('front/security/forgetpwsd.view.php',["user" => $user]);
+            Router::render('front/security/forgetpswd.view.php',["user" => $user]);
             if(empty($_POST)){
-                Router::render('front/security/forgetpwsd.view.php',["error" => "Aie un champ a disparue. =,("]);
+                Router::render('front/security/forgetpswd.view.php',["error" => "Aie un champ a disparue. =,("]);
                 die();
             }
             $result = Verificator::checkForm($user->getForgetPswdForm(), $_POST);
             if(!empty($result)){
-                Router::render('front/security/forgetpwsd.view.php',["error" => "Aie ton email est mal écrit. =,("]);
+                Router::render('front/security/forgetpswd.view.php',["error" => "Aie ton email est mal écrit. =,("]);
                 die();
             }
             $user = $user->getOneBy(["email" => $_POST['email']]);
             if(empty($user)){
-                Router::render('front/security/forgetpwsd.view.php',["error" => "L'email n'existe pas. =,("]);
+                Router::render('front/security/forgetpswd.view.php',["error" => "L'email n'existe pas. =,("]);
                 die();
             }
             $user = $user[0]; 
