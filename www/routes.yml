@@ -267,12 +267,27 @@
 /editPage:
   controller: admin
   action: editPage
-  role: [public]
+  role: [admin]
 
 /deletePage:
   controller: admin
   action: deletePageAdmin
   role: [public]
+
+/createTextBlock:
+  controller: admin
+  action: createTextBlock
+  role: [admin]
+
+/createFormInput:
+  controller: admin
+  action: createFormInput
+  role: [admin]
+
+/removeBlock:
+  controller: admin
+  action: removeBlock
+  role: [admin] 
 
 ###### pages ########
 
@@ -287,11 +302,11 @@
   action: moveItemPosition
   role: [public]
 
+
 /addItem:
   controller: admin
   action: addItem
   role: [public]
-
 
 
 
@@ -366,36 +381,3 @@
   controller: installation
   action: loading
   role: [admin]
-
-
-
-
-/actus:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/ligue-1:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/ligue-2:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/foot-feminin:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/champions-league:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/psg:
-  controller: categories
-  action: categoryPage
-  role: [public]

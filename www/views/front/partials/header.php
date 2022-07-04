@@ -24,7 +24,7 @@ use App\models\MenuItem;
 
             <ul>
                 <?php foreach ((new MenuItem())->getAllByPosition() as $link) : ?>
-                    <li><a href="<?= $link['link'] ?>"><?= $link['name'] ?></a></li>
+                    <li><a href="<?= strtolower($link['link']) ?>"><?= $link['name'] ?></a></li>
                 <?php endforeach ?>
 
 
