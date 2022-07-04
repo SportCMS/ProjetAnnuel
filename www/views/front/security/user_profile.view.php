@@ -2,9 +2,10 @@
 use App\core\Router; ?>
 <a class="active" href="/user-profile">Profil</a>
 <a class="" href="/user-profilePwd">Changer le mot de passe</a>
-<h1> Votre profil </h1>
-<?php  Router::includePartial("form", $user->getUserProfileForm(null)); ?>
-
+<div class="form_container">
+	<h1> Votre profil </h1>
+	<?php  Router::includePartial("form", $user->getUserProfileForm(null)); ?>
+</div>
 <?php if(isset($errors)) : ?>
 	<?php foreach ($errors as $error): ?>
 

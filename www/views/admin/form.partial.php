@@ -32,22 +32,20 @@
                 <?php
             case 'email': //ccd
                 ?>
-                <div class="logo__text">
-                    <img class="logo" src="../public/assets/images/mail.png" alt="logo SPORT-CMS">
+                <div class="logo__input">
                     <label><?= $input["label"] ?? "" ?></label>
+                    <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?><?= !empty($input["disabled"]) ? 'disabled' : ""  ?>><br>
                 </div>
-                <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?><?= !empty($input["disabled"]) ? 'disabled' : ""  ?>><br>
                 <?php break; 
                 ?>
 
                 <?php
             case 'password': 
                  ?>
-                <div class="logo__text">
-                <img class="logo" src="../public/assets/images/lock.png" alt="logo SPORT-CMS">
+                <div class="logo__input">
                 <label><?= $input["label"] ?? "" ?></label>
-                </div>
                 <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
+                </div>
                 <?php break; 
                 ?>
 
@@ -108,17 +106,21 @@
                 ?>
             <?php
             default: ?>
-                <div class="logo__text">
+                <div class="logo__input">
                     <label><?= $input["label"] ?? "" ?></label>
+                    <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?><?= !empty($input["disabled"]) ? 'disabled' : ""  ?>><br>
                 </div>
-                <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?><?= !empty($input["disabled"]) ? 'disabled' : ""  ?>><br>
         <?php endswitch; ?>
     <?php endforeach; ?>
 
     <input type="submit" value="<?= $config["config"]["submit"] ?? "Envoyer" ?>">
 
-    <?php if($_SERVER['REQUEST_URI'] == '/register') :?>
-        <p class="link_register">Déjà un compte ? <a href="/login">Connectez-vous !</a></p> 
-        <?php endif?>
+    <?php if($_SERVER['REQUEST_URI'] == '/inscription' || $_SERVER['REQUEST_URI'] == '/admin-inscription') :?>
+        <p class="link">Déjà un compte ? <a href="/login">Connectez-vous !</a></p> 
+    <?php endif?>
+
+    <?php if($_SERVER['REQUEST_URI'] == '/login') :?>
+        <p class="link">Pas de compte ? <a href="/inscription">Inscrivez-vous !</a></p> 
+    <?php endif?>
 
 </form>

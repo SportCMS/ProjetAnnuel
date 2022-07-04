@@ -12,8 +12,8 @@ use App\Helpers\DateHelper;
                 <span style="padding: 10px; background-color: red; color: white; border: solid 1px grey; border-radius: 50%;">
                     <?= ucfirst(substr($_SESSION['firstname'],0,1)).ucfirst(substr($_SESSION['lastname'],0,1));?>
                 </span>
-                <?php endif;?>
-            <p> connecté en tant que <?= $_SESSION['email'] ?></p>
+                <p> connecté en tant que <?= $_SESSION['email'] ?></p>
+                <?php endif;?> 
         </a>
     </div>
     <?= DateHelper::dateConverter('dayDate') ?>

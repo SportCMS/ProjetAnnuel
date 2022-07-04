@@ -4,9 +4,10 @@ use App\core\Router; ?>
 <li><a class="" href="/user-profile">Profil</a></li>
 <li><a class="active" href="/user-profilePwd">Changer le mot de passe</a></li>
 </ul>
+<div class="form_container">
 <h1> Mot de passe </h1>
-
 <?php  Router::includePartial("form", $user->getUserPwdForm(null)) ?>
+</div>
 <?php if(isset($errors)) : ?>
 	<?php foreach ($errors as $error): ?>
 

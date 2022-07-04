@@ -96,7 +96,7 @@
 
 /presentation:
   controller: presentation
-  action: index
+  action: indexPresentation
   role: [public]
 
 ###### comments/like ########

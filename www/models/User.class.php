@@ -108,7 +108,7 @@
                     "method"=>"POST",
                     "action"=>"",
                     "id"=>"formRegister",
-                    "class"=>"formRegister",
+                    "class"=>"form_builder",
                     "submit"=>"S'inscrire"
                 ],
                 "inputs"=>[
@@ -117,7 +117,7 @@
                         "placeholder"=>"Votre prénom ...",
                         "type"=>"text",
                         "id"=>"firstnameRegister",
-                        "class"=>"formRegister",
+                        "class"=>"form_input",
                         "min"=>2,
                         "max"=>25,
                         "error"=>" Votre prénom doit faire entre 2 et 25 caractères",
@@ -127,7 +127,7 @@
                         "placeholder"=>"Votre nom ...",
                         "type"=>"text",
                         "id"=>"lastnameRegister",
-                        "class"=>"formRegister",
+                        "class"=>"form_input",
                         "min"=>2,
                         "max"=>100,
                         "error"=>" Votre nom doit faire entre 2 et 100 caractères",
@@ -137,7 +137,7 @@
                         "placeholder"=>"Votre email ...",
                         "type"=>"email",
                         "id"=>"emailRegister",
-                        "class"=>"formRegister",
+                        "class"=>"form_input",
                         "required"=>true,
                         "error"=>"Email incorrect",
                         "unicity"=>true,
@@ -148,7 +148,7 @@
                         "placeholder"=>"Votre mot de passe ...",
                         "type"=>"password",
                         "id"=>"pwdRegister",
-                        "class"=>"formRegister",
+                        "class"=>"form_input",
                         "required"=>true,
                         "error"=>"Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
                     ],
@@ -157,7 +157,7 @@
                         "placeholder"=>"Confirmation ...",
                         "type"=>"password",
                         "id"=>"pwdConfirmRegister",
-                        "class"=>"formRegister",
+                        "class"=>"form_input",
                         "required"=>true,
                         "error"=>"Votre confirmation de mot de passe ne correspond pas",
                         "confirm"=>"password"
@@ -172,23 +172,25 @@
                     "method"=>"POST",
                     "action"=>"/login",
                     "id"=>"formLogin",
-                    "class"=>"formLogin",
+                    "class"=>"form_builder",
                     "submit"=>"Se connecter"
                 ],
                 "inputs"=>[
                     "email"=>[
+                        "label"=>"Votre email",
                         "placeholder"=>"Votre email ...",
                         "type"=>"email",
                         "id"=>"emailRegister",
-                        "class"=>"formRegister",
+                        "class"=>"form_input",
                         "error"=>"Email incorrect",
                         "required"=>true,
                     ],
                     "password"=>[
+                        "label"=>"Votre mot de passe",
                         "placeholder"=>"Votre mot de passe ...",
                         "type"=>"password",
                         "id"=>"pwdRegister",
-                        "class"=>"formRegister",
+                        "class"=>"form_input",
                         "error"=>"Password incorrect",
                         "required"=>true,
                         "error"=>"Mot de passe invalide"
@@ -202,7 +204,7 @@
                 "method"=>"POST",
                 "action"=>"sendPasswordReset",
                 "id"=>"formRstPswd",
-                "class"=>"formRstPswd",
+                "class"=>"form_builder",
                 "submit"=>"Récuperer mot de passe"
                 ],
                 "inputs"=>[
@@ -210,7 +212,7 @@
                         "placeholder"=>"Votre email ...",
                         "type"=>"email",
                         "id"=>"emailRegister",
-                        "class"=>"formRegister",
+                        "class"=>"form_input",
                         "required"=>true,
                         "error"=>"Email incorrect",
                         "unicity"=>true,
@@ -235,7 +237,7 @@
                 "method"=>"POST",
                 "action"=>"confirmChange",
                 "id"=>"formChangePswd",
-                "class"=>"formChangePswd",
+                "class"=>"form_builder",
                 "submit"=>"Changer de mot de passe"
                 ],
                 "inputs"=>[
@@ -243,7 +245,7 @@
                         "placeholder"=>"Votre mot de passe ...",
                         "type"=>"password",
                         "id"=>"changePswd",
-                        "class"=>"changePswd",
+                        "class"=>"form_input",
                         "required"=>true,
                         "error"=>"mot de passe incorrect"
                     ],
@@ -251,7 +253,7 @@
                         "placeholder"=>"Confirmez votre mot de pase ...",
                         "type"=>"password",
                         "id"=>"changePswd",
-                        "class"=>"changePswd",
+                        "class"=>"form_input",
                         "required"=>true,
                         "error"=>"Pas le meme mot de passe"
                     ]
@@ -266,7 +268,7 @@
                     "method" => "POST",
                     "action" => "",
                     "id" => "form_userprofile",
-                    "class" => "form_userprofile",
+                    "class" => "form_builder",
                     "submit" => "Sauvegarder"
                 ],
                 "inputs" => [
@@ -309,7 +311,7 @@
                     "method" => "POST",
                     "action" => "",
                     "id" => "form_userprofile",
-                    "class" => "form_userprofile",
+                    "class" => "form_builder",
                     "submit" => "Valider"
                 ],
                 "inputs" => [

@@ -1,10 +1,10 @@
 <?php ob_start();
 use App\core\Router; ?>
-
-<img class="logo__register" src="../public/assets/images/SportCMS.png" alt="logo SPORT-CMS">
+<div class="form_container">
+<img class="logo__icon" src="../public/assets/images/SportCMS.png" alt="logo SPORT-CMS">
 
 <?php  Router::includePartial("form", $user->getRegisterForm(null)) ?>
-
+</div>
 <p><span> <?= isset($_SESSION['success'])? $_SESSION['success'] : '' ?></span></p>
 
 <?php if(isset($errors)) : ?>
