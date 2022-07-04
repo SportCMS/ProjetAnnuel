@@ -16,6 +16,7 @@
 
   <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
   <script src="src/js/script.js"></script>
+  <script src="public/src/js/search.js"></script>
 </body>
 
 </html>

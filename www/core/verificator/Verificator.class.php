@@ -68,6 +68,8 @@
             }
             return $in;
         }
+
+        
     
         public static function checkEmail($email): bool
         {

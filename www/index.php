@@ -8,7 +8,7 @@
 			// -  créer un bouton logout avec le partial dédié pour le menu pour détruire la session et tester les différents roles 
 	session_start();
 
-	require ".env";
+	require "conf.inc.php";
 
 	function myAutoloader($class)
 	{

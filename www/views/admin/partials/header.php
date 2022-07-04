@@ -1,31 +1,42 @@
-<header>
+<?php
+
+use App\Helpers\DateHelper;
+?>
+<header style="padding-left:10px; padding-right:20px">
     <div class="search">
-        <!--<a href="#"> <img src="assets/images/Group 1.png" alt=""></a>
-        <input type="text" class="large" placeholder="Rechercher ce que vous souhaitez">
-        <input type="text" class="small" placeholder="Rechercher">-->
+        <input type="text" class="large" placeholder="Rechercher un utilisateur" id="search">
     </div>
     <div class="profil">
-        <a href=""><img src="assets/images/Vector.png" alt="Mail"> <span class="t-contact">Contact</span></a>
-        <span class="line"></span>
-        <a href="">
+        <a href="user-profile">
             <?php if(isset($_SESSION['email'])):?>
                 <span style="padding: 10px; background-color: red; color: white; border: solid 1px grey; border-radius: 50%;">
                     <?= ucfirst(substr($_SESSION['firstname'],0,1)).ucfirst(substr($_SESSION['lastname'],0,1));?>
                 </span>
                 <?php endif;?>
-            <img src="assets/images/unsplash_dcZsxUAAJXs.png" alt="Photo Profil">
+            <p> connecté en tant que <?= $_SESSION['email'] ?></p>
         </a>
     </div>
-
-    <div class="report-notifications" style="position:relative">
-        <a href="/reports">
-            <img src="public/assets/img/bell.svg" alt="" width="25" height="25">
-        </a>
-        <?php if ($_SESSION['report'] > 0) : ?>
-            <span style="display:block;padding:2px 7px;border-radius:50%;color:white;background:red;position:absolute;top:-4px;left:15px">
-                <?= $_SESSION['report'] ?>
-            </span>
-        <?php endif  ?>
+    <?= DateHelper::dateConverter('dayDate') ?>
+    <div style="display:flex">
+        <div class="report-notifications" style="position:relative">
+            <a href="/reports">
+                <img src="public/assets/images/bell.svg" alt="" width="25" height="25">
+            </a>
+            <?php if ($_SESSION['report'] > 0) : ?>
+                <span style="display:block;padding:2px 7px;border-radius:50%;color:white;background:red;position:absolute;top:-4px;left:15px">
+                    <?= $_SESSION['report'] ?>
+                </span>
+            <?php endif  ?>
+        </div>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        <div style="display:flex;align-items:center">
+            <a href="/gerer-mes-messages" style="padding-top:4px">
+                <img src="public/assets/images/mail.png" alt="" width="25" height="25">
+            </a>
+            <span>(<?= $_SESSION['contact'] ?>)</span>
+        </div>
     </div>
 
     <div class="l-navbar" id="navbar">
@@ -42,7 +53,7 @@
                         <span class="nav__name active">Dashboard</span>
                     </a>
                     <a href="/gerer-mon-menu" class="nav__link <?= $_SERVER['REQUEST_URI'] == '/gerer-mon-menu' ? 'active-link' : '' ?>">
-                        <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
+                        <ion-icon name="list-outline" class="nav__icon"></ion-icon>
                         <span class="nav__name">Gérer mon menu</span>
                     </a>
                     <a href="/gerer-mes-pages" class="nav__link <?= $_SERVER['REQUEST_URI'] == '/gerer-mes-pages' ? 'active-link' : '' ?>">
@@ -51,28 +62,28 @@
                     </a>
 
                     <a href="/gerer-mes-articles" class="nav__link <?= $_SERVER['REQUEST_URI'] == '/gerer-mes-articles' ? 'active-link' : '' ?>">
-                        <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
+                        <ion-icon name="newspaper-outline" class="nav__icon"></ion-icon>
                         <span class="nav__name">Gérer mes articles</span>
                     </a>
 
                     <a href="/gerer-mes-categories" class="nav__link <?= $_SERVER['REQUEST_URI'] == '/gerer-mes-categories' ? 'active-link' : '' ?>">
-                        <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
+                        <ion-icon name="football-outline" class="nav__icon"></ion-icon>
                         <span class="nav__name">Gérer mes categories</span>
                     </a>
 
-                    <a href="#" class="nav__link <?= $_SERVER['REQUEST_URI'] == '/' ? 'active-link' : '' ?>">
-                        <ion-icon name="pie-chart-outline" class="nav__icon"></ion-icon>
-                        <span class="nav__name">Statistiques</span>
+                    <a href="/voir-les-utilisateurs" class="nav__link <?= $_SERVER['REQUEST_URI'] == 'voir-les-utilisateurs' ? 'active-link' : '' ?>">
+                        <ion-icon name="person-outline"></ion-icon>
+                        <span class="nav__name">Gérer mes utilisateurs</span>
                     </a>
 
                     <a href="#" class="nav__link <?= $_SERVER['REQUEST_URI'] == '/' ? 'active-link' : '' ?>">
-                        <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
+                        <ion-icon name="settings-outline" class="nav__icon" style="font-size:14px;"></ion-icon>
                         <span class="nav__name">Paramètres</span>
                     </a>
                 </div>
             </div>
 
-            <a href="#" class="nav__link">
+            <a href="/logout?account=admin" class="nav__link">
                 <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
                 <span class="nav__name">Déconnexion</span>
             </a>

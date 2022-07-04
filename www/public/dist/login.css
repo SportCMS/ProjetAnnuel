@@ -42,11 +42,11 @@ body {
     margin-bottom: 1.2rem;
 }
 
-.link_register{
+.link_register {
     margin: auto;
 }
 
-#formLogin input[type="submit"]{
+#formLogin input[type="submit"] {
     font-size: 20px;
     margin: auto;
     width: 35%;

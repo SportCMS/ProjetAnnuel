@@ -92,7 +92,7 @@
         {
             $sql = "SELECT c.id as 'idComment', c.parent_id as 'parent', c.author_id as 'author', c.title, c.content, c.created_at,u.firstname, u.lastname, u.id as 'idUser'
             FROM {$this->table} as c
-            JOIN `bgfb_user`as u
+            JOIN `{$this->prefix}user`as u
             ON u.id = c.author_id
             WHERE c.article_id = ?
             AND c.parent_id IS NULL
@@ -115,7 +115,7 @@
         {
             $sql = "SELECT c.id as 'idComment', c.parent_id as 'parent', c.author_id as 'author', c.title, c.content, c.created_at,u.firstname, u.lastname, u.id as 'idUser'
             FROM {$this->table} as c
-            JOIN `bgfb_user`as u
+            JOIN `{$this->prefix}user`as u
             ON u.id = c.author_id
             WHERE c.article_id = ?
             AND c.parent_id IS NOT NULL
@@ -127,10 +127,10 @@
 
         public function getUserLikeByArticle($user_id, $article_id)
         {
-            $sql = "SELECT l.id as 'like' FROM `bgfb_like` as l
-            JOIN `bgfb_user`as u
+            $sql = "SELECT l.id as 'like' FROM `{$this->prefix}like` as l
+            JOIN `{$this->prefix}user`as u
             ON l.user_id = u.id
-            JOIN `bgfb_article`as a
+            JOIN `{$this->prefix}article`as a
             ON l.article_id = a.id
             WHERE u.id = ?
             AND a.id = ?";
@@ -145,7 +145,7 @@
     
     
             if (count($likes) == 0) {
-                $sql = "INSERT INTO bgfb_like (user_id, article_id) VALUES (?, ?)";
+                $sql = "INSERT INTO {$this->prefix}like (user_id, article_id) VALUES (?, ?)";
                 $this->pdo->prp($sql, [$user_id, $article_id]);
             } else {
                 $sql = "DELETE FROM {$this->table} WHERE user_id = ? AND article_id = ?";
@@ -155,8 +155,8 @@
 
         public function countAllLikesByArticle($article_id)
         {
-        $sql = "SELECT count(l.id) as 'likes' FROM `bgfb_like` as l
-        JOIN `bgfb_article`as a
+        $sql = "SELECT count(l.id) as 'likes' FROM `{$this->prefix}like` as l
+        JOIN `{$this->prefix}article`as a
         ON l.article_id = a.id
         AND a.id = ?";
         $queryPrp = $this->pdo->prp($sql, [$article_id]);
@@ -209,7 +209,7 @@
         // fixtures
         public function truncate($table)
         {
-            $sql = "TRUNCATE TABLE bgfb_" . $table;
+            $sql = "TRUNCATE TABLE {$this->prefix}" . $table;
             $queryPrp = $this->pdo->prp($sql, []);
 
         }
@@ -297,6 +297,83 @@
         $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}theme` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) NOT NULL,`description` text NOT NULL,`domain` varchar(255) NOT NULL,`image` varchar(255) NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}user` ( `id` int(11) NOT NULL AUTO_INCREMENT,`firstname` varchar(255) DEFAULT NULL,`lastname` varchar(255) DEFAULT NULL,`email` varchar(255) NOT NULL,`status` int(11) NOT NULL,`password` varchar(255) NOT NULL,`role` varchar(255) DEFAULT NULL, `token` varchar(255) DEFAULT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` datetime DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $queryPrp = $this->pdo->prp($sql);
+    }
+
+    public function getConnexionByDate(string $date, string $startRange)
+    {
+        $year = (new \DateTime($date))->format('Y');
+        $month = (new \DateTime($date))->format('m');
+        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}connexion
+        WHERE date_format(date, '%Y') = {$year}
+        AND date_format(date, '%m') = {$month}
+        AND date_format(date, '%d') = {$startRange}";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetch();
+    }
+
+    public function countMonthUsers()
+    {
+        $date = (new \DateTime('now'))->format('Y-m');
+        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}user
+        WHERE created_at BETWEEN '{$date}-1' AND '{$date}-31' ";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetch();
+    }
+
+    public function countWeekUsers()
+    {
+        $week = date('W');
+        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}user
+        WHERE WEEK(created_at) = {$week}";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetch();
+    }
+
+    public function countTodayUsers()
+    {
+        $year = (new \DateTime('now'))->format('Y');
+        $month = (new \DateTime('now'))->format('m');
+        $day = (new \DateTime('now'))->format('d');
+        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}user
+        WHERE date_format(created_at, '%Y') = {$year}
+        AND date_format(created_at, '%m') = {$month}
+        AND date_format(created_at, '%d') = {$day}";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetch();
+    }
+
+    public function getInscriptionByDate(string $date, string $startRange, string $endRange)
+    {
+        $year = (new \DateTime($date))->format('Y');
+        $month = (new \DateTime($date))->format('m');
+        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}user
+        WHERE date_format(created_at, '%Y') = {$year}
+        AND date_format(created_at, '%m') = {$month}
+        AND date_format(created_at, '%d') BETWEEN {$startRange} AND {$endRange}";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetch();
+    }
+
+    public function getLastInscriptions()
+    {
+        $sql = "SELECT * FROM {$this->prefix}user ORDER BY created_at DESC LIMIT 5";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetchAll();
+    }
+
+    public function getLastContacts()
+    {
+        $sql = "SELECT * FROM {$this->prefix}contact ORDER BY created_at DESC LIMIT 3";
+        $queryPrp = $this->pdo->prp($sql, []);
+        return $queryPrp->fetchAll();
+    }
+
+    public function searchUsers($search)
+    {
+        $sql = "SELECT * from {$this->prefix}user WHERE firstname LIKE ? OR lastname LIKE ?
+        ORDER BY lastname ASC";
+        $queryPrp = $this->pdo->prp($sql, ['%' . $search . '%', '%' . $search . '%']);
+        return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

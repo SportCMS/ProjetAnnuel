@@ -18,6 +18,16 @@
   action: logout
   role: [public]
 
+/searchUser:
+  controller: admin
+  action: searchUser
+  role: [public]
+
+/voir-les-utilisateurs:
+  controller: admin
+  action: memberview
+  role: [public]
+
 # /register:
 #   controller: user
 #   action: register
@@ -27,6 +37,7 @@
 /inscription:
   controller: user
   action: register
+  role: [public]
 
 /mail:
   controller: mail
@@ -355,6 +366,5 @@
   controller: installation
   action: loading
   role: [admin]
-
 
 

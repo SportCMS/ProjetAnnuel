@@ -10,9 +10,12 @@ use App\Helpers\Fixture;
 
 class Installation extends Sql
 {
+    /**
+     * this route allow user to complete the registration after his first login
+     * the form provide datas to set the database (global variables) and set the website
+     */
     public function completeRegistration()
     {
-
         // if ($_SESSION['role'] != 'admin') {
         //     header('Location: /home');
         // }
@@ -23,7 +26,7 @@ class Installation extends Sql
         $themeManager = new Theme();
         $themes = $themeManager->getAll();
 
-        
+        $_SESSION['email'] = 'admin@gmail.com';
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $alert = [];
@@ -59,12 +62,18 @@ class Installation extends Sql
             $this->writeDatabaseGlobals();
 
             header('Location: /loading');
+            
         }
+
+
         Router::render('admin/installation/completeRegistration.view.php', ['themes' => $themes]);
     }
-    
 
 
+    /**
+     * During the installation : 
+     * the database is created and poplulated,  a new mysql admin
+     */
     public function loading()
     {
         //     if ($_SESSION['role'] != 'admin') {
@@ -74,6 +83,8 @@ class Installation extends Sql
         //         header('Location: /dashboard');
         //     }
 
+        sleep(5);
+
         $this->createTables();
         $fixtures = new Fixture();
 
@@ -81,7 +92,8 @@ class Installation extends Sql
             $fixtures->loadThemeTwentyFoot();
         if ($_SESSION['temp_theme'] == 2)
             $fixtures->loadThemeTwentyOneSports();
-
+        
+        
         $user = new User();
         $user->setFirstname($_SESSION['temp_firstname']);
         $user->setLastname($_SESSION['temp_lastname']);
@@ -95,6 +107,11 @@ class Installation extends Sql
         Router::render('admin/installation/loadingPage.view.php');
     }
 
+    /**
+     * write new global variables for database connection  and erase the former ones
+     * file conf.inc.php
+     * @return void
+     */
     private function writeDatabaseGlobals()
     {
         $content = file_get_contents('conf.inc.php');

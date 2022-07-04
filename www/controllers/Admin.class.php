@@ -9,6 +9,8 @@
     use App\models\User as UserModel;
     use App\models\Block as BlockModel;
     use App\models\Theme as ThemeModel;
+    use App\models\Connexion as ConnexionModel;
+    use App\models\Contact as ContactModel;
     
     use App\core\Sql;
     use App\core\Router;
@@ -20,21 +22,85 @@
     {
         public function dashboard(): void
         {
-             //scenario installeur
-            //1 - creer base mvcdocker2
-            //2 - créer tables
-            //$this->createtablesDevTestDatas();
-            //3 - fixtures
+          //---------------------
+            // $this->createtablesDevTestDatas();
             //$fixtures = new Fixture();
             //$fixtures->loadThemeTwentyFoot();
-            //4 - aller sur l'installation : /installation
-            //5 - valider le formulaire
+
+
             $reportManager = new ReportModel();
             $reports = $reportManager->getReportNotifications();
             $_SESSION['report'] = count($reports);
-            Router::render('admin/home.view.php');
+
+            $connexionManager = new ConnexionModel();
+            $connexionData = [
+                '01' => $connexionManager->getConnexionByDate(date('Y-m-d'), '1'),
+                '03' => $connexionManager->getConnexionByDate(date('Y-m-d'), '3'),
+                '05' => $connexionManager->getConnexionByDate(date('Y-m-d'), '5'),
+                '07' => $connexionManager->getConnexionByDate(date('Y-m-d'), '7'),
+                '10' => $connexionManager->getConnexionByDate(date('Y-m-d'), '10'),
+                '15' => $connexionManager->getConnexionByDate(date('Y-m-d'), '15'),
+                '18' => $connexionManager->getConnexionByDate(date('Y-m-d'), '18'),
+                '20' => $connexionManager->getConnexionByDate(date('Y-m-d'), '20'),
+                '23' => $connexionManager->getConnexionByDate(date('Y-m-d'), '23'),
+                '25' => $connexionManager->getConnexionByDate(date('Y-m-d'), '25'),
+                '27' => $connexionManager->getConnexionByDate(date('Y-m-d'), '27'),
+                '30' => $connexionManager->getConnexionByDate(date('Y-m-d'), '30')
+            ];
+
+            $userManager = new UserModel();
+            $users = $userManager->getAll();
+            $monthUsers = $userManager->countMonthUsers();
+            $countWeekUsers = $userManager->countWeekUsers();
+            $todayUsers = $userManager->countTodayUsers();
+            var_dump($countWeekUsers);
+
+            $inscriptionData = [
+                '01' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '1', '5'),
+                '05' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '5', '10'),
+                '10' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '10', '15'),
+                '15' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '15', '20'),
+                '20' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '20', '25'),
+                '25' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '25', '30'),
+            ];
+
+            $contact = new ContactModel();
+            //Récuperation des contacts
+            $contacts = $contact->getAll();
+            $_SESSION['contact'] = count($contacts);
+
+            $lastsContacts = $contact->getLastContacts();
+
+            $lastUsers = $userManager->getLastInscriptions();
+            // var_dump($lastUsers);
+
+            
+            
+            Router::render('admin/home.view.php', ['connexionData' => $connexionData,'userStat' => count($users), 'monthUsers' => $monthUsers, 'countWeekUsers' => $countWeekUsers, 'todayUsers' => $todayUsers, 'inscriptionData' => $inscriptionData, 'lastUsers' => $lastUsers, 'lastsContacts' => $lastsContacts]);
         }
-        
+
+        //Pour la barre de recherche
+        public function searchUser()
+        {
+            if ($_POST['user'] == null) {
+                echo json_encode(['status' => 'error', 'message' => 'probleme']);
+                return;
+            }
+            $userManager = new UserModel();
+            $users = $userManager->searchUsers($_POST['user']);
+            echo json_encode(['status' => 'success', 'message' => 'success', 'res' => $users]);
+        }
+
+        public function memberview()
+    {
+        $user = new UserModel();
+
+        $users = $user->getAll();
+
+        Router::render('admin/users/users.view.php', ["users" => $users]);
+    }
+    
+
         public function indexArticle()
     	{
             $article = new ArticleModel();
@@ -116,15 +182,6 @@
         }
         echo json_encode(['data' => $_POST, 'objet' => $blockManager]);
     }
-
-        public function memberview()
-        {
-            $user = new UserModel();
-
-            $users = $user->getAll();
-
-            Router::render('admin/adminmember.view.php', ["users"=> $users]);
-        }
 
         public function deleteUser()
         {
