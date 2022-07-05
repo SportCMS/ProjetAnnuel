@@ -9,7 +9,7 @@ use App\Helpers\DateHelper;
     <div class="profil">
         <a href="user-profile">
             <?php if(isset($_SESSION['email'])):?>
-                <span style="padding: 10px; background-color: red; color: white; border: solid 1px grey; border-radius: 50%;">
+                <span style="padding: 10px; background-color: red; color: white; border: solid 1px grey; border-radius: 50%; margin-right: 1rem;">
                     <?= ucfirst(substr($_SESSION['firstname'],0,1)).ucfirst(substr($_SESSION['lastname'],0,1));?>
                 </span>
                 <p> connecté en tant que <?= $_SESSION['email'] ?></p>
@@ -32,7 +32,7 @@ use App\Helpers\DateHelper;
         &nbsp;
         &nbsp;
         <div style="display:flex;align-items:center">
-            <a href="/gerer-mes-messages" style="padding-top:4px">
+            <a href="/gerer-mes-messages">
                 <img src="public/assets/images/mail.png" alt="" width="25" height="25">
             </a>
             <span>(<?= $_SESSION['contact'] ?>)</span>

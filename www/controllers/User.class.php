@@ -26,7 +26,7 @@
                 }
                 if(!isset($user->getOneBy(['email' => $_POST['email']])[0])){
                     $errors = [];
-                    $errors[] = "Les informations sont incorrectes !";
+                    $errors[] = "Email ou mot de passe incorrect";
                     Router::render('front/security/login.view.php',["user" => $user, 'errors' => $errors]);
                     return;
                 }
@@ -243,9 +243,9 @@
                      
                 }
                 
-                $firstname = strip_tags($_POST['firstname']);
-                $lastname = strip_tags($_POST['lastname']);
-                $email = strip_tags($_POST['email']);
+                $firstname = htmlspecialchars($_POST['firstname']);
+                $lastname = htmlspecialchars($_POST['lastname']);
+                $email = htmlspecialchars($_POST['email']);
                 
                 
                 
@@ -255,8 +255,8 @@
                     Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
                 }
 
-                $password = strip_tags($_POST['password']);
-                $passwordConfirm = strip_tags($_POST['passwordConfirm']);
+                $password = htmlspecialchars($_POST['password']);
+                $passwordConfirm = htmlspecialchars($_POST['passwordConfirm']);
 
                 if ($password !== $passwordConfirm) {
                     $errors[] = "Les mots de passe doivent correspondre";
@@ -306,7 +306,7 @@
                     // pas de die svp
                     die("Vous rencontrer une erreur lors de l'envoie de mail");
                 }
-                
+
                 $_SESSION['success'] = "Un e-mail de confirmation vous a été envoyé pour valider votre compte !";
                 header('Location:' . $_SERVER['REQUEST_URI']);
                 

@@ -193,7 +193,7 @@
                         "class"=>"form_input",
                         "error"=>"Password incorrect",
                         "required"=>true,
-                        "error"=>"Mot de passe invalide"
+                        "error"=>"Email ou mot de passe incorrect"
                     ]
                 ]
             ];
