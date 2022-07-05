@@ -29,13 +29,23 @@
 	if (file_exists($path)) {
 		$routes = yaml_parse_file($path);
 	} else {
-		ini_get('display_errors')  == 1 ? die('404 not found fichier yml') : header('Location:/page-non-trouvee');
+		ini_get('display_errors')  == 1 ? die('404 not found pas de fichier yml') : header('Location:/page-non-trouvee');
 	}
 
 	$uri = strtok($_SERVER['REQUEST_URI'], "?");//J'ai ajouté strtok afin de gérer les requetes get
-	if(empty($routes[$uri]) || empty($routes[$uri]['controller']) || empty($routes[$uri]['action'])){
-		ini_get('display_errors') == 1 ? die('404 not found prbl d\'ecriture yml') : header('Location:/page-non-trouvee');
+	if(empty($routes[$uri])){
+		ini_get('display_errors') == 1 ? die('404 not found : url mal ecrit dans le yml') : header('Location:/page-non-trouvee');
 	}
+
+	if(empty($routes[$uri]['controller'])){
+		ini_get('display_errors') == 1 ? die('404 not found : controller mal ecrit dans yml') : header('Location:/page-non-trouvee');
+	}
+	if(empty($routes[$uri]['action'])){
+		ini_get('display_errors') == 1 ? die('404 not found : action mal ecrit dans yml') : header('Location:/page-non-trouvee');
+	}
+
+
+
 	if(!Security::checkRoute($uri)){
 		ini_get('display_errors') == 1 ? die('404 not found : La route n\'est pas trouvée') : header('Location:/page-non-trouvee');
 	}

@@ -252,7 +252,7 @@
 
 /deleteCategory:
   controller: categorie
-  acion: deleteCategory
+  action: deleteCategory
   role: [public]
 
 ###### categories ########

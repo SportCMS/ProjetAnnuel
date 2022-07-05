@@ -115,7 +115,8 @@ class Categorie extends Sql
     {
         $category = new CategorieModel();
         $category->delete($_GET['id']);
-
+        
+        
         $route = str_replace('/', '', $_SERVER['REQUEST_URI']);
         $this->eraseRoute($route);
 
