@@ -241,17 +241,17 @@
 
 ###### categories ########
 /gerer-mes-categories:
-  controller: categories
+  controller: categorie
   action: indexCategories
   role: [public]
 
 /crer-une-categorie:
-  controller: categories
+  controller: categorie
   action: addCategory
   role: [public]
 
 /deleteCategory:
-  controller: categories
+  controller: categorie
   acion: deleteCategory
   role: [public]
 
@@ -314,22 +314,22 @@
 
 
 /actus:
-  controller: categories
+  controller: categorie
   action: categoryPage
   role: [public]
 
 /ligue-1:
-  controller: categories
+  controller: categorie
   action: categoryPage
   role: [public]
 
 /ligue-2:
-  controller: categories
+  controller: categorie
   action: categoryPage
   role: [public]
 
 /foot-feminin:
-  controller: categories
+  controller: categorie
   action: categoryPage
   role: [public]
 
@@ -339,7 +339,7 @@
   role: [public]
 
 /psg:
-  controller: categories
+  controller: categorie
   action: categoryPage
   role: [public]
 
@@ -381,3 +381,8 @@
   controller: installation
   action: loading
   role: [admin]
+
+/test:
+  controller: categorie
+  action: categoryPage
+  role: [public]

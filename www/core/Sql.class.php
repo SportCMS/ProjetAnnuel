@@ -163,6 +163,16 @@
         return $queryPrp->fetch();
         }
 
+        public function getArticlesByCategory($slug)
+        {
+            $sql = "SELECT r.title, r.image as artImage, r.slug as slugArticle, r.content, r.created_at, c.slug as slugCategory
+            FROM  {$this->prefix}article as r 
+            JOIN {$this->prefix}categorie as c
+            ON r.category_id = c.id
+            WHERE c.slug = ?";
+            $queryPrp = $this->pdo->prp($sql, [$slug]);
+            return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
+        }
 
         // requete recupération des notifications pour la modération
         public function getReportNotifications()

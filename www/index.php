@@ -29,12 +29,12 @@
 	if (file_exists($path)) {
 		$routes = yaml_parse_file($path);
 	} else {
-		ini_get('display_errors')  == 1 ? die('404 not found') : header('Location:/page-non-trouvee');
+		ini_get('display_errors')  == 1 ? die('404 not found fichier yml') : header('Location:/page-non-trouvee');
 	}
 
 	$uri = strtok($_SERVER['REQUEST_URI'], "?");//J'ai ajouté strtok afin de gérer les requetes get
 	if(empty($routes[$uri]) || empty($routes[$uri]['controller']) || empty($routes[$uri]['action'])){
-		ini_get('display_errors') == 1 ? die('404 not found') : header('Location:/page-non-trouvee');
+		ini_get('display_errors') == 1 ? die('404 not found prbl d\'ecriture yml') : header('Location:/page-non-trouvee');
 	}
 	if(!Security::checkRoute($uri)){
 		ini_get('display_errors') == 1 ? die('404 not found : La route n\'est pas trouvée') : header('Location:/page-non-trouvee');
@@ -57,7 +57,7 @@
 
 	$objectController = new $controller();
 	if(!method_exists($objectController, $action)){
-		ini_get('display_errors') == 1 ? die('404 not found') : header('Location:/page-non-trouvee');
+		ini_get('display_errors') == 1 ? die('404 not found controller') : header('Location:/page-non-trouvee');
 	}
 	$objectController->$action();
 ?>
