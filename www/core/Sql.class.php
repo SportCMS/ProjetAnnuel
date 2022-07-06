@@ -286,6 +286,7 @@
         $sql .= "CREATE TABLE `{$this->prefix}text` (`id` int(11) NOT NULL AUTO_INCREMENT,`block_id` int(11) NOT NULL,`content` text NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $sql .= "CREATE TABLE `{$this->prefix}theme` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) NOT NULL,`description` text NOT NULL,`domain` varchar(255) NOT NULL,`image` varchar(255) NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $sql .= "CREATE TABLE `{$this->prefix}user` ( `id` int(11) NOT NULL AUTO_INCREMENT,`firstname` varchar(255) DEFAULT NULL,`lastname` varchar(255) DEFAULT NULL,`email` varchar(255) NOT NULL,`status` int(11) NOT NULL,`password` varchar(255) NOT NULL,`role` varchar(255) DEFAULT NULL, `token` varchar(255) DEFAULT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` datetime DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$this->prefix}newsletter` (`id` int(11) NOT NULL AUTO_INCREMENT,`email` varchar(255) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $queryPrp = $this->pdo->prp($sql);
     }
     public function createTables()
@@ -306,6 +307,7 @@
         $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}text` (`id` int(11) NOT NULL AUTO_INCREMENT,`block_id` int(11) NOT NULL,`content` text NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}theme` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) NOT NULL,`description` text NOT NULL,`domain` varchar(255) NOT NULL,`image` varchar(255) NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}user` ( `id` int(11) NOT NULL AUTO_INCREMENT,`firstname` varchar(255) DEFAULT NULL,`lastname` varchar(255) DEFAULT NULL,`email` varchar(255) NOT NULL,`status` int(11) NOT NULL,`password` varchar(255) NOT NULL,`role` varchar(255) DEFAULT NULL, `token` varchar(255) DEFAULT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` datetime DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}newsletter` (`id` int(11) NOT NULL AUTO_INCREMENT,`email` varchar(255) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $queryPrp = $this->pdo->prp($sql);
     }
 

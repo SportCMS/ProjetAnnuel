@@ -343,12 +343,12 @@ class Admin extends Sql
         $formManager = new FormModel();
         $exist = $formManager->getOneBy(['block_id' => $_POST['block']])[0] ?? null;
 
-        foreach ($formManager->getAll() as $formCheck) {
+        /*foreach ($formManager->getAll() as $formCheck) {
             if ($formCheck['title'] == $_POST['form']) {
                 echo json_encode(['status' => 'error', 'message' => 'Nom de formulaire deja existant']);
                 return;
             }
-        }
+        }*/
 
         if ($exist == null) {
             $formManager->setBlockId($_POST['block']);

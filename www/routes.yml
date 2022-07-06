@@ -89,11 +89,6 @@
   action: indexAbout
   role: [public]
 
-/contact:
-  controller: contact
-  action: indexContact
-  role: [public]
-
 /presentation:
   controller: presentation
   action: indexPresentation
@@ -188,16 +183,6 @@
 /user-profilePwd:
   controller: user
   action: changePwd
-  role: [public]
-
-/gerer-mes-messages:
-  controller: admin
-  action: indexContact
-  role: [public]
-
-/deleteContact:
-  controller: admin
-  action: deleteContact
   role: [public]
 
 /devFixtures:
@@ -383,6 +368,11 @@
   role: [admin]
 
 /test:
+  controller: categorie
+  action: categoryPage
+  role: [public]
+
+/samy:
   controller: categorie
   action: categoryPage
   role: [public]

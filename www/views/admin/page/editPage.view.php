@@ -54,13 +54,21 @@
                 </form>
                 <form class="builder-form" id="builder-form" style="display:none">
                     <div class="ligne">
+
                         <p class="encare" style="margin-top:10px">
                             <label>Ajouter un champs de formulaire</label>
                             <span id="newInput" style="cursor:pointer;font-size:14px;padding:8px;border-radius:50%;border:1px solid lightgrey;">
                                 <ion-icon name="add-outline"></ion-icon>
                             </span>
                         </p>
-                        <input type="text" id="input-card-form" style="padding:6px 40px" placeholder="nom du formulaire" />
+
+                        <select id="input-card-form" style="padding:6px 30px">
+                            <option value="">Choisir un type de formulaire</option>
+                            <option value="contact">Contact (1 champs email + 1 champ message)</option>
+                            <option value="newsletter">Newsletter (1 champs email)</option>
+                        </select>
+
+                        <!-- <input type="text" id="input-card-form" style="padding:6px 40px" placeholder="nom du formulaire" /> -->
                     </div>
 
                     <div class="ligne input-lines" style="visibility:hidden;display:flex">
@@ -186,7 +194,6 @@
                             copy.classList.add('cool')
                             form.appendChild(copy)
 
-
                             document.querySelectorAll('.input-lines').forEach(function(inputLine) {
 
                                 let button = inputLine.children[0].lastElementChild
@@ -194,14 +201,21 @@
 
                                 button.addEventListener('click', () => {
 
+                                    let chain = '';
                                     let select = inputLine.children[0].children[0]
                                     let choice = select.selectedIndex;
                                     let type = select.options[choice].value
 
-                                    let formName = form.firstElementChild.lastElementChild.value
+                                    let formSelect = form.firstElementChild.lastElementChild
+
+                                    let formSelectChoice = formSelect.selectedIndex;
+                                    let formSelectChoiceValue = formSelect.options[formSelectChoice].value
+
                                     let name = inputLine.children[0].children[1].value
                                     let label = inputLine.children[0].children[2].value
                                     let placeholder = inputLine.children[0].children[3].value
+
+                                    chain = `block=${block}&form=${formSelectChoiceValue}&type=${type}&name=${name}&placeholder=${placeholder}&label=${label}`;
 
                                     $.ajax({
                                         type: "POST",
@@ -209,7 +223,7 @@
                                         headers: {
                                             "Access-Control-Allow-Origin": "*",
                                         },
-                                        data: `block=${block}&form=${formName}&type=${type}&name=${name}&placeholder=${placeholder}&label=${label}`,
+                                        data: chain,
                                         success: function(rep) {
                                             let response = JSON.parse(rep)
                                             console.log(response)
@@ -233,13 +247,6 @@
                             })
 
                         })
-                    }
-                    if (items[i].textContent == 'cards') {
-                        menu.nextElementSibling.style.visibility = 'hidden';
-                        let formChildrens = menu.nextElementSibling.nextElementSibling.children
-                        formChildrens[0].style.display = 'none'
-                        formChildrens[1].style.display = 'none'
-                        formChildrens[2].style.display = 'block'
                     }
                 });
             }
@@ -270,7 +277,7 @@
 
             $.ajax({
                 type: "POST",
-                url: 'http://localhost:8143/saveItemPosition?',
+                url: 'http://localhost:81/saveItemPosition?',
                 headers: {
                     "Access-Control-Allow-Origin": "*"
                 },
