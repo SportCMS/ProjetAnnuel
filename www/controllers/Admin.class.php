@@ -27,8 +27,8 @@ class Admin extends Sql
     {
         //---------------------
         // $this->createtablesDevTestDatas();
-        //$fixtures = new Fixture();
-        //$fixtures->loadThemeTwentyFoot();
+        // $fixtures = new Fixture();
+        // $fixtures->loadThemeTwentyFoot();
 
 
         $reportManager = new ReportModel();
@@ -283,7 +283,7 @@ class Admin extends Sql
             $pageManager->setTitle($params['route']);
             $pageManager->setType($params['model']);
             $pageManager->setLink('/' . Slugger::sluggify($params['route']));
-            $pageManager->setThemeId(1); // remplacer par la suite par l'id_theme en SESSION
+            $pageManager->setThemeId($_SESSION['theme']); // remplacer par la suite par l'id_theme en SESSION
             $pageManager->save();
 
             $pageData = $pageManager->getOneBy(['title' => $pageManager->getTitle()]);

@@ -3,22 +3,14 @@
 namespace App\Helpers;
 
 use App\core\Sql;
-use App\core\Router;
 use App\Helpers\Slugger;
 use App\models\Page as PageModel;
 use App\models\Theme as ThemeModel;
-use App\models\Block as BlockModel;
 use App\models\Like as LikeModel;
-use App\models\Form;
-use App\models\Input;
 use App\models\MenuItem as MenuItemsModel;
 use App\models\Comment as CommentModel;
 use App\models\Categorie;
 use App\models\Article as ArticleModel;
-use App\models\Connexion;
-use App\models\Contact;
-use App\models\Report as ReportModel;
-use App\models\Text;
 use App\models\User;
 
 class Fixture extends Sql
@@ -28,18 +20,15 @@ class Fixture extends Sql
         $theme = new ThemeModel();
         $theme->truncate('theme');
         $theme->setDescription("Un thème blogging dédié au foot");
-        $theme->setDomain('https://sport-cms.fr');
         $theme->setName('Twenty foot theme');
         $theme->setImage('footTheme.png');
         $theme->save();
 
         $theme = new ThemeModel();
-        $theme->setDescription("Un thème moderne et élégant, proposant des articles sport , un système d'inscription pour réagir sur des articles d'actualité et poster ses propres articles");
-        $theme->setDomain('https://sport-cms.fr');
-        $theme->setName('Twenty one sports');
-        $theme->setImage('sportTheme.png');
+        $theme->setDescription("Un thème moderne et élégant, proposant des articles Tennis , un système d'inscription pour réagir sur des articles d'actualité et poster ses propres articles");
+        $theme->setName('Twenty one tennis');
+        $theme->setImage('tennis.jpg');
         $theme->save();
-
 
         $categoryManager = new Categorie();
         $categoryManager->truncate('categorie');
@@ -79,7 +68,7 @@ class Fixture extends Sql
                 $article->setCategoryId($categories[$i]['id']);
                 $article->settitle($title);
                 $article->setContent($content);
-                $article->setImage("https://loremflickr.com/{$rand2}/{$rand}/foot?random={$k}");
+                $article->setImage("https://loremflickr.com/{$rand2}/{$rand}/soccer?random={$k}");
                 $article->setSlug(Slugger::sluggify($title));
                 $article->save();
             }
@@ -99,6 +88,7 @@ class Fixture extends Sql
         $user->setLastname('sportCMS');
         $user->setEmail('admin@gmail.com');
         $user->setStatus(1);
+        $user->setSite(1);
         $user->setPassword(password_hash('1234', PASSWORD_BCRYPT));
         $user->setRole('admin');
         $user->save();
@@ -118,10 +108,10 @@ class Fixture extends Sql
         $admin->setLastname('cms');
         $admin->setEmail('sport.cms@gmail.com');
         $admin->setStatus(1);
+        $user->setSite(1);
         $admin->setPassword(password_hash('1234', PASSWORD_BCRYPT));
         $admin->setRole('admin');
         $admin->save();
-
 
         $articles = $articleManager->getAll();
         $users = $userManager->getAll();
@@ -199,22 +189,20 @@ class Fixture extends Sql
         $theme = new ThemeModel();
         $theme->truncate('theme');
         $theme->setDescription("Un thème blogging dédié au foot");
-        $theme->setDomain('https://sport-cms.fr');
         $theme->setName('Twenty foot theme');
         $theme->setImage('footTheme.png');
         $theme->save();
 
         $theme = new ThemeModel();
-        $theme->setDescription("Un thème moderne et élégant, proposant des articles sport , un système d'inscription pour réagir sur des articles d'actualité et poster ses propres articles");
-        $theme->setDomain('https://sport-cms.fr');
-        $theme->setName('Twenty one sports');
-        $theme->setImage('sportTheme.png');
+        $theme->setDescription("Un thème moderne et élégant, proposant des articles Tennis , un système d'inscription pour réagir sur des articles d'actualité et poster ses propres articles");
+        $theme->setName('Twenty one tennis');
+        $theme->setImage('tennis.jpg');
         $theme->save();
 
 
         $categoryManager = new Categorie();
         $categoryManager->truncate('categorie');
-        $categorieNames = ['Actus' => 'actus.jpg', 'Ligue 1' => 'ligue1.png', 'Ligue 2' => 'ligue2.jpg', 'Foot feminin' => 'footf.jpg', 'Champions league' => 'champion.jpg', 'PSG' => 'foot.jpg'];
+        $categorieNames = ['Grand Chelem' => 'wimbledon.jpg', 'NextGen' => 'nextgen.png', 'Tennis Francais' => 'garcia.jpg', 'Tennis feminin' => 'mladenovic.jpg', 'Les ATP 500' => '500.jpg'];
         foreach ($categorieNames as $key => $value) {
             $category = new Categorie();
             $category->setName($key);
@@ -245,7 +233,7 @@ class Fixture extends Sql
                 $article->setCategoryId($categories[$i]['id']);
                 $article->settitle($title);
                 $article->setContent($content);
-                $article->setImage("https://loremflickr.com/640/420/foot?random={$j}");
+                $article->setImage("https://loremflickr.com/640/420/tennis?random={$j}");
                 $article->setSlug(Slugger::sluggify($title));
                 $article->save();
             }
@@ -274,6 +262,7 @@ class Fixture extends Sql
         $admin->setLastname('cms');
         $admin->setEmail('sport.cms@gmail.com');
         $admin->setStatus(1);
+        $user->setSite(1);
         $admin->setPassword(password_hash('1234', PASSWORD_BCRYPT));
         $admin->setRole('admin');
         $admin->save();

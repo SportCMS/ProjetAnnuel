@@ -6,7 +6,7 @@ use App\core\Router;
 use App\core\Sql;
 use App\models\User;
 use App\models\Theme;
-use App\Helpers\Fixtures;
+use App\Helpers\Fixture;
 
 class Installation extends Sql
 {
@@ -26,8 +26,6 @@ class Installation extends Sql
         $themeManager = new Theme();
         $themes = $themeManager->getAll();
 
-        $_SESSION['email'] = 'admin@gmail.com';
-
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $alert = [];
             $databaseName = $_POST['databaseName'] ?? null;
@@ -39,12 +37,12 @@ class Installation extends Sql
                 $databaseName == null || $tablePrefix == null || $domain == null || $theme == null
             ) {
                 $alert = ["error", "Veuillez remplir tous les champs"];
-                Router::render('admin/installation/completeRegistration.view.php', ['alert', $alert, 'themes' => $themes]);
+                return Router::render('admin/installation/completeRegistration.view.php', ['alert', $alert, 'themes' => $themes]);
             }
 
             if (!preg_match('/^[a-z]*\ +\d*$/i', $domain)) {
                 $alert = ["error", "Veuillez renseigner un nom de domaine valide (ex : domain.fr)"];
-                Router::render('admin/installation/completeRegistration.view.php', ['alert', $alert, 'themes' => $themes]);
+               return Router::render('admin/installation/completeRegistration.view.php', ['alert', $alert, 'themes' => $themes]);
             }
 
             $userManager = new User();
@@ -68,7 +66,7 @@ class Installation extends Sql
 
             header('Location: /loading');
         }
-        Router::render('admin/installation/completeRegistration.view.php', ['themes' => $themes]);
+       return Router::render('admin/installation/completeRegistration.view.php', ['themes' => $themes]);
     }
 
 
@@ -86,7 +84,7 @@ class Installation extends Sql
         //     }
 
         $this->createTables();
-        $fixtures = new Fixtures();
+        $fixtures = new Fixture();
 
         if ($_SESSION['temp_theme'] == 1)
             $fixtures->loadThemeTwentyFoot();
@@ -104,7 +102,8 @@ class Installation extends Sql
         $user->setSite($_SESSION['temp_theme']);
         $user->save();
 
-        Router::render('admin/installation/loadingPage.view.php');
+        
+        return Router::render('admin/installation/loadingPage.view.php');
     }
 
     /**
