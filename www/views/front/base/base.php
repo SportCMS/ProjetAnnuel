@@ -3,8 +3,12 @@
 
 <?php include_once './views/front/partials/head.php' ?>
 
-<body>
+<body id="body-front">
     <?php include_once './views/front/partials/header.php' ?>
+    <!-- lien de redirection au dashboard si admin -->
+    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') : ?>
+        <a class="back-dash" href="/dashboard">Revenir au dashboard</a>
+    <?php endif ?>
     <main style="padding:100px 50px">
         <?= $base ?>
     </main>

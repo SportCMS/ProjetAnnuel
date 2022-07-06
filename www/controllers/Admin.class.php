@@ -56,7 +56,6 @@ class Admin extends Sql
         $monthUsers = $userManager->countMonthUsers();
         $countWeekUsers = $userManager->countWeekUsers();
         $todayUsers = $userManager->countTodayUsers();
-        var_dump($countWeekUsers);
 
         $inscriptionData = [
             '01' => $connexionManager->getInscriptionByDate(date('Y-m-d'), '1', '5'),
