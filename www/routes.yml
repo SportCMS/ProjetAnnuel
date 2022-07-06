@@ -380,4 +380,4 @@
 /sitemap:
   controller: sitemap
   action: index
-  role: [user]
+  role: [public]

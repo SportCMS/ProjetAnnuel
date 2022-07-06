@@ -103,11 +103,11 @@
             $this->updated_at = $updated_at;
         }
 
-        public function getSite(): string
+        public function getSite(): ?int
         {
             return $this->site;
         }
-        public function setSite(string $site): void
+        public function setSite(int $site): void
         {
             $this->site = $site;
         }

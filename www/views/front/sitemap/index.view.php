@@ -16,6 +16,7 @@
 </span><br>
 <span class="one"><?= htmlspecialchars("</url>") ?></span><br>
 
+<?php if(isset($pages)) :?>
 <?php foreach ($pages as $page) : ?>
     <span class="one"><?= htmlspecialchars("<url>") ?></span><br>
     <span class="two"> <?= htmlspecialchars("<loc>http://" . $domain .  $page['link'] . "</loc>") ?></span><br>
@@ -32,6 +33,7 @@
     </span><br>
     <span class="two"><?= htmlspecialchars("</url>") ?></span><br>
 <?php endforeach ?>
+<?php endif ?>
 <br>
 <?php foreach ($categories as $category) : ?>
     <span class="two"><?= htmlspecialchars("<url>") ?></span><br>
