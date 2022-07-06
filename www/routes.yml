@@ -376,3 +376,8 @@
   controller: categorie
   action: categoryPage
   role: [public]
+
+/sitemap:
+  controller: sitemap
+  action: index
+  role: [user]

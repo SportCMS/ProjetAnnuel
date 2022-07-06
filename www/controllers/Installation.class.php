@@ -6,7 +6,7 @@ use App\core\Router;
 use App\core\Sql;
 use App\models\User;
 use App\models\Theme;
-use App\Helpers\Fixture;
+use App\Helpers\Fixtures;
 
 class Installation extends Sql
 {
@@ -39,7 +39,12 @@ class Installation extends Sql
                 $databaseName == null || $tablePrefix == null || $domain == null || $theme == null
             ) {
                 $alert = ["error", "Veuillez remplir tous les champs"];
-                Router::render('admin/installation/completeRegistration.view.php', ['alert', $alert, '$themes' => $themes]);
+                Router::render('admin/installation/completeRegistration.view.php', ['alert', $alert, 'themes' => $themes]);
+            }
+
+            if (!preg_match('/^[a-z]*\ +\d*$/i', $domain)) {
+                $alert = ["error", "Veuillez renseigner un nom de domaine valide (ex : domain.fr)"];
+                Router::render('admin/installation/completeRegistration.view.php', ['alert', $alert, 'themes' => $themes]);
             }
 
             $userManager = new User();
@@ -62,10 +67,7 @@ class Installation extends Sql
             $this->writeDatabaseGlobals();
 
             header('Location: /loading');
-            
         }
-
-
         Router::render('admin/installation/completeRegistration.view.php', ['themes' => $themes]);
     }
 
@@ -83,17 +85,14 @@ class Installation extends Sql
         //         header('Location: /dashboard');
         //     }
 
-        sleep(5);
-
         $this->createTables();
-        $fixtures = new Fixture();
+        $fixtures = new Fixtures();
 
         if ($_SESSION['temp_theme'] == 1)
             $fixtures->loadThemeTwentyFoot();
         if ($_SESSION['temp_theme'] == 2)
             $fixtures->loadThemeTwentyOneSports();
-        
-        
+
         $user = new User();
         $user->setFirstname($_SESSION['temp_firstname']);
         $user->setLastname($_SESSION['temp_lastname']);
@@ -102,6 +101,7 @@ class Installation extends Sql
         $user->setStatus($_SESSION['temp_status']);
         $user->setRole($_SESSION['temp_role']);
         $user->setStatus(2);
+        $user->setSite($_SESSION['temp_theme']);
         $user->save();
 
         Router::render('admin/installation/loadingPage.view.php');
@@ -132,6 +132,8 @@ class Installation extends Sql
                 array_push($newOutput, ["'DBNAME'", "'" . $_SESSION['temp_dbName'] . "'"]);
             elseif (trim($arrayOutput[$i][0]) == "'DBPREFIXE'")
                 array_push($newOutput, ["'DBPREFIXE'", "'" . $_SESSION['temp_prefix'] . "'"]);
+            elseif (trim($arrayOutput[$i][0]) == "'DOMAIN'")
+                array_push($newOutput, ["'DOMAIN'", "'" . $_SESSION['temp_domain'] . "'"]);
             else
                 $newOutput[] = $arrayOutput[$i];
         }

@@ -12,6 +12,7 @@
         protected $password;// string (string)
         protected $token = null;// ?string (?string)
         protected $updated_at;// ?string (?string)
+        protected $site;
         //Créer getter / setter
         public function __construct(){
             //echo 'créa user';
@@ -101,6 +102,16 @@
         {
             $this->updated_at = $updated_at;
         }
+
+        public function getSite(): string
+        {
+            return $this->site;
+        }
+        public function setSite(string $site): void
+        {
+            $this->site = $site;
+        }
+
         public function getRegisterForm(): array
         {
             return [

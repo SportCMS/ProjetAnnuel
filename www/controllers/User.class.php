@@ -50,6 +50,7 @@
                 $_SESSION['lastname'] = $user->getLastname();
                 $_SESSION['id'] = $user->getId();
                 $_SESSION['role'] = $user->getRole();
+                $_SESSION['site'] = $user->getSite();
 
                 //Si user, on redirige vers home
                 if ($_SESSION['role'] == 'user') {
