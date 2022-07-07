@@ -240,8 +240,7 @@ h2 {
 }
 
 .container {
-  margin: auto;
-  max-width: 80%;
+  line-height: 0,5rem;
 }
 
 :root {
