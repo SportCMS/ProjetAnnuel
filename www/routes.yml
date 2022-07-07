@@ -89,6 +89,11 @@
   action: indexAbout
   role: [public]
 
+/contact:
+  controller: contact
+  action: indexContact
+  role: [public]
+
 /presentation:
   controller: presentation
   action: indexPresentation

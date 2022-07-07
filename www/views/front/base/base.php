@@ -9,7 +9,7 @@
     <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') : ?>
         <a class="back-dash" href="/dashboard">Revenir au dashboard</a>
     <?php endif ?>
-    <main class="mainuser">
+    <main>
         <?= $base ?>
     </main>
     <?php include_once './views/front/partials/footer.php' ?>
