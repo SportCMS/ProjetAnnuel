@@ -232,7 +232,7 @@ input {
 /* bouton retourner au dashboard si admin*/
 .back-dash {
     position: absolute;
-    margin-left: 5px;
+    margin: 5px 0 0 43%;
     text-decoration: none;
     color: blueviolet;
     border: blueviolet 1px solid;
@@ -291,12 +291,6 @@ input {
 
 .button--alert:hover {
     background-color: #f41717;
-}
-
-#body-front {
-    position: relative;
-    padding-bottom: 75px;
-    min-height: 100vh;
 }
 
 * {
@@ -480,7 +474,8 @@ footer {
     color: #FFF;
     display: flex;
     z-index: 10;
-    position: absolute;
+    margin: auto;
+    position: fixed;
 }
 
 .mainuser{
