@@ -16,20 +16,25 @@
         </ul>
     </div>
 
-    <div style="padding:20px;margin:100px;border:1px solid grey;min-height:20vh;background:white">
-        <h3>Ajouter un lien NAV</h3>
-        <span>Donnez un nom à votre nouveau lien de navigation</span><br>
-        <input style=" width:400px;height:30px;padding:3px" type="text" id="item-name" /><br><br>
-
-        <span>Choisir une destination (créer une page pour ajouter une nouvelle destination)</span><br>
-        <select id="item-route" style=" width:410px;height:40px;padding:3px">
-            <option value="">Choisir une page</option>
-            <?php foreach ($pages as $page) : ?>
-                <option value="<?= $page['title'] ?>"><?= $page['title'] ?></option>
-            <?php endforeach ?>
-        </select><br><br>
-        <button style="padding:9px 15px" id="addItem">valider</button>
-        <br><small id="error" style="color:red;font-size:11px"></small>
+    <div class="form_container">
+        <h1>Ajouter un lien NAV</h1>
+        <form class="form_builder">
+            <div class="logo__input">
+            <span>Donnez un nom à votre nouveau lien de navigation</span><br>
+            <input class="form_input" type="text" id="item-name" /><br><br>
+            </div>
+            <div class="logo__input">
+            <span>Choisir une destination (créer une page pour ajouter une nouvelle destination)</span><br>
+            <select id="item-route">
+                <option value="">Choisir une page</option>
+                <?php foreach ($pages as $page) : ?>
+                    <option value="<?= $page['title'] ?>"><?= $page['title'] ?></option>
+                <?php endforeach ?>
+            </select><br><br>
+            </div>
+            <button id="addItem">valider</button>
+            <br><small id="error" style="color:red;font-size:11px"></small>
+        </form>
     </div>
 </div>
 </div>

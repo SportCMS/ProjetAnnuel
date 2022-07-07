@@ -231,7 +231,7 @@ input {
 /* bouton retourner au dashboard si admin*/
 .back-dash {
     position: absolute;
-    margin: 5px 0 0 43%;
+    margin: 5px 0 0 85%;
     text-decoration: none;
     color: blueviolet;
     border: blueviolet 1px solid;
@@ -361,7 +361,7 @@ input {
 }
 
 #site-header {
-    padding: 10px 0;
+    padding: 10px 75px;
     width: 100%;
     z-index: 20;
     transition: background-color 1s;
@@ -485,6 +485,10 @@ footer {
     border-radius: 5px;
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
     padding: 3.5%;
+}
+
+footer .container {
+    margin: auto;
 }
 
 footer .container ul {
