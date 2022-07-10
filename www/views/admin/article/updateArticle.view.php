@@ -4,7 +4,7 @@ use App\core\Router; ?>
 <h1>Editer un article</h1>
 
 
-<?php Router::includePartial('form', $article->getArticleForm(null)) ?>
+<?php Router::includePartial('form', $article->getArticleForm($params)) ?>
 
 <!-- envoie des erreurs -->
 <?php if (isset($result)) : ?>

@@ -27,7 +27,7 @@
                     <input type="radio" id="theme" name="chooseTheme" value="<?= $theme['id'] ?>">
                 </div>
                 <div>
-                    <img src="public/assets/images/<?= $theme['image']  ?>" alt="" width="70" height="70"><br>
+                    <img src="public/assets/img/<?= $theme['image']  ?>" alt="" width="70" height="70"><br>
                     <small><?= $theme['description'] ?></small><br><br>
                 </div>
             </div>

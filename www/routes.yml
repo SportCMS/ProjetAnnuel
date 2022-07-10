@@ -3,6 +3,11 @@
   action: register
   role: [public]
 
+/admin-login:
+  controller: user
+  action: login
+  role: [public]
+
 /confirmation-inscription:
   controller: user
   action: confirmaccount
@@ -33,7 +38,7 @@
 #   action: register
 #   role: [public]
 
-# inscription user
+######### .  INSCRIPTION USER
 /inscription:
   controller: user
   action: register
@@ -293,7 +298,18 @@
   action: addItem
   role: [public]
 
+### landing page #####
 
+/:
+  controller: landing
+  action: landingPage
+  role: [public]
+
+
+/bienvenue:
+  controller: landing
+  action: landingPage
+  role: [public]
 
 
 
@@ -328,10 +344,6 @@
   action: categoryPage
   role: [public]
 
-/adminmember:
- controller: admin
- action: memberview
- role: [public]
 
 /deleteUser:
   controller: admin
@@ -343,20 +355,6 @@
   action: editUserRole
   role: [public]
 
-
-
-
-/tets:
-  controller: presentation
-  action: indexPresentation
-  role: [ admin]
-
-
-/kkl:
-  controller: presentation
-  action: indexPresentation
-  role: [ admin]
-
 /installation:
   controller: installation
   action: completeRegistration
@@ -367,137 +365,15 @@
   action: loading
   role: [admin]
 
-/test:
-  controller: categorie
-  action: categoryPage
-  role: [public]
-
-/samy:
-  controller: categorie
-  action: categoryPage
-  role: [public]
 
 /sitemap:
   controller: sitemap
   action: index
   role: [public]
 
-/actus:
-  controller: categories
-  action: categoryPage
-  role: [public]
 
-/ligue-1:
-  controller: categories
-  action: categoryPage
-  role: [public]
 
-/ligue-2:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/foot-feminin:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/champions-league:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/psg:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/actus:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/ligue-1:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/ligue-2:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/foot-feminin:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/champions-league:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/psg:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/actus:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/ligue-1:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/ligue-2:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/foot-feminin:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/champions-league:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/psg:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/actus:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/ligue-1:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/ligue-2:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/foot-feminin:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/champions-league:
-  controller: categories
-  action: categoryPage
-  role: [public]
-
-/psg:
-  controller: categories
-  action: categoryPage
+/nouvelle-page:
+  controller: presentation
+  action: indexPresentation
   role: [public]

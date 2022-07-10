@@ -16,15 +16,17 @@ class Installation extends Sql
      */
     public function completeRegistration()
     {
-        // if ($_SESSION['role'] != 'admin') {
-        //     header('Location: /home');
-        // }
-        // if ($_SESSION['role'] == 'admin' && $_SESSION['status'] == 2) {
-        //     header('Location: /dashboard');
-        // }
+        if ($_SESSION['role'] != 'admin') {
+            header('Location: /home');
+        }
+        if ($_SESSION['role'] == 'admin' && $_SESSION['status'] == 2) {
+            header('Location: /dashboard');
+        }
 
         $themeManager = new Theme();
         $themes = $themeManager->getAll();
+
+        $_SESSION['email'] = 'admin@gmail.com';
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $alert = [];
@@ -42,7 +44,7 @@ class Installation extends Sql
 
             if (!preg_match('/^[a-z]*\ +\d*$/i', $domain)) {
                 $alert = ["error", "Veuillez renseigner un nom de domaine valide (ex : domain.fr)"];
-               return Router::render('admin/installation/completeRegistration.view.php', ['alert', $alert, 'themes' => $themes]);
+                Router::render('admin/installation/completeRegistration.view.php', ['alert', $alert, 'themes' => $themes]);
             }
 
             $userManager = new User();
@@ -60,13 +62,14 @@ class Installation extends Sql
             $_SESSION['temp_domain'] = $domain;
             $_SESSION['temp_theme'] = $theme;
 
-            $this->createDatabase();
-            $this->dropDatabase();
+           // $this->createDatabase();
+            //$this->dropDatabase();
             $this->writeDatabaseGlobals();
+            
 
             header('Location: /loading');
         }
-       return Router::render('admin/installation/completeRegistration.view.php', ['themes' => $themes]);
+        Router::render('admin/installation/completeRegistration.view.php', ['themes' => $themes]);
     }
 
 
@@ -76,12 +79,12 @@ class Installation extends Sql
      */
     public function loading()
     {
-        //     if ($_SESSION['role'] != 'admin') {
-        //         header('Location: /home');
-        //     }
-        //     if ($_SESSION['role'] == 'admin' && $_SESSION['status'] == 2) {
-        //         header('Location: /dashboard');
-        //     }
+        if ($_SESSION['role'] != 'admin') {
+            header('Location: /home');
+        }
+        if ($_SESSION['role'] == 'admin' && $_SESSION['status'] == 2) {
+            header('Location: /dashboard');
+        }
 
         $this->createTables();
         $fixtures = new Fixture();
@@ -102,8 +105,7 @@ class Installation extends Sql
         $user->setSite($_SESSION['temp_theme']);
         $user->save();
 
-        
-        return Router::render('admin/installation/loadingPage.view.php');
+        Router::render('admin/installation/loadingPage.view.php');
     }
 
     /**
@@ -113,7 +115,7 @@ class Installation extends Sql
      */
     private function writeDatabaseGlobals()
     {
-        $content = file_get_contents('conf.inc.php');
+        $content = file_get_contents('conf2.inc.php');
         $content = explode('define', $content);
 
         $arrayOutput = [];
@@ -137,6 +139,8 @@ class Installation extends Sql
                 $newOutput[] = $arrayOutput[$i];
         }
 
+       
+
         $content = "";
         $content = "\n";
         $content .= '<?php';
@@ -145,6 +149,59 @@ class Installation extends Sql
             $content .= "\ndefine( {$new[0]}, {$new[1]} );";
         }
 
-        $content = file_put_contents('conf.inc.php', $content);
+        $content = file_put_contents('conf2.inc.php', $content);
     }
+
+
+     /**
+     * write new global variables for database connection  and erase the former ones
+     * file conf.inc.php
+     * @return void
+     */
+    // private function writeDatabaseGlobals()
+    // {
+    //     $content = file_get_contents('conf2.inc.php');
+    //     $content = explode('define', $content);
+
+    //     echo "<pre>" . print_r($content) . "<pre>";
+        
+        
+        
+    //     $arrayOutput = [];
+    //     foreach ($content as $var) {
+    //         $var = str_replace('(', '', $var);
+    //         $var = str_replace(')', '', $var);
+    //         $var = str_replace(';', '', $var);
+    //         $var = explode(',', $var);
+    //         $arrayOutput[] = $var;
+    //     }
+        
+    //     echo "<pre>" . print_r($arrayOutput). "<pre>";
+        
+    //     $newOutput = [];
+    //     for ($i = 0; $i < count($arrayOutput); $i++) {
+    //         if (trim($arrayOutput[$i][0] == "'" . $_SESSION['temp_dbName'] . "'")) {
+    //             array_push($newOutput, ["'DBNAME'", "'" . $_SESSION['temp_dbName'] . "'"]);
+    //         } elseif (trim($arrayOutput[$i][0]) == "'" . $_SESSION['temp_prefix'] . "'") {
+    //             array_push($newOutput, ["'DBPREFIXE'", "'" . $_SESSION['temp_prefix'] . "'"]);
+    //         } elseif (trim($arrayOutput[$i][0]) == "'" . $_SESSION['temp_domain'] . "'") {
+    //             array_push($newOutput, ["'DOMAIN'", "'" . $_SESSION['temp_domain'] . "'"]);
+    //         } else {
+    //             $newOutput[] = $arrayOutput[$i];
+    //         }
+    //     }
+        
+    //     echo "<pre>" . print_r($newOutput). "<pre>";
+        
+    //     $content = "";
+    //     $content = "\n";
+    //     $content .= '<?php';
+    //     unset($newOutput[0]);
+    //     foreach ($newOutput as $new) {
+    //         $content .= "\ndefine( {$new[0]}, {$new[1]} );";
+    //     }
+
+    //     $content = file_put_contents('conf2.inc.php', $content);
+    // }
+
 }
