@@ -3,9 +3,9 @@
 namespace App\models;
 
 
-use App\core\sql;
+use App\core\Sql;
 
-class Text extends sql
+class Text extends Sql
 {
     protected $id;
     protected $content;

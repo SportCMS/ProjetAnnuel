@@ -3,9 +3,9 @@
 namespace App\models;
 
 
-use App\core\sql;
+use App\core\Sql;
 
-class Form extends sql
+class Form extends Sql
 {
     protected $id;
     protected $block_id;

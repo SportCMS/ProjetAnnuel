@@ -2,9 +2,9 @@
 
 namespace App\models;
 
-use App\core\sql;
+use App\core\Sql;
 
-class Theme extends sql
+class Theme extends Sql
 {
     protected $id;
     protected $name;

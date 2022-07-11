@@ -3,9 +3,9 @@
 namespace App\models;
 
 
-use App\core\sql;
+use App\core\Sql;
 
-class Connexion extends sql
+class Connexion extends Sql
 {
     protected $id;
     protected $ip;

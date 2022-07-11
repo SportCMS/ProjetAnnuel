@@ -3,9 +3,9 @@
 namespace App\models;
 
 
-use App\core\sql;
+use App\core\Sql;
 
-class Contact extends sql
+class Contact extends Sql
 {
 
     protected $message;

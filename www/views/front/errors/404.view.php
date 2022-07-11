@@ -1,4 +1,4 @@
-<?php ob_start(); ?>
+<?php ob_start();?>
 
 <img src="public/assets/img/yellow.png" alt="" width="100" height="100">
 <h2>Ooops! page non trouvée, elle à peut être été supprimée ou est temporairempent indisponible<br>

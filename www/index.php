@@ -8,6 +8,8 @@
 			// -  créer un bouton logout avec le partial dédié pour le menu pour détruire la session et tester les différents roles 
 	session_start();
 
+	require "functional/functional.inc.php";
+
 	require "conf.inc.php";
 
 	function myAutoloader($class)
@@ -18,23 +20,21 @@
 		if(file_exists($class)){
 			include $class;//On utilise include car plus rapide, et on a déjà vérifier son existance
 		}else{
-			ini_get('display_errors') == 1 ? die('404 not found : la classe n\'existe pas') : header('Location:/page-non-trouvee');
-
+			abort(500);
 		}
 	} 
 
 	spl_autoload_register('App\myAutoloader');
 
-	$path = 'routes.yml';
-	if (file_exists($path)) {
-		$routes = yaml_parse_file($path);
-	} else {
-		ini_get('display_errors')  == 1 ? die('404 not found pas de fichier yml') : header('Location:/page-non-trouvee');
+	//';
+	if(!file_exists($path = 'routes.yml')){
+		abort(500);
 	}
+	$routes = yaml_parse_file($path);
 
 	$uri = strtok($_SERVER['REQUEST_URI'], "?");//J'ai ajouté strtok afin de gérer les requetes get
 	if(empty($routes[$uri])){
-		ini_get('display_errors') == 1 ? die('404 not found : url mal ecrit dans le yml') : header('Location:/page-non-trouvee');
+		abort(404);
 	}
 
 	if(empty($routes[$uri]['controller'])){

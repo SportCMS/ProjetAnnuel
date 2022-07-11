@@ -3,9 +3,9 @@
 namespace App\models;
 
 
-use App\core\sql;
+use App\core\Sql;
 
-class MenuItem extends sql
+class MenuItem extends Sql
 {
     protected $id;
     protected $name;
