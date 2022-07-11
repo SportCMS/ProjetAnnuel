@@ -7,7 +7,7 @@ use App\core\Router; ?>
 		<?php endforeach ?>
 	</div>
 <?php endif ?>
-<div class="form_container">
+<div class="form_container" style="margin-top:1rem; margin-bottom:100px">
 <img class="logo__icon" src="../public/assets/images/SportCMS.png" alt="logo SPORT-CMS">
 
 <?php  Router::includePartial("form", $user->getLoginForm(null)) ?>

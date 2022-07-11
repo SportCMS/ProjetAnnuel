@@ -12,9 +12,9 @@
 
 <section id="section2">
     <div class="slider">
-        <img src="assets/images/outils.png" alt="Erreur lors du chargment de l'image">
-        <img src="assets/images/Abonnement.png" alt="Erreur lors du chargment de l'image">
-        <img src="assets/images/Dashboard.png" alt="Erreur lors du chargment de l'image">
+        <img src="public/assets/images/outils.png" alt="Erreur lors du chargment de l'image">
+        <img src="public/assets/images/Abonnement.png" alt="Erreur lors du chargment de l'image">
+        <img src="public/assets/images/Dashboard.png" alt="Erreur lors du chargment de l'image">
     </div>
 </section>
 

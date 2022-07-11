@@ -1,6 +1,6 @@
 <?php ob_start();
 use App\core\Router; ?>
-<div class="form_container">
+<div class="form_container" style="margin-top:1rem; margin-bottom:100px">
 <img class="logo__icon" src="../public/assets/images/SportCMS.png" alt="logo SPORT-CMS">
 
 <?php  Router::includePartial("form", $user->getRegisterForm(null)) ?>

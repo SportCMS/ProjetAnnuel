@@ -89,7 +89,11 @@
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
     width: 20%;
     padding: 1rem;
-    
+    list-style-type: none;
+}
+
+.card a {
+    text-decoration: none;
 }
 
 .card li {

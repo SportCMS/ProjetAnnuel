@@ -1,8 +1,8 @@
 <?php ob_start();
 use App\core\Router; ?>
 
-<div style="display:flex; align-items:flex-start;">
-	<ul class="card">
+<div style="display:flex; align-items:flex-start; margin-top: 1em">
+	<ul class="card" style="margin-left: 1em;">
 		<li class="card__active"><a href="/user-profile">Profil</a></li>
 		<li><a href="/user-profilePwd">Changer le mot de passe</a></li>
 	</ul>

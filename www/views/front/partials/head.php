@@ -5,6 +5,6 @@
     <title>SportCMS - Accueil</title>
     <link rel="stylesheet" href="public/dist/main.css">
     <link rel="stylesheet" href="public/dist/form.css">
-    <script src="src/js/vendor/jquery-3.6.0.min.js"></script>
-    <script src="src/js/main.js"></script>
+    <script src="public/src/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="public/src/js/main.js"></script>
 </head>
