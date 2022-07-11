@@ -3,9 +3,9 @@
 namespace App\models;
 
 
-use App\core\sql;
+use App\core\Sql;
 
-class Report extends sql
+class Report extends Sql
 {
     protected $id;
     protected $comment_id;

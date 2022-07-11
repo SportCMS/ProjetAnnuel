@@ -3,9 +3,9 @@
 namespace App\models;
 
 
-use App\core\sql;
+use App\core\Sql;
 
-class Page extends sql
+class Page extends Sql
 {
     protected $id;
     protected $title;

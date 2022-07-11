@@ -3,9 +3,9 @@
 namespace App\models;
 
 
-use App\core\sql;
+use App\core\Sql;
 
-class Input extends sql
+class Input extends Sql
 {
     protected $id;
     protected $form_id;

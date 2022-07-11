@@ -12,7 +12,7 @@
     <main style="margin-bottom: 100px;">
         <?= $base ?>
     </main>
-    <?php include_once './views/front/partials/footer.php' ?>
+    <?php include_once './views/front/partials/footer.php';?>
 
     
 </body>

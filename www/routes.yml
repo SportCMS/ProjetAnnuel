@@ -33,6 +33,10 @@
   action: memberview
   role: [public]
 
+/test:
+  controller: adadadda
+  action: memberview
+  role: [public]
 # /register:
 #   controller: user
 #   action: register

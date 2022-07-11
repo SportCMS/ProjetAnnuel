@@ -72,6 +72,9 @@ class Article extends Sql
         $article_id = $_GET['slug'];
 
         $articleDatas = $articleManager->getOneBy(['slug' => $article_id]);
+        if(empty($articleDatas)){
+            abort(404);
+        }
         $article = $articleDatas[0];
 
         $like = count($likeManager->getUserLikeByArticle(1, $article_id)); // remplacer par l'id user id de session 
