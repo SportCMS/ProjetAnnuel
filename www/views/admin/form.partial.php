@@ -115,12 +115,20 @@
 
     <input type="submit" value="<?= $config["config"]["submit"] ?? "Envoyer" ?>">
 
-    <?php if($_SERVER['REQUEST_URI'] == '/inscription' || $_SERVER['REQUEST_URI'] == '/admin-inscription') :?>
+    <?php if($_SERVER['REQUEST_URI'] == '/inscription') :?>
         <p class="link">Déjà un compte ? <a href="/login">Connectez-vous !</a></p> 
+    <?php endif?>
+    <?php if($_SERVER['REQUEST_URI'] == '/admin-inscription') :?>
+        <p class="link">Déjà un compte ? <a href="/admin-login">Connectez-vous !</a></p> 
     <?php endif?>
 
     <?php if($_SERVER['REQUEST_URI'] == '/login') :?>
         <p class="link">Pas de compte ? <a href="/inscription">Inscrivez-vous !</a></p> 
     <?php endif?>
+    <?php if($_SERVER['REQUEST_URI'] == '/admin-login') :?>
+        <p class="link">Pas de compte ? <a href="/admin-inscription">Inscrivez-vous !</a></p> 
+    <?php endif?>
+
+
 
 </form>

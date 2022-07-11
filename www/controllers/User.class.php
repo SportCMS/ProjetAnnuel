@@ -55,16 +55,18 @@
                 }
 
                 //Si user, on redirige vers home
-                if ($_SESSION['role'] == 'user') {
-                    header("Location: /home");
-                }
-                //Tant que le statut != 2, on rediride vers installation
-                if ($_SESSION['role'] == 'admin' && $user->getStatus() == 1) {
-                    header("Location: /installation");
-                }
+                if(isset($_SESSION['role'])){
+                    if ($_SESSION['role'] == 'user') {
+                        header("Location: /home");
+                    }
+                    //Tant que le statut != 2, on rediride vers installation
+                    if ($_SESSION['role'] == 'admin' && $user->getStatus() == 1) {
+                        header("Location: /installation");
+                    }
 
-                if ($_SESSION['role'] == 'admin' && $user->getStatus() == 2) {
-                    header("Location: /dashboard");
+                    if ($_SESSION['role'] == 'admin' && $user->getStatus() == 2) {
+                        header("Location: /dashboard");
+                    }
                 }
 
             }
@@ -317,15 +319,6 @@
                 // quand tu arrive pour la premier fois pas de POST
                 Router::render('front/security/register.view.php', ["user" => $user]);
         }
-
-
-
-
-                           
-                
-
-
-    
 
         public function confirmaccount() {
             $user = new UserModel();

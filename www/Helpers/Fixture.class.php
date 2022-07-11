@@ -15,9 +15,14 @@ use App\models\User;
 
 class Fixture extends Sql
 {
+
+    /**
+    * créations des models pour le thème foot
+    */
     public function loadThemeTwentyFoot()
     {
         $theme = new ThemeModel();
+        // on vide la table
         $theme->truncate('theme');
         $theme->setDescription("Un thème blogging dédié au foot");
         $theme->setName('Twenty foot theme');
@@ -31,8 +36,11 @@ class Fixture extends Sql
         $theme->save();
 
         $categoryManager = new Categorie();
+         // on vide la table
         $categoryManager->truncate('categorie');
+        // on definit les catégories et l'image associée
         $categorieNames = ['Actus' => 'actus.jpg', 'Ligue 1' => 'ligue1.png', 'Ligue 2' => 'ligue2.jpg', 'Foot feminin' => 'footf.jpg', 'Champions league' => 'champion.jpg', 'PSG' => 'foot.jpg'];
+        // creation des categories
         foreach ($categorieNames as $key => $value) {
             $category = new Categorie();
             $category->setName($key);
@@ -41,34 +49,42 @@ class Fixture extends Sql
             $category->setSlug(Slugger::sluggify(strtolower($key)));
             $category->save();
 
+            // on crée un tableau 'params' avec les infos de la categorie
             $params['route'] = Slugger::sluggify($key);
             $params['role'] = 'public' ?? null;
             $params['model'] = 'categories' ?? null;
             $params['action'] = 'categoryPage';
+            
+            // on ecrit la route de la categorie dans le yaml
             $this->writeRoute($params);
         }
 
         $articleManager = new ArticleModel();
         $articleManager->truncate('article');
         $categories = $categoryManager->getAll();
-        $content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.";
+        $content = "CET ARTICLE EST UN MODÈLE D'EXEMPLE : Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.";
         $content = str_replace(',', '', $content);
         $content = str_replace('.', '', $content);
         $arrayContent =  explode(' ', $content);
 
+        // tableaux de donnée  de sizes
         $sizehigh = ['500', '580', '540', '600', '630', '900', '730', '760', '800', '820', '840'];
         $sizeWidth = ['980', '1200', '1400', '1500', '630', '700', '730', '760', '800', '820', '840'];
         for ($i = 0; $i < count($categories); $i++) {
-            for ($j = 0; $j < 10; $j++) {
+            for ($j = 0; $j < 2; $j++) {
                 $k = $i . $j;
+                // on genere des sizes aleatoires
                 $rand =  $sizehigh[rand(0, count($sizehigh) - 1)];
                 $rand2 =  $sizehigh[rand(0, count($sizeWidth) - 1)];
                 $title = $arrayContent[rand(0, count($arrayContent) - 1)] . ' ' . $arrayContent[rand(0, count($arrayContent) - 1)] . ' ' . $arrayContent[rand(0, count($arrayContent) - 1)];
+                // on crée l'article
                 $article = new ArticleModel();
                 $article->setCategoryId($categories[$i]['id']);
                 $article->settitle($title);
                 $article->setContent($content);
+                // appel à l'api d'image loremflickr avec les sizes en parametres de requete
                 $article->setImage("https://loremflickr.com/{$rand2}/{$rand}/soccer?random={$k}");
+                // on crée un slug grace au Helper Slugger
                 $article->setSlug(Slugger::sluggify($title));
                 $article->save();
             }
@@ -76,42 +92,6 @@ class Fixture extends Sql
 
         $userManager = new User();
         $userManager->truncate('user');
-        $usersArray = [
-            'john' => 'doe', 'jane' => 'doe', 'ela' => 'fitzerald', 'bob' => 'mercier', 'yvan' => 'dupont', 'peter' => 'scwalk', 'piotr' => 'weber',
-            'jacques' => 'Lousier', 'Pierre' => 'durand', 'olga' => 'zwetlik', 'mamadou' => 'mbala', 'eva' => 'garnier', 'cecile' => 'lamy', 'agathe' => 'domy',
-            'sylvie' => 'bellanger', 'samir' => 'el boustani', 'louis' => 'costas', 'elmut' => 'kholer', 'malik' => 'bensala', 'cerise' => 'dupont',
-            'denis' => 'grognier', 'nicolas' => 'dupont', 'ingrid' => 'marnier', 'estelle' => 'grosjean', 'patricia' => 'mernier', 'jean' => 'lebon', 'priscilla' => 'wallace'
-        ];
-
-        $user = new User();
-        $user->setFirstName('admin');
-        $user->setLastname('sportCMS');
-        $user->setEmail('admin@gmail.com');
-        $user->setStatus(1);
-        $user->setSite(1);
-        $user->setPassword(password_hash('1234', PASSWORD_BCRYPT));
-        $user->setRole('admin');
-        $user->save();
-
-        foreach ($usersArray as $key => $value) {
-            $user = new User();
-            $user->setFirstName(ucfirst(strtolower($key)));
-            $user->setLastname(ucfirst(strtolower($value)));
-            $user->setEmail(strtolower($key) . strtolower($value) . '@gmail.com');
-            $user->setStatus(1);
-            $user->setPassword(password_hash('1234', PASSWORD_BCRYPT));
-            $user->setRole('user');
-            $user->save();
-        }
-        $admin = new User();
-        $admin->setFirstName('sport');
-        $admin->setLastname('cms');
-        $admin->setEmail('sport.cms@gmail.com');
-        $admin->setStatus(1);
-        $user->setSite(1);
-        $admin->setPassword(password_hash('1234', PASSWORD_BCRYPT));
-        $admin->setRole('admin');
-        $admin->save();
 
         $articles = $articleManager->getAll();
         $users = $userManager->getAll();
@@ -124,10 +104,12 @@ class Fixture extends Sql
         $contentComment = str_replace('.', '', $contentComment);
         $explode = explode(' ', $contentComment);
 
+        // pour chaque article
         foreach ($articles as $article) {
             $rand = rand(2, 10);
             $rand2 = rand(1, 3);
 
+            // on crée un nombre de commentaire aleatoire
             for ($j = 0; $j < $rand; $j++) {
                 $comment = new CommentModel();
                 $comment->setParentId(null);
@@ -137,6 +119,7 @@ class Fixture extends Sql
                 $comment->setContent(substr($contentComment, rand(0, 50), rand(100, strlen($contentComment))));
                 $comment->save();
             }
+            // et un nombre de like aleatoire
             for ($k = 0; $k < $rand2; $k++) {
                 $like = new LikeModel();
                 $like->setUserId($users[rand(0, count($users) - 1)]['id']);
@@ -148,8 +131,10 @@ class Fixture extends Sql
         $comments = $commentManager->getAll();
         foreach ($comments as $comment) {
             $rand2 = rand(1, 3);
+            // pour chaque commentaire on crée un nombre de reponse aleatoire
             for ($j = 0; $j < $rand2; $j++) {
                 $reply = new CommentModel();
+                // setParent permet d'identifier le commentaire initial (le parent)
                 $reply->setParentId($comment['id']);
                 $reply->setAuthorId($users[rand(0, count($users) - 1)]['id']);
                 $reply->setArticleId($comment['article_id']);
@@ -159,6 +144,7 @@ class Fixture extends Sql
             }
         }
 
+        // liste des pages presentes dans ce theme
         $arrayPages = ['Home' => 'home', 'Articles' => 'articles', 'Presentation' => 'presentation', 'Contact' => 'contact', 'About' => 'about'];
         $itemManager = new MenuItemsModel();
         $pageManager = new PageModel();
@@ -166,6 +152,7 @@ class Fixture extends Sql
         $itemManager->truncate('menuitem');
 
         $position = 1;
+        // creation des pages
         foreach ($arrayPages as $key => $value) {
             $page = new PageModel();
             $page->setTitle($key);
@@ -174,9 +161,11 @@ class Fixture extends Sql
             $page->setThemeId(1);
             $page->save();
 
+            // creation des items du menu nav
             $item = new MenuItemsModel();
             $item->setLink('/' . $value);
             $item->setName($key);
+            // la position definit l'ordre d'affichage, updatable par admin
             $item->setPosition($position);
             $item->save();
 
@@ -184,6 +173,9 @@ class Fixture extends Sql
         }
     }
 
+    /**
+    * créations des models pour le thème tennis
+    */
     public function loadThemeTwentyOneSports()
     {
         $theme = new ThemeModel();
@@ -221,13 +213,13 @@ class Fixture extends Sql
         $articleManager = new ArticleModel();
         $articleManager->truncate('article');
         $categories = $categoryManager->getAll();
-        $content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.";
+        $content = "CET ARTICLE EST UN MODÈLE D'EXEMPLE : Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.";
         $content = str_replace(',', '', $content);
         $content = str_replace('.', '', $content);
         $arrayContent =  explode(' ', $content);
 
         for ($i = 0; $i < count($categories); $i++) {
-            for ($j = 0; $j < 10; $j++) {
+            for ($j = 0; $j < 2; $j++) {
                 $title = $arrayContent[rand(0, count($arrayContent) - 1)] . ' ' . $arrayContent[rand(0, count($arrayContent) - 1)] . ' ' . $arrayContent[rand(0, count($arrayContent) - 1)];
                 $article = new ArticleModel();
                 $article->setCategoryId($categories[$i]['id']);
@@ -241,32 +233,6 @@ class Fixture extends Sql
 
         $userManager = new User();
         $userManager->truncate('user');
-        $usersArray = [
-            'john' => 'doe', 'jane' => 'doe', 'ela' => 'fitzerald', 'bob' => 'mercier', 'yvan' => 'dupont', 'peter' => 'scwalk', 'piotr' => 'weber',
-            'jacques' => 'Lousier', 'Pierre' => 'durand', 'olga' => 'zwetlik', 'mamadou' => 'mbala', 'eva' => 'garnier', 'cecile' => 'lamy', 'agathe' => 'domy',
-            'sylvie' => 'bellanger', 'samir' => 'el boustani', 'louis' => 'costas', 'elmut' => 'kholer', 'malik' => 'bensala', 'cerise' => 'dupont',
-            'denis' => 'grognier', 'nicolas' => 'dupont', 'ingrid' => 'marnier', 'estelle' => 'grosjean', 'patricia' => 'mernier', 'jean' => 'lebon', 'priscilla' => 'wallace'
-        ];
-        foreach ($usersArray as $key => $value) {
-            $user = new User();
-            $user->setFirstName(ucfirst(strtolower($key)));
-            $user->setLastname(ucfirst(strtolower($value)));
-            $user->setEmail(strtolower($key) . strtolower($value) . '@gmail.com');
-            $user->setStatus(1);
-            $user->setPassword(password_hash('1234', PASSWORD_BCRYPT));
-            $user->setRole('user');
-            $user->save();
-        }
-        $admin = new User();
-        $admin->setFirstName('sport');
-        $admin->setLastname('cms');
-        $admin->setEmail('sport.cms@gmail.com');
-        $admin->setStatus(1);
-        $user->setSite(1);
-        $admin->setPassword(password_hash('1234', PASSWORD_BCRYPT));
-        $admin->setRole('admin');
-        $admin->save();
-
 
         $articles = $articleManager->getAll();
         $users = $userManager->getAll();

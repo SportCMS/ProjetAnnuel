@@ -15,4 +15,4 @@ use App\core\Router; ?>
 	<?php endforeach; ?>
 <?php endif; ?>	
 <?php $base = ob_get_clean(); ?>
-<?php require('./views/front/base/base.php'); ?>
+<?php require('./views/front/base/baseSecurity.php'); ?>
