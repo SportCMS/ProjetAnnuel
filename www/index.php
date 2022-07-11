@@ -20,6 +20,7 @@
 		if(file_exists($class)){
 			include $class;//On utilise include car plus rapide, et on a déjà vérifier son existance
 		}else{
+			echo "CLASS EXISTE PAS";
 			abort(500);
 		}
 	} 
@@ -28,6 +29,7 @@
 
 	//';
 	if(!file_exists($path = 'routes.yml')){
+		echo "FICHIER ROUTER EXISTE";
 		abort(500);
 	}
 	$routes = yaml_parse_file($path);
@@ -38,17 +40,14 @@
 	}
 
 	if(empty($routes[$uri]['controller'])){
-		ini_get('display_errors') == 1 ? die('404 not found : controller mal ecrit dans yml') : header('Location:/page-non-trouvee');
+		echo "CONTROLLER NON SPÉCIFIÉ";
+		abort(500);
 	}
 	if(empty($routes[$uri]['action'])){
-		ini_get('display_errors') == 1 ? die('404 not found : action mal ecrit dans yml') : header('Location:/page-non-trouvee');
+		echo "ACTION NON SPÉCIFIÉ";
+		abort(500);
 	}
 
-
-
-	if(!Security::checkRoute($uri)){
-		ini_get('display_errors') == 1 ? die('404 not found : La route n\'est pas trouvée') : header('Location:/page-non-trouvee');
-	}
 	$controller =  'App\\controllers\\' . ucfirst(strtolower($routes[$uri]['controller']));
 	$action = strtolower($routes[$uri]['action']);
 
@@ -67,7 +66,8 @@
 
 	$objectController = new $controller();
 	if(!method_exists($objectController, $action)){
-		ini_get('display_errors') == 1 ? die('404 not found controller') : header('Location:/page-non-trouvee');
+		echo "MÉTHODE N'EXISTE PAS";
+		abort(500);
 	}
 	$objectController->$action();
 ?>

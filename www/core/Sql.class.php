@@ -411,9 +411,9 @@ abstract class Sql extends Db
      * @param integer $article_id
      * @return array
      */
-    public function getUserLikeByArticle(int $user_id, int $article_id): array
+    public function getUserLikeByArticle(int $user_id, string $article_id): array
     {
-        $sql = "SELECT l.id as 'like' FROM {$this->prefix}likes as l
+        $sql = "SELECT l.id as 'like' FROM {$this->prefix}like as l
         JOIN {$this->prefix}user as u
         ON l.user_id = u.id
         JOIN {$this->prefix}article as a
