@@ -1,3 +1,4 @@
+/* Classe général pour les formulaires */
 .form_container {
     margin: auto;
     width: 50%;
@@ -79,4 +80,23 @@
 .form_builder button:hover {
     background-color: #395b89;
     transition: 0.5s;
+}
+
+/* Menu profil user */
+.card {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    width: 20%;
+    padding: 1rem;
+    
+}
+
+.card li {
+    margin-bottom: 10px;
+}
+
+.card__active a {
+    font-weight: 700;
+    border-bottom: 1px solid blueviolet;
 }

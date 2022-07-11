@@ -15,24 +15,26 @@ ob_start(); ?>
         <?php endif ?>
 
         <?php if (isset($block['formTitle'])) : ?>
-        <form action="" method="POST">
             <h1><?= $block['formTitle'] ?></h1>
+            <form class="form_builder" action="" method="POST">
             <?php endif ?>
 
             <?php $inputManager = new Input();
                 if ($inputs = $inputManager->getFormInputs($block['formId'])) ?>
             <?php foreach ($inputs as $input) : ?>
-            <div class="ligne">
                 <?php if ($input['type'] != 'submit') : ?>
-                <p class="encare">
-                    <label><?= $input['label'] ?></label>
-                </p>
+                    <div class="logo__input">
+                        <label><?= $input['label'] ?></label>
+                        
+                        <input class="form_input" type="<?= $input['type'] ?>" name="<?= $input['name'] ?>"
+                            placeholder="<?= $input['placeholder'] ?>" required>
+                    </div>
+                    <br>
                 <?php endif ?>
-                <br>
-                <input style="padding:6px 50px" type="<?= $input['type'] ?>" name="<?= $input['name'] ?>"
-                    placeholder="<?= $input['placeholder'] ?>" required>
-            </div>
-            <br>
+                <?php if ($input['type'] == 'submit') : ?>
+                    <input type="<?= $input['type'] ?>" name="<?= $input['name'] ?>"
+                                placeholder="<?= $input['placeholder'] ?>" required>
+                <?php endif ?>
             <?php endforeach ?>
 
             <?php if (isset($block['formTitle'])) : ?>

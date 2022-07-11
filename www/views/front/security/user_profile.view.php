@@ -1,10 +1,15 @@
 <?php ob_start();
 use App\core\Router; ?>
-<a class="active" href="/user-profile">Profil</a>
-<a class="" href="/user-profilePwd">Changer le mot de passe</a>
-<div class="form_container">
-	<h1> Votre profil </h1>
-	<?php  Router::includePartial("form", $user->getUserProfileForm(null)); ?>
+
+<div style="display:flex; align-items:flex-start;">
+	<ul class="card">
+		<li class="card__active"><a href="/user-profile">Profil</a></li>
+		<li><a href="/user-profilePwd">Changer le mot de passe</a></li>
+	</ul>
+	<div class="form_container">
+		<h1> Votre profil </h1>
+		<?php  Router::includePartial("form", $user->getUserProfileForm(null)); ?>
+	</div>
 </div>
 <?php if(isset($errors)) : ?>
 	<?php foreach ($errors as $error): ?>
