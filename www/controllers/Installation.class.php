@@ -115,7 +115,7 @@ class Installation extends Sql
      */
     private function writeDatabaseGlobals()
     {
-        $content = file_get_contents('conf2.inc.php');
+        $content = file_get_contents('conf.inc.php');
         $content = explode('define', $content);
 
         $arrayOutput = [];
@@ -149,7 +149,7 @@ class Installation extends Sql
             $content .= "\ndefine( {$new[0]}, {$new[1]} );";
         }
 
-        $content = file_put_contents('conf2.inc.php', $content);
+        $content = file_put_contents('conf.inc.php', $content);
     }
 
 
@@ -160,7 +160,7 @@ class Installation extends Sql
      */
     // private function writeDatabaseGlobals()
     // {
-    //     $content = file_get_contents('conf2.inc.php');
+    //     $content = file_get_contents('conf.inc.php');
     //     $content = explode('define', $content);
 
     //     echo "<pre>" . print_r($content) . "<pre>";
@@ -201,7 +201,7 @@ class Installation extends Sql
     //         $content .= "\ndefine( {$new[0]}, {$new[1]} );";
     //     }
 
-    //     $content = file_put_contents('conf2.inc.php', $content);
+    //     $content = file_put_contents('conf.inc.php', $content);
     // }
 
 }

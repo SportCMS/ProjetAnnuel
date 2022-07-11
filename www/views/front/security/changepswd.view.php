@@ -2,11 +2,11 @@
 use App\core\Router; ?>
 
 <?php if(!empty($errors)): ?>
-	<div class="">
-		<?php foreach($errors as $error): ?>
-			<p> <?=$error?> </p>
-		<?php endforeach ?>
-	</div>
+	<?php foreach ($errors as $error): ?>
+		<div class="alert">
+			<p class="errormsg"><ion-icon name="close-circle-outline"></ion-icon><?= $error ?></p>
+		</div>
+	<?php endforeach; ?>
 <?php endif ?>
 
 <div class="form_container">

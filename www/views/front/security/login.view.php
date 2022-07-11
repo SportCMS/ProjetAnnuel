@@ -1,12 +1,14 @@
 <?php ob_start();
 use App\core\Router; ?>
+
 <?php if(!empty($errors)): ?>
-	<div class="">
-		<?php foreach($errors as $error): ?>
-			<p> <?=$error?> </p>
-		<?php endforeach ?>
-	</div>
-<?php endif ?>
+	<?php foreach ($errors as $error): ?>
+		<div class="alert">
+			<p class="errormsg"><ion-icon name="close-circle-outline"></ion-icon><?= $error ?></p>
+		</div>
+	<?php endforeach; ?>
+<?php endif; ?>	
+
 <div class="form_container" style="margin-top:1rem; margin-bottom:100px">
 <img class="logo__icon" src="../public/assets/images/SportCMS.png" alt="logo SPORT-CMS">
 

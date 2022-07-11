@@ -701,3 +701,18 @@ footer .container ul li .bottom-title-cms {
     margin: 1rem auto;
     transition: 0.5s;
 }
+
+/********* MESSAGE SUCCESS et ERREUR *************/
+.alert {
+    border-radius: 3px 3px 3px 3px;
+}
+
+.errormsg {
+    color: #D8000C;
+    background-color: #FFBABA;
+}
+
+.successmsg {
+    color: #270;
+    background-color: #DFF2BF;
+  }

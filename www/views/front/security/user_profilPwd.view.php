@@ -12,11 +12,19 @@ use App\core\Router; ?>
 </div>
 <?php if(isset($errors)) : ?>
 	<?php foreach ($errors as $error): ?>
-
-		<p><?= $error ?></p>
-	
+		<div class="alert">
+			<p class="errormsg"><ion-icon name="close-circle-outline"></ion-icon><?= $error ?></p>
+		</div>
 	<?php endforeach; ?>
 <?php endif;
+
+if(isset($infos)) : ?>
+	<?php foreach ($infos as $info): ?>
+		<div class="alert">
+			<p class="successmsg"><ion-icon name="checkmark-circle-outline"></ion-icon><?= $info ?></p>
+		</div>
+	<?php endforeach; ?>
+<?php endif; 
 
 if ($user->getRole() == 'admin'){
     $content = ob_get_clean();

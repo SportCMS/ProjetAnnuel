@@ -256,7 +256,7 @@
                 
                 if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
                     $errors = [];
-                    $errors[] = "l'utilisateur exites déjà"; 
+                    $errors[] = "L'utilisateur existe déjà"; 
                     Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
                 }
 
@@ -386,9 +386,9 @@
                 //Vérification du nouveau password
                     $user->setPassword($password);
                     $user->save();
-                    $errors=[];
-                    $errors[] = "Votre mot de passe a été modifié";
-                    Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
+                    $infos=[];
+                    $infos[] = "Votre mot de passe a été modifié";
+                    Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "infos" => $infos]);
                     return;
                 
             }
@@ -406,8 +406,8 @@
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 //Sécurité sur le champs email
                 if(isset($_POST['email']) && $_POST['email'] != $user->getEmail()){
-                    $errors[]="Tentative de changement d'email !";
-                    return Router::render('front/security/user_profile.view.php', ["user" => $user, "infos" => $errors]);
+                    $errors[]="Une erreur est survenue, veuillez réessayer.";
+                    return Router::render('front/security/user_profile.view.php', ["user" => $user, "errors" => $errors]);
                 }
                 //Changement du prénom
                 if($_POST['firstname'] != $user->getFirstname()){

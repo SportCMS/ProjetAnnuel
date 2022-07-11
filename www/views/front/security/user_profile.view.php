@@ -11,19 +11,20 @@ use App\core\Router; ?>
 		<?php  Router::includePartial("form", $user->getUserProfileForm(null)); ?>
 	</div>
 </div>
+
 <?php if(isset($errors)) : ?>
 	<?php foreach ($errors as $error): ?>
-
-		<p><?= $error ?></p>
-	
+		<div class="alert">
+			<p class="errormsg"><ion-icon name="close-circle-outline"></ion-icon><?= $error ?></p>
+		</div>
 	<?php endforeach; ?>
 <?php endif; ?>	
 
 <?php if(isset($infos)) : ?>
 	<?php foreach ($infos as $info): ?>
-
-		<p><?= $info ?></p>
-	
+		<div class="alert">
+			<p class="successmsg"><ion-icon name="checkmark-circle-outline"></ion-icon><?= $info ?></p>
+		</div>
 	<?php endforeach; ?>
 <?php endif; 
 
