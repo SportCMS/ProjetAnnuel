@@ -19,3 +19,13 @@
         }
         die();
     }
+
+    /* FONCTION REDIRECT : REDIRIGE VERS LA BONNE ROUTE*/
+    function redirect($route, $val = []){
+        $session = new Session;
+        foreach($val as $key => $value){
+            $_SESSION[$key] = $value;
+        }
+        header("Location: " . $route);
+        die();
+    }
