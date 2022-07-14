@@ -11,7 +11,7 @@ use App\core\Router; ?>
 
 <div class="form_container">
     <h1>Change password</h1>
-    <?php Router::includePartial("form", $user->getChangePswdForm()) ?>
+    <?php Router::includePartial("form", $user->getChangePswdForm($token)) ?>
 </div>
 
 <?php if(isset($_SESSION['success'])) : ?>

@@ -100,6 +100,16 @@ abstract class Sql extends Db
         $this->pdo->prp($sql, $colums);
     }
 
+    public function deleteL(){
+        $colums = get_object_vars($this);
+        if(!is_null($colums["id"])){
+            $sql = "DELETE FROM " . $this->table . " WHERE id=:id";
+            $this->pdo->prp($sql, ["id" => $colums["id"]]);
+            return true;
+        }
+        return false;
+    }
+
     public function getOneBy($entrie)
     {
         $val = [];

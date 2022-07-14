@@ -243,10 +243,10 @@
         //         "submit"=>"Se déconnecter"
         //     ]];
         // }
-        public function getChangePswdForm(){
+        public function getChangePswdForm($token){
             return ["config"=>[
                 "method"=>"POST",
-                "action"=>"changePassword?token=" . $_GET["token"],
+                "action"=>"changePassword?token=" . $token,
                 "id"=>"formChangePswd",
                 "class"=>"form_builder",
                 "submit"=>"Changer de mot de passe"

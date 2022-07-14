@@ -79,6 +79,7 @@
         public static function checkPwd($pwd): bool
         {
             return strlen($pwd)>=8
+                && strlen($pwd)<=255
                 && preg_match("/[0-9]/",$pwd, $result )
                 && preg_match("/[A-Z]/",$pwd, $result );
         }
