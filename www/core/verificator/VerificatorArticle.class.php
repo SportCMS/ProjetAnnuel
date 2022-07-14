@@ -7,7 +7,7 @@
 		public static function validate($config, array $data): array
 		{
 			if( count($config["inputs"]) != count($_POST) && count($config["inputs"]) != count($_GET) ){
-                	die("Tentative de hack");
+				return ['Une erreur est survenue'];
             }
 		
 			$errors = [];

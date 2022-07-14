@@ -9,7 +9,7 @@
             $errors = [];
 
             if( count($config["inputs"]) != count($_POST) && count($config["inputs"]) != count($_GET) ){//J'ai changé la vérif des nombres de champs pour les methood get
-                die("Tentative de hack");
+                return ['Une erreur est survenue'];
             }
     
             foreach ($config["inputs"] as $name=>$input)
