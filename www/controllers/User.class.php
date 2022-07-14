@@ -259,7 +259,7 @@
         //     Router::render('front/security/register.view.php',["success" => "Un e-mail de confirmation vous a été envoyé pour valider votre compte !"]);
         // }
         
-        public function register (){
+        public function register(){
             $user = new UserModel();
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
@@ -328,8 +328,7 @@
                 $mail->message($mailBody);
                 
                 if (!$mail->send()) {
-                    // pas de die svp
-                    die("Vous rencontrer une erreur lors de l'envoie de mail");
+                    abort(500);
                 }
 
                 $_SESSION['success'] = "Un e-mail de confirmation vous a été envoyé pour valider votre compte !";
