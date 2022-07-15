@@ -532,7 +532,6 @@ class Admin extends Sql
      */
     public function searchUser()
     {
-        dd('ceci est un testss');
         if ($_POST['user'] == null) {
             // response d'erreur retourné au client
             echo json_encode(['status' => 'error', 'message' => 'probleme']);

@@ -137,44 +137,6 @@
             $_SESSION['success'] = "Vous allez recevoir un mail pour modifier votre mot de passe !";
             Router::render('front/security/forgetpswd.view.php',["user" => $user]);
         }
-        //envoie mail utilisateur ou redirection vers formulaire 
-        public function sendPswdRst(){
-            $user = new UserModel();
-            if(empty($_POST)){
-                return Router::render('front/security/forgetpswd.view.php',["user" => $user, "errors" => ["Une erreur est survenue"]]);
-            }
-            $result = Verificator::checkForm($user->getForgetPswdForm(), $_POST);
-            if(!empty($result)){
-                
-            }
-            $user = $user->getOneBy(["email" => $_POST['email']]);
-            if(empty($user)){
-                
-            }
-            $user = $user[0]; 
-            $pswdRst = new PswdRst();
-            $pswdRst->generateToken();
-            $pswdRst->generateTokenExpiry();
-            $pswdRst->setIdUser($user);
-            
-            $mail = new Mail();
-            $mail->sendTo($_POST['email']);
-            $mail->subject("Il est l'heure de changer de mot de passe");
-            $mail->message('<h1 style="color:blue">SPORTCMS</h1>
-            <p>
-                Nous avons bien reçus votre demande de changement de mot de passe.
-            </p>
-            <div>
-                Changez de mot de passe en cliquant <a href="http://127.0.0.1:81/changePassword?token=' . $pswdRst->getToken() . '">ici</a>
-            </div>');
-            if(!$mail->send()){
-                die("Vous rencontrer une erreur lors de l'envoie de mail");
-            }
-            
-            $pswdRst->save();
-            $_SESSION['success'] = "Vous allez recevoir un mail pour modifier votre mot de passe !";
-            Router::render('front/security/forgetpswd.view.php',["user" => $user]);
-        }
 
         //formulaire changement du mot de passeEmail envoyé
         public function changePswd(){
@@ -369,7 +331,7 @@
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                 $errors = VerificatorPwd::checkForm($user->getUserPwdForm(), $_POST);
-                if(count($errors) > 0){
+                if(!empty($errors)){
                     Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
                     return;
                 }
@@ -424,8 +386,10 @@
             
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 //Sécurité sur le champs email
-                if(isset($_POST['email']) && $_POST['email'] != $user->getEmail()){
-                    $errors[]="Une erreur est survenue, veuillez réessayer.";
+                $form = $user->getUserProfileForm();
+                unset($form['inputs']['email']);
+                $errors = Verificator::checkForm($form, $_POST);
+                if(!empty($errors)){
                     return Router::render('front/security/user_profile.view.php', ["user" => $user, "errors" => $errors]);
                 }
                 //Changement du prénom

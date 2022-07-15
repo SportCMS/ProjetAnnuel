@@ -58,7 +58,6 @@
                     $errors[]=$input["error"];
                 }
 
-               
             }
 
             return $errors;

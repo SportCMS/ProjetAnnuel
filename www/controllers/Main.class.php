@@ -15,7 +15,7 @@
             $userManager = new User();
     
             if (isset($_SESSION['email'])) {
-                $userDatas = $userManager->getOneBy(['email' => $_SESSION['email']]);
+                $userDatas = $userManager->getOneBy(['email' => 'johndoe@gmail.com']);
                 $user =  $userDatas[0] ?? null;
                 if ($user != null) {
                     $connexionManager->setUserId($user->getId());
