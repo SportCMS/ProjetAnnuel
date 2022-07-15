@@ -87,7 +87,8 @@
                         "required"=>true,
                         "error"=>"Email incorrect",
                         "unicity"=>true,
-                        "errorUnicity"=>"Un compte existe déjà avec cet email"
+                        "errorUnicity"=>"Un compte existe déjà avec cet email",
+                        "pattern"=>"[a-z0-9-.]+@[a-z0-9-.]+.[a-z]{2,3}"
                     ]
                 ]
             ];

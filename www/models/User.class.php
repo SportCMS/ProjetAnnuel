@@ -129,9 +129,10 @@
                         "type"=>"text",
                         "id"=>"firstnameRegister",
                         "class"=>"form_input",
-                        "min"=>2,
-                        "max"=>25,
+                        "minlength"=>2,
+                        "maxlength"=>25,
                         "error"=>" Votre prénom doit faire entre 2 et 25 caractères",
+                        "required"=>true,
                     ],
                     "lastname"=>[
                         "label"=>"Nom",
@@ -139,9 +140,10 @@
                         "type"=>"text",
                         "id"=>"lastnameRegister",
                         "class"=>"form_input",
-                        "min"=>2,
-                        "max"=>100,
+                        "minlength"=>2,
+                        "maxlength"=>100,
                         "error"=>" Votre nom doit faire entre 2 et 100 caractères",
+                        "required"=>true,
                     ],
                     "email"=>[
                         "label"=>"Email",
@@ -152,7 +154,8 @@
                         "required"=>true,
                         "error"=>"Email incorrect",
                         "unicity"=>true,
-                        "errorUnicity"=>"Un compte existe déjà avec cet email"
+                        "errorUnicity"=>"Un compte existe déjà avec cet email",
+                        "pattern"=>"[a-z0-9-.]+@[a-z0-9-.]+.[a-z]{2,3}"
                     ],
                     "password"=>[
                         "label"=>"Mot de passe",
@@ -161,7 +164,9 @@
                         "id"=>"pwdRegister",
                         "class"=>"form_input",
                         "required"=>true,
-                        "error"=>"Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre"
+                        "error"=>"Votre mot de passe doit faire au min 8 caratères avec une majuscule et un chiffre",
+                        "minlength"=>8,
+                        "pattern"=>"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                     ],
                     "passwordConfirm"=>[
                         "label"=>"Confirmation du mot de passe",
@@ -171,7 +176,9 @@
                         "class"=>"form_input",
                         "required"=>true,
                         "error"=>"Votre confirmation de mot de passe ne correspond pas",
-                        "confirm"=>"password"
+                        "confirm"=>"password",
+                        "minlength"=>8,
+                        "pattern"=>"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                     ]
                 ]
             ];
@@ -204,7 +211,9 @@
                         "class"=>"form_input",
                         "error"=>"Password incorrect",
                         "required"=>true,
-                        "error"=>"Email ou mot de passe incorrect"
+                        "error"=>"Email ou mot de passe incorrect",
+                        "minlength"=>8,
+                        "pattern"=>"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                     ]
                 ]
             ];
@@ -227,7 +236,8 @@
                         "required"=>true,
                         "error"=>"Email incorrect",
                         "unicity"=>true,
-                        "errorUnicity"=>"Un compte existe déjà avec cet email"
+                        "errorUnicity"=>"Un compte existe déjà avec cet email",
+                        "pattern"=>"[a-z0-9-.]+@[a-z0-9-.]+.[a-z]{2,3}"
                     ]
                 ]
             ];
@@ -258,7 +268,9 @@
                         "id"=>"changePswd",
                         "class"=>"form_input",
                         "required"=>true,
-                        "error"=>"mot de passe incorrect"
+                        "error"=>"mot de passe incorrect",
+                        "minlength"=>8,
+                        "pattern"=>"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                     ],
                     "confirmPassword"=>[
                         "placeholder"=>"Confirmez votre mot de pase ...",
@@ -266,7 +278,9 @@
                         "id"=>"changePswd",
                         "class"=>"form_input",
                         "required"=>true,
-                        "error"=>"Pas le meme mot de passe"
+                        "error"=>"Pas le meme mot de passe",
+                        "minlength"=>8,
+                        "pattern"=>"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                     ]
                 ]
             ];
@@ -290,6 +304,9 @@
                         "class" => "form_input",
                         "placeholder" => "Saisissez un prénom..",
                         "value" => $this->getFirstname() ?? "",
+                        "minlength"=>2,
+                        "maxlength"=>25,
+                        "required"=>true
                     ],
                     "lastname" => [
                         "type" => "text",
@@ -298,6 +315,9 @@
                         "class" => "form_input",
                         "placeholder" => "Saisissez un nom..",
                         "value" => $this->getLastname() ?? "",
+                        "minlength"=>2,
+                        "maxlength"=>100,
+                        "required"=>true
                     ],
                     "email" => [
                         "type" => "email",
@@ -308,7 +328,8 @@
                         "value" => $this->getEmail() ?? '',
                         "error" => "Votre email doit faire entre 8 et 320 caractères",
                         "required" => true,
-                        "disabled" => 'disabled'
+                        "disabled" => 'disabled',
+                        "pattern"=>"[a-z0-9-.]+@[a-z0-9-.]+.[a-z]{2,3}"
                     ],
                 ]
             ];
@@ -334,7 +355,8 @@
                         "class" => "form_input",
                         "placeholder" => "",
                         "error" => "L'ancien mot de passe est incorrecte",
-                        "required" => true
+                        "required" => true,
+                        "pattern"=>"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                     ],
                     "password" => [
                         "label" => "Votre nouveau mot de passe",
@@ -343,7 +365,8 @@
                         "class" => "form_input",
                         "placeholder" => "",
                         "error" => "Votre mot de passe doit faire au minimum 8 caractères et doit contenir minimum un chiffre et une majuscule",
-                        "required" => true
+                        "required" => true,
+                        "pattern"=>"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                     ],
                     "passwordConfirm" => [
                         "label" => "Confirmation",
@@ -353,7 +376,8 @@
                         "class" => "form_input",
                         "placeholder" => "",
                         "error" => "Votre mot de mot de passe de confirmation ne correspond pas",
-                        "required" => true
+                        "required" => true,
+                        "pattern"=>"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                     ],
                 ]
             ];

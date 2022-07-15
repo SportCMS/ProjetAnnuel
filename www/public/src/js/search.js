@@ -27,10 +27,10 @@ $(document).ready(function () {
 
                         let html = `
                     <tr>
-                    <td>${element.firstname}</td>
                     <td>${element.lastname}</td>
+                    <td>${element.firstname}</td>
                     <td>${element.email}</td>
-                    <td>${element.firstname == 1 ? 'actif' : 'inactif'}</td>
+                    <td>${element.status == 1 || element.status == 2 ? 'actif' : 'inactif'}</td>
                     <td>${element.created_at.substr(0, 10)}</td>
 
                     <td>

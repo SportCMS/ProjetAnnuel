@@ -24,7 +24,7 @@ use App\core\Router;
                     <td><?= $user["lastname"]; ?></td>
                     <td><?= $user["firstname"]; ?></td>
                     <td><?= $user["email"]; ?></td>
-                    <td><?= $user["status"] == 1 ? "actif" : "inactif" ?></td>
+                    <td><?= $user["status"] == 1 || $user["status"] == 2 ? "actif" : "inactif" ?></td>
                     <td><?= (new \datetime($user["updated_at"]))->format('d-m-Y'); ?></td>
 
                     <td>

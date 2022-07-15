@@ -93,8 +93,9 @@ class Report extends Sql
                     "id" => "emailReport",
                     "class" => "emailReport",
                     "placeholder" => "Entrer votre email",
-                    //"required" => "required",
+                    "required" => "required",
                     "error" => "Veuillez entrer un email valide",
+                    "pattern"=>"[a-z0-9-.]+@[a-z0-9-.]+.[a-z]{2,3}"
                 ],
 
                 "message" => [
@@ -103,9 +104,9 @@ class Report extends Sql
                     "id" => "messageReport",
                     "class" => "messageReport",
                     "placeholder" => "Votre message",
-                    // "required" => "required",
-                    "min" => "10",
-                    "max" => "3000",
+                    "required" => "required",
+                    "minlength" => "10",
+                    "maxlength" => "3000",
                     "error" => "Veuillez entrer un message",
                 ]
             ]

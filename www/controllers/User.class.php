@@ -378,6 +378,7 @@
 
         public function getUserProfile(){
             $user = new UserModel();
+            //Récupérer les infos du USER grâce à la session  
             if(isset($_SESSION['email'])){
                 $user = $user->getOneBy(['email' => $_SESSION['email']])[0];
             }else{
@@ -386,23 +387,23 @@
             
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 //Sécurité sur le champs email
-                $form = $user->getUserProfileForm();
-                unset($form['inputs']['email']);
-                $errors = Verificator::checkForm($form, $_POST);
-                if(!empty($errors)){
+                $form = $user->getUserProfileForm();    
+                unset($form['inputs']['email']);    //On supprime le champs email du formulaire
+                $errors = Verificator::checkForm($form, $_POST);    //On vérifie le formulaire    
+                if(!empty($errors)){ //Si il y a des erreurs
                     return Router::render('front/security/user_profile.view.php', ["user" => $user, "errors" => $errors]);
                 }
                 //Changement du prénom
-                if($_POST['firstname'] != $user->getFirstname()){
-                    $user->setFirstname(htmlspecialchars($_POST['firstname']));
-                    $user->save();
+                if($_POST['firstname'] != $user->getFirstname()){   //Si le prénom a changé
+                    $user->setFirstname(htmlspecialchars($_POST['firstname'])); 
+                    $user->save(); //On sauvegarde le changement
 
                     $infos[] = "Votre prénom a bien été modifié !";
                 }
                 //Changement du nom
-                if($_POST['lastname'] != $user->getLastname()){
+                if($_POST['lastname'] != $user->getLastname()){  //Si le nom a changé
                     $user->setLastname(htmlspecialchars($_POST['lastname']));
-                    $user->save();
+                    $user->save(); //On sauvegarde le changement
 
                     $infos[] = "Votre nom a bien été modifié !";
                 }
@@ -411,7 +412,7 @@
                 }
             }
             // quand tu arrive pour la premier fois pas de POST
-            Router::render('front/security/user_profile.view.php', ["user" => $user]);
+            Router::render('front/security/user_profile.view.php', ["user" => $user]);  
         }
 
         // /* Gestion des rôles */ 

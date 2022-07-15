@@ -532,14 +532,14 @@ class Admin extends Sql
      */
     public function searchUser()
     {
-        if ($_POST['user'] == null) {
+        if ($_POST['user'] == null) { 
             // response d'erreur retourné au client
             echo json_encode(['status' => 'error', 'message' => 'probleme']);
             return;
         }
         $userManager = new User();
         // search the query expression
-        $users = $userManager->searchUsers($_POST['user']);
+        $users = $userManager->searchUsers($_POST['user']); // on recupère les utilisateurs correspondants à la recherche
         // retourne une reponse json de succès
         echo json_encode(['status' => 'success', 'message' => 'success', 'res' => $users]);
     }

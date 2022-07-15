@@ -34,7 +34,7 @@
                 ?>
                 <div class="logo__input">
                     <label><?= $input["label"] ?? "" ?></label>
-                    <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?><?= !empty($input["disabled"]) ? 'disabled' : ""  ?>><br>
+                    <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?><?= !empty($input["disabled"]) ? 'disabled' : ""  ?> <?= !empty($input["pattern"]) ? 'pattern='.$input['pattern'] : ""  ?> <?= !empty($input["minlength"]) ? 'minlength='.$input['minlength'] : "" ?> <?= !empty($input["maxlength"]) ? 'maxlength='.$input['maxlength'] : ""  ?>><br>
                 </div>
                 <?php break; 
                 ?>
@@ -44,7 +44,7 @@
                  ?>
                 <div class="logo__input">
                 <label><?= $input["label"] ?? "" ?></label>
-                <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?>><br>
+                <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?><?= !empty($input["pattern"]) ? 'pattern='.$input['pattern'] : ""  ?> <?= !empty($input["minlength"]) ? 'minlength='.$input['minlength'] : "" ?> <?= !empty($input["maxlength"]) ? 'maxlength='.$input['maxlength'] : ""  ?>><br>
                 </div>
                 <?php break; 
                 ?>
@@ -57,7 +57,7 @@
                     * ********* SELECT ***************
                     **********************************/
                 -->
-                <select name="<?= $name ?>" id="<?= $input["id"] ?? "" ?>" class="<?= $input["class"] ?? "" ?>">
+                <select name="<?= $name ?>" id="<?= $input["id"] ?? "" ?>" class="<?= $input["class"] ?? "" ?>"<?= !empty($input["required"]) ? 'required="required"' : ""  ?>>
                     <option value="">Veuillez choisir</option>
                     <?php foreach ($input['value'] as $value) : ?>
                         <?php if ($input["selectedValue"] == $value[0]) : ?>
@@ -108,7 +108,7 @@
             default: ?>
                 <div class="logo__input">
                     <label><?= $input["label"] ?? "" ?></label>
-                    <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?><?= !empty($input["disabled"]) ? 'disabled' : ""  ?>><br>
+                    <input name="<?= $name ?>" class="<?= $input["class"] ?? "" ?>" id="<?= $input["id"] ?? "" ?>" placeholder="<?= $input["placeholder"] ?? "" ?>" type="<?= $input["type"] ?? "text" ?>" value="<?= $input["value"] ?? "" ?>" <?= !empty($input["required"]) ? 'required="required"' : ""  ?><?= !empty($input["disabled"]) ? 'disabled' : ""  ?><?= !empty($input["pattern"]) ? 'pattern='.$input['pattern'] : ""  ?><?= !empty($input["minlength"]) ? 'minlength='.$input['minlength'] : "" ?> <?= !empty($input["maxlength"]) ? 'maxlength='.$input['maxlength'] : ""  ?>><br>
                 </div>
         <?php endswitch; ?>
     <?php endforeach; ?>
@@ -116,17 +116,19 @@
     <input type="submit" value="<?= $config["config"]["submit"] ?? "Envoyer" ?>">
 
     <?php if($_SERVER['REQUEST_URI'] == '/inscription') :?>
-        <p class="link">Déjà un compte ? <a href="/login">Connectez-vous !</a></p> 
+        <p class="link">Déjà un compte ? <a href="/login">Connectez-vous !</a></p>
     <?php endif?>
     <?php if($_SERVER['REQUEST_URI'] == '/admin-inscription') :?>
         <p class="link">Déjà un compte ? <a href="/admin-login">Connectez-vous !</a></p> 
     <?php endif?>
 
     <?php if($_SERVER['REQUEST_URI'] == '/login') :?>
-        <p class="link">Pas de compte ? <a href="/inscription">Inscrivez-vous !</a></p> 
+        <p class="link">Pas de compte ? <a href="/inscription">Inscrivez-vous !</a></p>
+        <small class="link">Mot de passe oublié ? <a href="/forgetPassword">Cliquez ici !</a></small> 
     <?php endif?>
     <?php if($_SERVER['REQUEST_URI'] == '/admin-login') :?>
-        <p class="link">Pas de compte ? <a href="/admin-inscription">Inscrivez-vous !</a></p> 
+        <p class="link">Pas de compte ? <a href="/admin-inscription">Inscrivez-vous !</a></p>
+        <small class="link">Mot de passe oublié ? <a href="/forgetPassword">Cliquez ici !</a></small> 
     <?php endif?>
 
 

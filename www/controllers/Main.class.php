@@ -10,30 +10,30 @@
     class Main extends Sql {
         public function home()
         {
-            $ip = $_SERVER['REMOTE_ADDR'];
-            $connexionManager = new Connexion();
-            $userManager = new User();
+            $ip = $_SERVER['REMOTE_ADDR']; // Récupère l'adresse IP de l'utilisateur  
+            $connexionManager = new Connexion(); // Instancie un nouvel objet Connexion
+            $userManager = new User(); // Instancie un nouvel objet User  
     
-            if (isset($_SESSION['email'])) {
-                $userDatas = $userManager->getOneBy(['email' => 'johndoe@gmail.com']);
+            if (isset($_SESSION['email'])) {    // Si l'utilisateur est connecté
+                $userDatas = $userManager->getOneBy(['email' => $_SESSION['email']]); // get user datas from db
                 $user =  $userDatas[0] ?? null;
-                if ($user != null) {
+                if ($user != null) { // Si l'utilisateur existe dans la base de données
                     $connexionManager->setUserId($user->getId());
                 }
             }
     
-            $datas = $connexionManager->getOneBy(['ip' => $ip]);
-            $existingConnexion = $datas[0] ?? null;
-    
-            // on compte une meme connexion/ip par jour
+            $datas = $connexionManager->getBy(['ip' => $ip, 'user_id' => $user->getId()]); // get connexion datas from db
+            $existingConnexion = end($datas) ?? null; // On prend le dernier élément de la liste
+
+            // Si l'utilisateur a déjà fait une connexion aujourd'hui 
             if ($existingConnexion != null && (new \Datetime($existingConnexion->getDate()))->format('Y-m-d') == date('Y-m-d')) {
-                return Router::render('front/home/home.view.php');
+                return Router::render('front/home/home.view.php'); 
             }
-    
-            $connexionManager->setIp($ip);
+            //Sinon, on l'enregistre dans la base de données
+            $connexionManager->setIp($ip);  // On set l'adresse IP de l'utilisateur
             $connexionManager->save();
     
-            Router::render('front/home/home.view.php');
+            Router::render('front/home/home.view.php'); 
         }
 
         

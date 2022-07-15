@@ -146,8 +146,8 @@ class Article extends Sql
                     "class" => "content",
                     "placeholder" => "Contenu de l'article",
                     //"required" => "required",
-                    "min" => "10",
-                    "max" => "1000",
+                    "minlength" => "10",
+                    "maxlength" => "1000",
                     "error" => "Veuillez entrer un contenu",
                 ],
 
