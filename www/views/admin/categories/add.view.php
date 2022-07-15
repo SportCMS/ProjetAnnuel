@@ -1,5 +1,12 @@
 <?php ob_start(); ?>
 
+<?php if(!empty($errors)): ?>
+	<?php foreach ($errors as $error): ?>
+		<div class="alert">
+			<p class="errormsg"><ion-icon name="close-circle-outline"></ion-icon><?= $error ?></p>
+		</div>
+	<?php endforeach; ?>
+<?php endif; ?>	
 <div class="form_container">
 <h1>Créer une categorie</h1>
 <form class="form_builder" action="" method="post" enctype="multipart/form-data">
