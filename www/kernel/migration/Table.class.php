@@ -3,7 +3,7 @@
     
     class Table{
         private $table;
-        public $Type = ['VARCHAR', 'CHAR', 'DATETIME', 'TIME', 'INT', 'BOOLEAN', 'timestamp'];
+        public $Type = ['VARCHAR', 'CHAR', 'DATETIME', 'TIME', 'INT', 'BOOLEAN', 'timestamp', 'TEXT', 'TINYINT'];
 
         private function __construct($table){
             $this->table = $table;
