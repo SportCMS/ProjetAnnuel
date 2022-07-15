@@ -1,0 +1,6 @@
+<?php
+	require "conf.inc.php";
+
+	require 'autoloader/autoloader.php';
+
+	include 'kernel/kernel.php';
