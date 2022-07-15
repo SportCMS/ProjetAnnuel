@@ -12,7 +12,7 @@
                     die("\e[0;30;41mAttention ! la migration vers la base de donnée a été arrété car une erreur de type est présente sur la migration : " . $name  . "\e[0m\n");
                 }
                 $data = array_diff($column->getTable(), [null]);
-                $sql  .= implode($data, ' ') . ', ';
+                $sql  .= implode(' ', $data) . ', ';
             }
             $sql .= 'PRIMARY KEY(id))';
             return $sql;
