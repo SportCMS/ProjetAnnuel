@@ -70,7 +70,12 @@
                 }
 
             }
-            Router::render('front/security/login.view.php',["user" => $user]);
+            $errors = [];
+            if(isset($_SESSION['error'])){
+                $errors[] = $_SESSION['error'];
+                unset($_SESSION['error']);
+            }
+            Router::render('front/security/login.view.php',["user" => $user, 'errors' => $errors]);
         }
 
         public function logout()
@@ -95,30 +100,18 @@
         /******************************************************/
         //Formulaire email user
         public function forgetPswd(){
-            if(isset($test)){
-                echo $test;
-                die();
-            }
             $user = new UserModel();
-            Router::render('front/security/forgetpswd.view.php',["user" => $user]);
-        }
-        //envoie mail utilisateur ou redirection vers formulaire 
-        public function sendPswdRst(){
-            $user = new UserModel();
-            Router::render('front/security/forgetpswd.view.php',["user" => $user]);
             if(empty($_POST)){
-                Router::render('front/security/forgetpswd.view.php',["error" => "Aie un champ a disparue. =,("]);
-                die();
+                return Router::render('front/security/forgetpswd.view.php',["user" => $user]);
             }
             $result = Verificator::checkForm($user->getForgetPswdForm(), $_POST);
             if(!empty($result)){
-                Router::render('front/security/forgetpswd.view.php',["error" => "Aie ton email est mal écrit. =,("]);
-                die();
+                return Router::render('front/security/forgetpswd.view.php',["user" => $user, "errors" => ["Champ mal renseigné"]]);
             }
             $user = $user->getOneBy(["email" => $_POST['email']]);
             if(empty($user)){
-                Router::render('front/security/forgetpswd.view.php',["error" => "L'email n'existe pas. =,("]);
-                die();
+                $user = new UserModel();
+                return Router::render('front/security/forgetpswd.view.php',["user" => $user, "errors" => ["Email introuvable"]]);
             }
             $user = $user[0]; 
             $pswdRst = new PswdRst();
@@ -137,52 +130,42 @@
                 Changez de mot de passe en cliquant <a href="http://127.0.0.1:81/changePassword?token=' . $pswdRst->getToken() . '">ici</a>
             </div>');
             if(!$mail->send()){
-                die("Vous rencontrer une erreur lors de l'envoie de mail");
+                abort(500);
             }
             
             $pswdRst->save();
-            echo "Vous allez recevoir un mail pour modifier votre mail";
+            $_SESSION['success'] = "Vous allez recevoir un mail pour modifier votre mot de passe !";
+            Router::render('front/security/forgetpswd.view.php',["user" => $user]);
         }
 
         //formulaire changement du mot de passeEmail envoyé
         public function changePswd(){
-            $pswdRst = new PswdRst();
             $user = new UserModel();
-            if(empty($pswdRst->getOneBy(["token" => $_GET["token"]])[0])){
-                die('<p style="color:red;">Le token n\'existe pas</p>');
+            if(!isset($_GET["token"])){
+                return Router::render('front/security/changepswd.view.php',["user" => $user, "errors" => ["Une erreur est survenue"]]);
             }
-            $pswdRst = $pswdRst->getOneBy(["token" => $_GET["token"]])[0];
+            $token = $_GET["token"];
+            $pswdRst = new PswdRst();
+            if(empty($pswdRst->getOneBy(["token" => $token])[0])){
+                return Router::render('front/security/changepswd.view.php',["user" => $user, "token" => $token, "errors" => ["Une erreur est survenue"]]);
+            }
+            $pswdRst = $pswdRst->getOneBy(["token" => $token])[0];
             if($pswdRst->getTokenExpiry() < time()){
-                die('<p style="color:red;">Le token n\'est plus valide</p>');
-            }
-            $session = new Session();
-            $session->set("token", $pswdRst->getToken());
-            Router::render('front/security/changepswd.view.php',["user" => $user]);
-        }
-
-        
-
-        //confirm changement mot de passe
-        public function confirmChng(){
-            $user = new UserModel();
-            $pswdRst = new PswdRst();
-            $session = new Session();
-            $pswdRst = $pswdRst->getOneBy(["token" => $session->get('token')])[0];
-            if(empty($pswdRst) && $pswdRst->getTokenExpiry() < time()){
-                die("Le token n'existe pas ou est expiré");
+                return Router::render('front/security/changepswd.view.php',["user" => $user, "token" => $token, "errors" => ["Votre récupération de mot de passe a expiré"]]);
             }
             if(empty($_POST)){
-                die("Attention Vous n'avez pas remplie les champs");
+                return Router::render('front/security/changepswd.view.php',["user" => $user, "token" => $token]);
             }
-            $result = Verificator::checkForm($user->getChangePswdForm(), $_POST);
-
+            $result = Verificator::checkForm($user->getChangePswdForm($token), $_POST);
             if(!empty($result)){
-                die("HOO! des erreurs sont présentent dans le formulaire");
+                return Router::render('front/security/changepswd.view.php',["user" => $user, "token" => $token, "errors" => $result]);
             }
-            $user->setId($pswdRst->getIdUser());
+            $user = $user->setId($pswdRst->getIdUser());
             $user->setPassword($_POST['password']);
             $user->save();
-            echo "Mot de passe changé";
+            $_SESSION['success'] = "Votre mot de passe a bien été modifié !";
+            $pswdRst->deleteL();
+            Router::render('front/security/changepswd.view.php',["user" => $user, "token" => $token]);
         }
         
         /*****REGISTER*****/
@@ -238,14 +221,13 @@
         //     Router::render('front/security/register.view.php',["success" => "Un e-mail de confirmation vous a été envoyé pour valider votre compte !"]);
         // }
         
-        public function register (){
+        public function register(){
             $user = new UserModel();
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
                 
                 if(count($errors) > 0){
-                    Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
-                     
+                    return Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
                 }
                 
                 $firstname = htmlspecialchars($_POST['firstname']);
@@ -257,7 +239,7 @@
                 if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
                     $errors = [];
                     $errors[] = "L'utilisateur existe déjà"; 
-                    Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
+                    return Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
                 }
 
                 $password = htmlspecialchars($_POST['password']);
@@ -266,7 +248,7 @@
                 if ($password !== $passwordConfirm) {
                     $errors[] = "Les mots de passe doivent correspondre";
                     // *user permet de réafficher le formulaire
-                    Router::render('front/security/register.view.php', ["user" => $user, "errors" => $errors]);
+                    return Router::render('front/security/register.view.php', ["user" => $user, "errors" => $errors]);
                 }
 
                 $user->setFirstname($firstname);
@@ -308,8 +290,7 @@
                 $mail->message($mailBody);
                 
                 if (!$mail->send()) {
-                    // pas de die svp
-                    die("Vous rencontrer une erreur lors de l'envoie de mail");
+                    abort(500);
                 }
 
                 $_SESSION['success'] = "Un e-mail de confirmation vous a été envoyé pour valider votre compte !";
@@ -324,7 +305,7 @@
             $user = new UserModel();
             
             if(!isset($user->getOneBy(['token' => $_GET['token']])[0])){
-                die();
+                redirect("/login", ["error" => "Une erreur est survenue lors de la vérification de votre compte !"]);
             }
             $user = $user->getOneBy(['token' => $_GET['token']])[0];
 
@@ -350,7 +331,7 @@
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                 $errors = VerificatorPwd::checkForm($user->getUserPwdForm(), $_POST);
-                if(count($errors) > 0){
+                if(!empty($errors)){
                     Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
                     return;
                 }
@@ -405,8 +386,10 @@
             
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 //Sécurité sur le champs email
-                if(isset($_POST['email']) && $_POST['email'] != $user->getEmail()){
-                    $errors[]="Une erreur est survenue, veuillez réessayer.";
+                $form = $user->getUserProfileForm();
+                unset($form['inputs']['email']);
+                $errors = Verificator::checkForm($form, $_POST);
+                if(!empty($errors)){
                     return Router::render('front/security/user_profile.view.php', ["user" => $user, "errors" => $errors]);
                 }
                 //Changement du prénom

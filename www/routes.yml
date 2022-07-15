@@ -31,12 +31,8 @@
 /voir-les-utilisateurs:
   controller: admin
   action: memberview
-  role: [public]
+  role: [admin]
 
-/test:
-  controller: adadadda
-  action: memberview
-  role: [public]
 # /register:
 #   controller: user
 #   action: register

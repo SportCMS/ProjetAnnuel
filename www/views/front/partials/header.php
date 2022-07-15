@@ -24,11 +24,13 @@ use App\models\MenuItem;
             </ul>
         </nav>
         <?php if (isset($_SESSION['role'])) : ?>
+            <?php if ($_SESSION['role'] == 'public') : ?>
+                <a id="se_connecter" href="/login" class="button"  style="background-color: #2A4365;">Se connecter</a>
+            <?php else :?>    
                     <?= $_SESSION['role'] == 'user'
                         ? '<a id="logout" href="/logout" class="button" style="background-color: #2A4365;">Déconnexion</a>'
-                        : '<a id="logout" href="#" class="button" style="background-color: #2A4365;">Déconnexion</a>' ?>
-         <?php else : ?>
-            <a id="se_connecter" href="/login" class="button"  style="background-color: #2A4365;">Se connecter</a>
+                        : '<a id="logout" href="" class="button" style="background-color: #2A4365;">Déconnexion</a>' ?>
+            <?php endif ?>
         <?php endif ?>
     </div>
 </header>

@@ -5,8 +5,6 @@
         public function __construct(){
             if(session_status() === 1){
                 session_start();
-            }else{
-                echo "Session déjà initialisé";
             }
         }
         public function set($key, $value){//ajouter des données à la session
@@ -20,6 +18,9 @@
         }
         public function getAll(){//récupérer toutes les données d'une session 
             return $_SESSION;
+        }
+        public function unset($key){
+            unset($_SESSION[$key]);
         }
         public function clear(){//suppression de la session
             session_unset();

@@ -51,6 +51,12 @@ class Categorie extends Sql
             $target_file = $target_dir . basename($_FILES["image"]["name"]);
             $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
+
+            /* CORRECTIONs */
+            if(empty($_FILES['image']['name'])){
+                Router::render('admin/categories/add.view.php',['errors' => ['Vous devez mettre une image']]);
+            }
+            
             $check = getimagesize($_FILES["image"]["tmp_name"]);
             if ($check == false) {
                 $error = "l'upload de l'image à échoué";

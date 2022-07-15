@@ -9,7 +9,7 @@
             $errors = [];
 
             if( count($config["inputs"]) != count($_POST) && count($config["inputs"]) != count($_GET) ){//J'ai changé la vérif des nombres de champs pour les methood get
-                die("Tentative de hack");
+                return ['Une erreur est survenue'];
             }
     
             foreach ($config["inputs"] as $name=>$input)
@@ -22,6 +22,22 @@
                     $errors[]=$name ." ne peut pas être vide";
                 }
     
+                if($name == "firstname" && self::isHtml($data[$name])){
+                    $errors[] = 'Une erreur est survenue';
+                }
+
+                if($name == 'lastname' && self::isHtml($data[$name])){
+                    $errors[] = 'Une erreur est survenue';
+                }
+
+                if($name == "firstname" && !self::maxLen($data[$name])){
+                    $errors[] = 'Une erreur est survenue';
+                }
+
+                if($name == 'lastname' && !self::maxLen($data[$name])){
+                    $errors[] = 'Une erreur est survenue';
+                }
+
                 if($input["type"]=="email" &&  !self::checkEmail($data[$name])) {
                     $errors[]=$input["error"];
                 }
@@ -42,10 +58,8 @@
                     $errors[]=$input["error"];
                 }
 
-               
             }
-    
-    
+
             return $errors;
         }
         
@@ -69,7 +83,9 @@
             return $in;
         }
 
-        
+        public static function isHtml($str){
+            return preg_match("/<[^<]+>/",$str) != 0;
+        }
     
         public static function checkEmail($email): bool
         {
@@ -79,7 +95,13 @@
         public static function checkPwd($pwd): bool
         {
             return strlen($pwd)>=8
+                && strlen($pwd)<=255
                 && preg_match("/[0-9]/",$pwd, $result )
                 && preg_match("/[A-Z]/",$pwd, $result );
+        }
+
+        public static function maxLen($str){
+            return strlen($str)>=3
+            && strlen($str)<=255;
         }
     }

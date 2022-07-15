@@ -27,7 +27,6 @@
 
 	spl_autoload_register('App\myAutoloader');
 
-	//';
 	if(!file_exists($path = 'routes.yml')){
 		echo "FICHIER ROUTER EXISTE";
 		abort(500);
@@ -57,6 +56,10 @@
 
 	//ajout role - routes.yaml - control des roles via index.php
 	$role = $routes[$uri]['role'];
+
+	if(!isset($_SESSION['role'])){
+		$_SESSION['role'] = 'public';
+	}
 
 	if(isset($_SESSION['role'])){
 		if(!in_array($_SESSION['role'], $role) && !in_array('public',$role)){

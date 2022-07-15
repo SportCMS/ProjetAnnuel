@@ -10,7 +10,7 @@
 
 
             if( count($config["inputs"]) != count($_POST) && count($config["inputs"]) != count($_GET) ){//J'ai changé la vérif des nombres de champs pour les methood get
-                die("Tentative de hack");
+                return ['Une erreur est survenue'];
             }
 
             
@@ -74,6 +74,7 @@
         public static function checkPwd($pwd): bool
         {
             return strlen($pwd)>=8
+                && strlen($pwd)<=255
                 && preg_match("/[0-9]/",$pwd, $result )
                 && preg_match("/[A-Z]/",$pwd, $result );
         }

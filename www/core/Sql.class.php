@@ -70,7 +70,7 @@ abstract class Sql extends Db
         $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}report` (`id` int(11) NOT NULL AUTO_INCREMENT,`comment_id` int(11) NOT NULL,`message` text NOT NULL,`email` varchar(255) NOT NULL,`has_read` tinyint(1) NOT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}text` (`id` int(11) NOT NULL AUTO_INCREMENT,`block_id` int(11) NOT NULL,`content` text NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}theme` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) NOT NULL,`description` text NOT NULL,`domain` varchar(255) NOT NULL,`image` varchar(255) NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}user` ( `id` int(11) NOT NULL AUTO_INCREMENT,`firstname` varchar(255) DEFAULT NULL,`lastname` varchar(255) DEFAULT NULL,`email` varchar(255) NOT NULL,`status` int(11) NOT NULL,`password` varchar(255) NOT NULL,`role` varchar(255) DEFAULT NULL, `token` varchar(255) DEFAULT NULL,`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` datetime DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $sql .= "CREATE TABLE `{$_SESSION['temp_prefix']}user` ( `id` int(11) NOT NULL AUTO_INCREMENT,`firstname` varchar(255) DEFAULT NULL,`lastname` varchar(255) DEFAULT NULL,`email` varchar(255) NOT NULL,`status` int(11) NOT NULL,`password` varchar(255) NOT NULL,`role` varchar(255) DEFAULT NULL, `token` varchar(255) DEFAULT NULL, `site` int DEFAULT NULL, `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` datetime DEFAULT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $queryPrp = $this->pdo->prp($sql);
     }
 
@@ -98,6 +98,16 @@ abstract class Sql extends Db
             $sql = "UPDATE " . $this->table . " SET " . implode(',', $update) . " WHERE id=:id";
         }
         $this->pdo->prp($sql, $colums);
+    }
+
+    public function deleteL(){
+        $colums = get_object_vars($this);
+        if(!is_null($colums["id"])){
+            $sql = "DELETE FROM " . $this->table . " WHERE id=:id";
+            $this->pdo->prp($sql, ["id" => $colums["id"]]);
+            return true;
+        }
+        return false;
     }
 
     public function getOneBy($entrie)

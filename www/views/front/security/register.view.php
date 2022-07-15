@@ -19,6 +19,7 @@ use App\core\Router; ?>
 		<div class="alert">
 			<p class="successmsg"><ion-icon name="checkmark-circle-outline"></ion-icon><?= $_SESSION['success'] ?></p>
 		</div>
+		<?php unset($_SESSION['success']);?>
 <?php endif; ?>
 
 <?php $base = ob_get_clean(); ?>
