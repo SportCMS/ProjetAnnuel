@@ -341,7 +341,7 @@
                 $password = htmlspecialchars($_POST['password']);
                 $passwordConfirm = htmlspecialchars($_POST['passwordConfirm']);
                 $oldPassword = htmlspecialchars($_POST['oldPassword']);
-                if(!password_verify($oldPassword, $user->getPassword()) && $status == 1){
+                if(!password_verify($oldPassword, $user->getPassword()) ){
                     $errors=[];
                     $errors[] = "Ancien mot de passe n'est pas bon";
                     Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
