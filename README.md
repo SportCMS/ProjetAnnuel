@@ -42,8 +42,6 @@ Liste des versions : [Cliquer pour afficher](https://github.com/SportCMS/ProjetA
 * **Simon Farnault** _alias_ [@SimonBTSSio](https://github.com/SimonBTSSio)
 * **Morade Chemlal** _alias_ [@mchemlal](https://github.com/mchemlal)
 * **Antoine Chaberneaud** _alias_ [@senex127](https://github.com/senex127)
-* **Ayman Bedda** _alias_ [@Ayman-BEDDA ](https://github.com/Ayman-BEDDA)
+* **Ayman Bedda** _alias_ [@Ayman-BEDDA](https://github.com/Ayman-BEDDA)
+* **Muthulan Mohanadas** _alias_ [@muthuxv] (https://github.com/muthuxv)
 
-## License
-
-SportCMS est sous licence ``en attente`` - voir le fichier [LICENSE.md](LICENSE.md) pour plus d'informations
