@@ -47,24 +47,24 @@
 <script type="text/javascript" src="https://code.jquery.com/ui/1.13.0/jquery-ui.js" integrity="sha256-xH4q8N0pEzrZMaRmd7gQVcTZiFei+HfRTBPJ1OGXC0k=" crossorigin="anonymous"></script>
 
 <script>
-    $(".droppable").sortable({
-        connectWith: ".connected-sortable",
+    $(".droppable").sortable({ // drag and drop
+        connectWith: ".connected-sortable", 
         stack: '.connected-sortable li',
-        stop: function(e, ui) {
-            let list = $.map($(this).find('li'), function(el) {
+        stop: function(e, ui) { // when drag and drop stop
+            let list = $.map($(this).find('li'), function(el) { // get all li
                 return [{
-                    'id_block': el.id,
-                    'position': $(el).index() - 1
+                    'id_block': el.id, // get id of li
+                    'position': $(el).index() - 1 // get position of li
                 }]
 
-                var ids = $('.droppable li').map(function(i) {
-                    return this.id;
+                var ids = $('.droppable li').map(function(i) { 
+                    return this.id; // get id of li
                 }).get();
             });
 
             console.log(list)
 
-            let chain = "";
+            let chain = ""; 
             for (item of list) {
                 chain += `&${item.id_block}=${item.position}`
             }

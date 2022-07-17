@@ -22,7 +22,7 @@ class Contact extends Sql
             $contact->setMessage($message);
             $contact->setEmail($_SESSION['email'] ?? 'test@gmail.com');
             $contact->save();
-            $alert = array('success', 'Message envoyÃ©');
+            $alert = array('success', 'Message envoyé');
 
             Router::render('front/contact/index.view.php', ['alert' => $alert]);
         }

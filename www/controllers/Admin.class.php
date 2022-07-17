@@ -187,7 +187,7 @@ class Admin extends Sql
         $position = $positionBlocks + 1;
 
         if ($page == null) {
-            // si la page n'existe pas , redirection index
+            // si la page n'existe pas, redirection index
             header('Location: /gerer-mes-pages');
         }
 

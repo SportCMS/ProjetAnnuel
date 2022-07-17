@@ -12,20 +12,20 @@ class Like extends Sql
 {
     public function createLike()
     {
-        if (empty($_POST['action']) || empty($_POST['article'])) {
-            echo json_encode(['response' => ['error' => 'Missing informations', 'status' => 400]]);
+        if (empty($_POST['action']) || empty($_POST['article'])) { 
+            echo json_encode(['response' => ['error' => 'Missing informations', 'status' => 400]]); 
         }
 
         $like = new LikeModel();
         // remplacer par l'id de SESSION user !!!!!
         try {
-            $like->toggleLikes(1, $_POST['article']);
+            $like->toggleLikes(1, $_POST['article']); 
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
 
         $manager = new LikeModel();
-        $total_likes = $manager->countAllLikesByArticle($_POST['article']);
+        $total_likes = $manager->countAllLikesByArticle($_POST['article']); 
         echo json_encode([
             'count_likes' => $total_likes['likes']
         ]);

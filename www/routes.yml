@@ -31,7 +31,7 @@
 /voir-les-utilisateurs:
   controller: admin
   action: memberview
-  role: [admin]
+  role: [public]
 
 # /register:
 #   controller: user
@@ -257,7 +257,7 @@
 /editPage:
   controller: admin
   action: editPage
-  role: [admin]
+  role: [public]
 
 /deletePage:
   controller: admin
@@ -267,17 +267,17 @@
 /createTextBlock:
   controller: admin
   action: createTextBlock
-  role: [admin]
+  role: [public]
 
 /createFormInput:
   controller: admin
   action: createFormInput
-  role: [admin]
+  role: [public]
 
 /removeBlock:
   controller: admin
   action: removeBlock
-  role: [admin] 
+  role: [public] 
 
 ###### pages ########
 
@@ -358,12 +358,12 @@
 /installation:
   controller: installation
   action: completeRegistration
-  role: [admin]
+  role: [public]
 
 /loading:
   controller: installation
   action: loading
-  role: [admin]
+  role: [public]
 
 
 /sitemap:
@@ -376,4 +376,14 @@
 /nouvelle-page:
   controller: presentation
   action: indexPresentation
+  role: [public]
+
+/test:
+  controller: new
+  action: indexNew
+  role: [public]
+
+/test2:
+  controller: contact
+  action: indexContact
   role: [public]

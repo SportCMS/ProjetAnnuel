@@ -224,9 +224,9 @@
         public function register(){
             $user = new UserModel();
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
+                $errors = Verificator::checkForm($user->getRegisterForm(), $_POST); //on vérifie le formulaire
                 
-                if(count($errors) > 0){
+                if(count($errors) > 0){ //si il y a des erreurs on renvoie sur la vue avec les erreurs
                     return Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
                 }
                 
@@ -236,7 +236,7 @@
                 
                 
                 
-                if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
+                if(isset($user->getOneBy(['email' => $_POST['email']])[0])){ //si l'email est déjà utilisé on renvoie sur la vue avec une erreur
                     $errors = [];
                     $errors[] = "L'utilisateur existe déjà"; 
                     return Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
@@ -270,8 +270,7 @@
                         Cordialement,<br> <a href=''>L'Equipe de SportCMS</a>";
                 }
 
-                // if admin register assign admin role and create admin email template
-                if ($_SERVER['REQUEST_URI'] == '/admin-inscription') {
+                if ($_SERVER['REQUEST_URI'] == '/admin-inscription') { // si l'utilisateur est admin, on lui assigne le role admin
                 
                 $user->setRole('admin');
                 
@@ -283,8 +282,7 @@
                         Cordialement,<br> <a href=''>L'Equipe de SportCMS</a>";
                 }
 
-                // send email
-                $mail = new Mail();
+                $mail = new Mail(); 
                 $mail->sendTo($_POST['email']);
                 $mail->subject("Confirmation inscription SportCMS");
                 $mail->message($mailBody);
@@ -304,12 +302,12 @@
         public function confirmaccount() {
             $user = new UserModel();
             
-            if(!isset($user->getOneBy(['token' => $_GET['token']])[0])){
+            if(!isset($user->getOneBy(['token' => $_GET['token']])[0])){ //si le token n'existe pas on renvoie sur la vue avec une erreur
                 redirect("/login", ["error" => "Une erreur est survenue lors de la vérification de votre compte !"]);
             }
-            $user = $user->getOneBy(['token' => $_GET['token']])[0];
+            $user = $user->getOneBy(['token' => $_GET['token']])[0]; //on récupère l'utilisateur grâce au token
 
-            if($user->getStatus() == 0){
+            if($user->getStatus() == 0){ //si l'utilisateur n'est pas validé on le valide
                 $user->setStatus(1);
                 $user->save();
             }
