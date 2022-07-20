@@ -7,10 +7,15 @@ use App\core\Sql;
 use App\models\Connexion;
 use App\models\User;
 
+use App\querys\QueryUser;
+
 class Landing
 {
     public function landingPage()
     {
+        $qu = new QueryUser();
+        dd($qu->searchUsers("test"));
+
         if (isset($_SESSION["role"]) && $_SESSION['role'] == 'user'){
             header('Location: /home');
         }

@@ -13,7 +13,8 @@
 
         public function __construct($class){
             $this->pdo = Db::connect();
-            $this->table = "bg_" . strtolower($class);
+            $table = explode("\\", $class);
+            $this->table = DBPREFIXE . strtolower(end($table));
             $this->class = $class; 
         }
 
@@ -42,7 +43,7 @@
         /********************/
         public function where(string $column, string $value, string $operator = "="): QueryBuilder
         {
-            $this->query->where[] = $column . $operator . "'" . $value . "'";
+            $this->query->where[] = $column . " " . $operator . " " . "'" . $value . "'";
             return $this;
         }
 
@@ -51,7 +52,7 @@
         /********************/
         public function orwhere(string $column, string $value, string $operator = "="): QueryBuilder
         {
-            $this->query->orwhere[] = " OR " . $column . $operator . $value;
+            $this->query->orwhere[] = " OR " . $column . " " . $operator . " " . "'" . $value . "'";
             return $this;
         }
 
@@ -119,7 +120,7 @@
         /** RESULT **/
         public function getResult(){
             $stmt = $this->pdo->prp($this->query->sql);
-            return $stmt->fetchAll();
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 
         public function getObject(){

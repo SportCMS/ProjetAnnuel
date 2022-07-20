@@ -18,6 +18,9 @@ use App\models\Report;
 use App\models\Article;
 use App\models\MenuItem;
 
+//Query builder
+use App\querys\QueryUser;
+
 class Admin extends Sql
 {
     # dashboard main page
@@ -537,9 +540,10 @@ class Admin extends Sql
             echo json_encode(['status' => 'error', 'message' => 'probleme']);
             return;
         }
-        $userManager = new User();
+        $qu = new QueryUser();
+        //$userManager = new User();
         // search the query expression
-        $users = $userManager->searchUsers($_POST['user']); // on recupère les utilisateurs correspondants à la recherche
+        $users = $qu->searchUsers($_POST['user']); // on recupère les utilisateurs correspondants à la recherche
         // retourne une reponse json de succès
         echo json_encode(['status' => 'success', 'message' => 'success', 'res' => $users]);
     }
