@@ -7,14 +7,14 @@ use App\core\Sql;
 use App\models\Connexion;
 use App\models\User;
 
-use App\querys\QueryUser;
+use App\querys\QueryLike;
 
 class Landing
 {
     public function landingPage()
     {
-        $qu = new QueryUser();
-        dd($qu->searchUsers("test"));
+        $ql = new QueryLike();
+        dd($ql->countAllLikesByArticle(1));
 
         if (isset($_SESSION["role"]) && $_SESSION['role'] == 'user'){
             header('Location: /home');

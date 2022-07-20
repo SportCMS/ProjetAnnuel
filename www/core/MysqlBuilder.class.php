@@ -57,11 +57,20 @@
         }
 
         /********************/
+        /********JOIN********/
+        /********************/
+        public function join(string $table, string $fk, string $pk): QueryBuilder 
+        {
+            $this->query->join[] = " JOIN " . DBPREFIXE . $table . " ON " . $this->table . '.' . $pk . " = " . DBPREFIXE . $table . '.' . $fk;
+            return $this;
+        }
+
+        /********************/
         /*****RIGHT JOIN*****/
         /********************/
         public function rightJoin(string $table, string $fk, string $pk): QueryBuilder 
         {
-            $this->query->join[] = " RIGHT JOIN " . $table . " ON " . $pk . " = " . $fk;
+            $this->query->join[] = " RIGHT JOIN " . $table . " ON " . $this->table . '.' . $pk . " = " . $table . '.' . $fk;
             return $this;
         }
 
@@ -119,6 +128,11 @@
         }
         /** RESULT **/
         public function getResult(){
+            $stmt = $this->pdo->prp($this->query->sql);
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        }
+
+        public function getAllResult(){
             $stmt = $this->pdo->prp($this->query->sql);
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }

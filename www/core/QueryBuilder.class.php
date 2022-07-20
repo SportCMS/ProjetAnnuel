@@ -12,6 +12,8 @@
 
         public function orderBy(string $column, string $scale = ""): QueryBuilder;
 
+        public function join(string $table, string $fk, string $pk): QueryBuilder;
+
         public function rightJoin(string $table, string $fk, string $pk): QueryBuilder;
         
         public function limit(int $from, int $offset): QueryBuilder;
@@ -19,6 +21,8 @@
         public function getQuery(): QueryBuilder;
 
         public function getResult();
+
+        public function getAllResult();
 
         public function getObject();
     }

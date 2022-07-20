@@ -27,7 +27,7 @@ class Admin extends Sql
     public function dashboard(): void
     {
 
-        
+        $qu = new QueryUser();
         
         $reportManager = new Report();
         // recuperer les signalements
@@ -36,11 +36,11 @@ class Admin extends Sql
         $userManager = new User();
         $users = $userManager->getAll();
         // inscriptions du mois
-        $monthUsers = $userManager->countMonthUsers();
+        $monthUsers = $qu->countMonthUsers();
         //inscriptions cette semaine
-        $countWeekUsers = $userManager->countWeekUsers();
+        $countWeekUsers = $qu->countWeekUsers();
         // inscriptions aujourd'hui
-        $todayUsers = $userManager->countTodayUsers();
+        $todayUsers = $qu->countTodayUsers();
 
         $contact = new Contact();
         $contacts = $contact->getAll();
@@ -78,7 +78,7 @@ class Admin extends Sql
         ];
 
         // derniers inscrits
-        $lastUsers = $userManager->getLastInscriptions();
+        $lastUsers = $qu->getLastInscriptions();
 
         Router::render('admin/home.view.php', [
             'userStat' => count($users),

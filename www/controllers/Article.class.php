@@ -14,6 +14,9 @@ use App\core\Sql;
 
 use App\helpers\Slugger;
 
+// Query builder \\
+use App\querys\QueryLike;
+
 class Article extends Sql
 {
 	public function indexArticle()
@@ -77,8 +80,9 @@ class Article extends Sql
         }
         $article = $articleDatas[0];
 
+        $ql = new QueryLike();
         $like = count($likeManager->getUserLikeByArticle(1, $article_id)); // remplacer par l'id user id de session 
-        $total_likes = $likeManager->countAllLikesByArticle($article->getId());
+        $total_likes = $ql->countAllLikesByArticle($article->getId());
 
         $categoryDatas = $category->getOneBy(['id' => $article->getCategoryId()]);
         $category = $categoryDatas[0];
