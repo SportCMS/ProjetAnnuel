@@ -10,6 +10,9 @@ use App\core\verificator\VerificatorReport;
 use App\core\Sql;
 use App\core\Router;
 
+// observer
+use App\core\ReportNotification;
+
 class Comment extends Sql
 {
 	public function commentCreate()
@@ -86,19 +89,19 @@ class Comment extends Sql
 		]);
 	}
 
-	public function reportComment()
+	public function reportComment() 
     {
         $reportManager = new ReportModel();
         $commentManager = new CommentModel();
         $userManager = new UserModel();
 
-        $commentDatas = $commentManager->getOneBy(['id' => $_GET['id']]);
+        $commentDatas = $commentManager->getOneBy(['id' => $_GET['id']]); // récupère le commentaire en question
         $comment = $commentDatas[0];
-        $userDatas = $userManager->getOneBy(['id' => $comment->getAuthorId()]);
+        $userDatas = $userManager->getOneBy(['id' => $comment->getAuthorId()]); // récupère l'utilisateur qui a posté le commentaire
         $user = $userDatas[0];
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $email = htmlspecialchars($_POST['email']);
+            $email = htmlspecialchars($_POST['email']); 
             $message = htmlspecialchars($_POST['message']);
 
             $result = VerificatorReport::validate($reportManager->getReportForm(), $_POST);
@@ -113,6 +116,13 @@ class Comment extends Sql
                 return;
             }
 
+			$users = new UserModel();
+			$users = $users->getAllAdmin();
+
+			$reportNotify = new ReportNotification();
+
+
+			$comment = "Un report viens d'etre fait avec le message " . $message;
             $report = new ReportModel();
             $report->setCommentId($_GET['id']);
             $report->setEmail($email);
@@ -120,6 +130,10 @@ class Comment extends Sql
 	    	$report->setHasRead(0);
             $report->setCreatedAt((new \Datetime('now'))->format('Y-m-d H:i:s'));
             $report->save();
+
+			foreach($users as $user){
+				$user->update($reportNotify, $comment);
+			}
 
             header('Location:/articles');
         }
@@ -134,9 +148,9 @@ class Comment extends Sql
     public function getReports()
     {
         $reportManager = new ReportModel();
-        $reports = $reportManager->getBy(['has_read' => 0]);
+        $reports = $reportManager->getBy(['has_read' => 0]); // récupère tous les reports non lus
 
-        $_SESSION['report'] = 0;
+        $_SESSION['report'] = 0; 
 
         foreach ($reports as $report) {
             $report->setHasRead(1);

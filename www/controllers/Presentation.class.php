@@ -26,7 +26,7 @@ class Presentation extends Sql
         $inputManager = new Input();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            foreach ($blocks as $block) {
+            foreach ($blocks as $block) { 
                 if (isset($block['formTitle']) && $block['formTitle'] == 'newsletter') {
                     $inputs = $inputManager->getFormInputs($block['formId']);
                     $newsLetter = new Newsletter();
@@ -34,7 +34,7 @@ class Presentation extends Sql
                         if ($input['type'] == 'submit') {
                             continue;
                         }
-                        if (empty($_POST[$input['name']])) {
+                        if (empty($_POST[$input['name']])) { 
                             $alert = 'Veuillez renseigner un email';
                             return Router::render('front/presentation/index.view.php', ['blocks' => $blocks, 'alert' => $alert]);
                         }

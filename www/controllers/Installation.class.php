@@ -35,9 +35,7 @@ class Installation extends Sql
             $domain = $_POST['domain'] ?? null;
             $theme = $_POST['chooseTheme'] ?? null;
 
-            if (
-                $databaseName == null || $tablePrefix == null || $domain == null || $theme == null
-            ) {
+            if ($databaseName == null || $tablePrefix == null || $domain == null || $theme == null) {
                 $alert = ["error", "Veuillez remplir tous les champs"];
                 return Router::render('admin/installation/completeRegistration.view.php', ['alert', $alert, 'themes' => $themes]);
             }
@@ -62,8 +60,8 @@ class Installation extends Sql
             $_SESSION['temp_domain'] = $domain;
             $_SESSION['temp_theme'] = $theme;
 
-           // $this->createDatabase();
-            //$this->dropDatabase();
+            $this->createDatabase();
+            $this->dropDatabase();
             $this->writeDatabaseGlobals();
             
 
@@ -151,57 +149,4 @@ class Installation extends Sql
 
         $content = file_put_contents('conf.inc.php', $content);
     }
-
-
-     /**
-     * write new global variables for database connection  and erase the former ones
-     * file conf.inc.php
-     * @return void
-     */
-    // private function writeDatabaseGlobals()
-    // {
-    //     $content = file_get_contents('conf.inc.php');
-    //     $content = explode('define', $content);
-
-    //     echo "<pre>" . print_r($content) . "<pre>";
-        
-        
-        
-    //     $arrayOutput = [];
-    //     foreach ($content as $var) {
-    //         $var = str_replace('(', '', $var);
-    //         $var = str_replace(')', '', $var);
-    //         $var = str_replace(';', '', $var);
-    //         $var = explode(',', $var);
-    //         $arrayOutput[] = $var;
-    //     }
-        
-    //     echo "<pre>" . print_r($arrayOutput). "<pre>";
-        
-    //     $newOutput = [];
-    //     for ($i = 0; $i < count($arrayOutput); $i++) {
-    //         if (trim($arrayOutput[$i][0] == "'" . $_SESSION['temp_dbName'] . "'")) {
-    //             array_push($newOutput, ["'DBNAME'", "'" . $_SESSION['temp_dbName'] . "'"]);
-    //         } elseif (trim($arrayOutput[$i][0]) == "'" . $_SESSION['temp_prefix'] . "'") {
-    //             array_push($newOutput, ["'DBPREFIXE'", "'" . $_SESSION['temp_prefix'] . "'"]);
-    //         } elseif (trim($arrayOutput[$i][0]) == "'" . $_SESSION['temp_domain'] . "'") {
-    //             array_push($newOutput, ["'DOMAIN'", "'" . $_SESSION['temp_domain'] . "'"]);
-    //         } else {
-    //             $newOutput[] = $arrayOutput[$i];
-    //         }
-    //     }
-        
-    //     echo "<pre>" . print_r($newOutput). "<pre>";
-        
-    //     $content = "";
-    //     $content = "\n";
-    //     $content .= '<?php';
-    //     unset($newOutput[0]);
-    //     foreach ($newOutput as $new) {
-    //         $content .= "\ndefine( {$new[0]}, {$new[1]} );";
-    //     }
-
-    //     $content = file_put_contents('conf.inc.php', $content);
-    // }
-
 }

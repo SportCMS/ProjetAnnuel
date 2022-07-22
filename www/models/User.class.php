@@ -112,6 +112,10 @@
             $this->site = $site;
         }
 
+        public function update($observer, $msg){
+            $observer->alert($this->email, $msg);
+        }
+
         public function getRegisterForm(): array
         {
             return [

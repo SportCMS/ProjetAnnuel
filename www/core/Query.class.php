@@ -4,7 +4,7 @@
     use App\core\MysqlBuilder;
 
     class Query{
-        private $query;
+        protected $query;
 
         public function __construct($class){
             $this->query = new MysqlBuilder($class);

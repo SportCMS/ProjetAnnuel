@@ -22,7 +22,7 @@ class Categorie extends Sql
 
     public function categoryPage()
     {
-        $slug = str_replace('/', '', $_SERVER['REQUEST_URI']);
+        $slug = str_replace('/', '', $_SERVER['REQUEST_URI']); 
         $articleManager = new ArticleModel();
         $categoryManager = new CategorieModel();
 

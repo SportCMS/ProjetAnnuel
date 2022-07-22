@@ -148,6 +148,32 @@ abstract class Sql extends Db
     }
 
 
+    public function getAllModel()
+    {
+        $sql = 'SELECT * FROM ' . $this->table;
+        $queryPrp = $this->pdo->prp($sql);
+
+        $val = [];
+        while($row = $queryPrp->fetchObject(get_called_class())){
+            array_push($val, $row); 
+        }
+
+        return $val;
+    }
+
+    public function getAllAdmin()
+    {
+        $sql = 'SELECT * FROM ' . $this->table . 'WHERE role="admin"';
+        $queryPrp = $this->pdo->prp($sql);
+
+        $val = [];
+        while($row = $queryPrp->fetchObject(get_called_class())){
+            array_push($val, $row); 
+        }
+
+        return $val;
+    }
+
     /**
      * récupère les données d'un modele selon un range definit en parametres, pour realiser une pagination
      *
@@ -267,49 +293,6 @@ abstract class Sql extends Db
     }
 
     /**
-     * Compte le nombre d'utilisateur inscrit entre le 1 et le 31 du mois en cours.
-     * Fait partie du jeu de donnée des statistiques dashboard
-     */
-    public function countMonthUsers():array
-    {
-        $date = (new \DateTime('now'))->format('Y-m');
-        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}user
-        WHERE created_at BETWEEN '{$date}-1' AND '{$date}-31' ";
-        $queryPrp = $this->pdo->prp($sql, []);
-        return $queryPrp->fetch();
-    }
-
-    /**
-     * Compte le nombre d'utilisateurs inscrits pendant la semaine en cours
-     * On utilise date('w') qui renvoi le numero de semaine
-     */
-    public function countWeekUsers():array
-    {
-        $week = date('W');
-        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}user
-        WHERE WEEK(created_at) = {$week}";
-        $queryPrp = $this->pdo->prp($sql, []);
-        return $queryPrp->fetch();
-    }
-
-    /**
-     * Compte le nombre d'utilisateurs inscrits pendant le jour en cours
-     * Fait partie du jeu de donnée des statistiques dashboard
-     */
-    public function countTodayUsers():array
-    {
-        $year = (new \DateTime('now'))->format('Y');
-        $month = (new \DateTime('now'))->format('m');
-        $day = (new \DateTime('now'))->format('d');
-        $sql = "SELECT count(id) as 'count' FROM {$this->prefix}user
-        WHERE date_format(created_at, '%Y') = {$year}
-        AND date_format(created_at, '%m') = {$month}
-        AND date_format(created_at, '%d') = {$day}";
-        $queryPrp = $this->pdo->prp($sql, []);
-        return $queryPrp->fetch();
-    }
-
-    /**
      * Compte le nombre de connexions au site
      *
      * @param string $date
@@ -346,18 +329,6 @@ abstract class Sql extends Db
         AND date_format(created_at, '%d') BETWEEN {$startRange} AND {$endRange}";
         $queryPrp = $this->pdo->prp($sql, []);
         return $queryPrp->fetch();
-    }
-
-    /**
-     * Recupère les 5 derniers utilisateurs inscrits
-     *
-     * @return void
-     */
-    public function getLastInscriptions()
-    {
-        $sql = "SELECT * FROM {$this->prefix}user ORDER BY created_at DESC LIMIT 5";
-        $queryPrp = $this->pdo->prp($sql, []);
-        return $queryPrp->fetchAll();
     }
 
     /**
@@ -530,19 +501,5 @@ abstract class Sql extends Db
     {
         $sql = "INSERT INTO {$this->table} (position, title, page_id) VALUES (?, ?, ?)";
         $this->pdo->prp($sql, [$position, $title, $page_id]);
-    }
-
-    /**
-     * Recherche un utilisateur
-     *
-     * @param string $search
-     * @return array
-     */
-    public function searchUsers(string $search): array
-    {
-        $sql = "SELECT * from {$this->prefix}user WHERE firstname LIKE ? OR lastname LIKE ?
-        ORDER BY lastname ASC";
-        $queryPrp = $this->pdo->prp($sql, ['%' . $search . '%', '%' . $search . '%']);
-        return $queryPrp->fetchAll(PDO::FETCH_ASSOC);
     }
 }

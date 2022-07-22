@@ -136,84 +136,84 @@
 
 <script>
     let menuBlock = document.querySelectorAll('.menuBlock');
-    menuBlock.forEach(function(menu) {
-        menu.addEventListener('click', () => {
-            menu.nextElementSibling.style.visibility = 'visible';
+    menuBlock.forEach(function(menu) { 
+        menu.addEventListener('click', () => { 
+            menu.nextElementSibling.style.visibility = 'visible'; // afficher le menu
 
-            let items = menu.nextElementSibling.children
-            for (let i = 0; i < items.length; i++) {
+            let items = menu.nextElementSibling.children // récupérer les items du menu
+            for (let i = 0; i < items.length; i++) { // ajouter les evenements aux items du menu
                 items[i].addEventListener('click', () => {
 
-                    if (items[i].textContent == 'Texte') {
-                        menu.nextElementSibling.style.visibility = 'hidden';
-                        let formChildrens = menu.nextElementSibling.nextElementSibling.children
-                        formChildrens[0].style.display = 'block'
-                        formChildrens[1].style.display = 'none'
-                        formChildrens[1].style.display = 'none'
+                    if (items[i].textContent == 'Texte') { 
+                        menu.nextElementSibling.style.visibility = 'hidden'; // on cache le menu
+                        let formChildrens = menu.nextElementSibling.nextElementSibling.children //form-div
+                        formChildrens[0].style.display = 'block' //text-form
+                        formChildrens[1].style.display = 'none' //form
+                        formChildrens[1].style.display = 'none' //card
 
-                        formChildrens[0].lastElementChild.addEventListener('click', () => {
+                        formChildrens[0].lastElementChild.addEventListener('click', () => { //submit-text-form
 
                             if (formChildrens[0].lastElementChild.previousElementSibling.lastElementChild.value.length == 0) {
                                 alert('Veuillez entrer un contenu')
                                 return;
                             }
-                            let content = formChildrens[0].lastElementChild.previousElementSibling.lastElementChild.value;
-                            let block = menu.dataset.block
+                            let content = formChildrens[0].lastElementChild.previousElementSibling.lastElementChild.value; // on récupère le contenu du textarea
+                            let block = menu.dataset.block // on récupère l'id du block
 
                             $.ajax({
-                                type: "POST",
-                                url: 'http://localhost:81/createTextBlock?',
+                                type: "POST", 
+                                url: 'http://localhost:81/createTextBlock?', 
                                 headers: {
                                     "Access-Control-Allow-Origin": "*",
                                 },
                                 data: `content=${content}&block=${block}`,
-                                success: function(rep) {
-                                    let response = JSON.parse(rep)
-                                    console.log(response)
-                                    formChildrens[0].style.display = 'none'
-                                    menu.parentElement.innerHTML = response.content
+                                success: function(rep) { 
+                                    let response = JSON.parse(rep) 
+                                    console.log(response) 
+                                    formChildrens[0].style.display = 'none' 
+                                    menu.parentElement.innerHTML = response.content 
                                 }
                             });
                         })
 
                     }
-                    if (items[i].textContent == 'Form') {
-                        menu.nextElementSibling.style.visibility = 'hidden';
-                        let formChildrens = menu.nextElementSibling.nextElementSibling.children
-                        formChildrens[0].style.display = 'none'
-                        formChildrens[1].style.display = 'none'
-                        formChildrens[2].style.display = 'block'
+                    if (items[i].textContent == 'Form') { 
+                        menu.nextElementSibling.style.visibility = 'hidden'; // on cache le menu
+                        let formChildrens = menu.nextElementSibling.nextElementSibling.children //form-div
+                        formChildrens[0].style.display = 'none' //text-form
+                        formChildrens[1].style.display = 'none' //card 
+                        formChildrens[2].style.display = 'block' //form
 
-                        let form = menu.nextElementSibling.nextElementSibling.children[2];
-                        let newInput = form.firstElementChild.children[0].lastElementChild
+                        let form = menu.nextElementSibling.nextElementSibling.children[2]; // on récupère le formulaire
+                        let newInput = form.firstElementChild.children[0].lastElementChild // on récupère le champ input
 
-                        newInput.addEventListener('click', () => {
-                            let newLine = form.children[1]
-                            let copy = newLine.cloneNode(true)
-                            copy.style.visibility = 'visible'
-                            copy.classList.add('cool')
-                            form.appendChild(copy)
+                        newInput.addEventListener('click', () => { 
+                            let newLine = form.children[1] // on récupère la ligne du formulaire
+                            let copy = newLine.cloneNode(true) // on copie la ligne du formulaire
+                            copy.style.visibility = 'visible' // on affiche la ligne copiée
+                            copy.classList.add('cool') // on ajoute la classe cool pour la stylisation
+                            form.appendChild(copy) // on ajoute la ligne copiée au formulaire
 
-                            document.querySelectorAll('.input-lines').forEach(function(inputLine) {
+                            document.querySelectorAll('.input-lines').forEach(function(inputLine) { // on ajoute les évènements aux nouveaux champs input
 
-                                let button = inputLine.children[0].lastElementChild
-                                let block = menu.dataset.block
+                                let button = inputLine.children[0].lastElementChild // on récupère le bouton de suppression
+                                let block = menu.dataset.block // on récupère id du block
 
-                                button.addEventListener('click', () => {
+                                button.addEventListener('click', () => { 
 
                                     let chain = '';
-                                    let select = inputLine.children[0].children[0]
-                                    let choice = select.selectedIndex;
-                                    let type = select.options[choice].value
+                                    let select = inputLine.children[0].children[0] // on récupère le select
+                                    let choice = select.selectedIndex; // on récupère la valeur du select
+                                    let type = select.options[choice].value // on récupère le type du select
 
-                                    let formSelect = form.firstElementChild.lastElementChild
+                                    let formSelect = form.firstElementChild.lastElementChild // on récupère le select du formulaire
 
-                                    let formSelectChoice = formSelect.selectedIndex;
-                                    let formSelectChoiceValue = formSelect.options[formSelectChoice].value
+                                    let formSelectChoice = formSelect.selectedIndex; // on récupère la valeur du select du formulaire
+                                    let formSelectChoiceValue = formSelect.options[formSelectChoice].value // on récupère le type du select du formulaire
 
-                                    let name = inputLine.children[0].children[1].value
-                                    let label = inputLine.children[0].children[2].value
-                                    let placeholder = inputLine.children[0].children[3].value
+                                    let name = inputLine.children[0].children[1].value // on récupère le nom du champ input
+                                    let label = inputLine.children[0].children[2].value // on récupère le label du champ input
+                                    let placeholder = inputLine.children[0].children[3].value // on récupère le placeholder du champ input
 
                                     chain = `block=${block}&form=${formSelectChoiceValue}&type=${type}&name=${name}&placeholder=${placeholder}&label=${label}`;
 
@@ -251,16 +251,16 @@
                 });
             }
         })
-    });
+    }); 
 
-    $(".droppable").sortable({
-        connectWith: ".connected-sortable",
+    $(".droppable").sortable({ // pour le drag and drop
+        connectWith: ".connected-sortable", 
         stack: '.connected-sortable div',
-        stop: function(e, ui) {
-            let list = $.map($(this).find('div'), function(el) {
+        stop: function(e, ui) { 
+            let list = $.map($(this).find('div'), function(el) { 
                 return [{
-                    'id_block': el.dataset.idblock,
-                    'position': $(el).index() - 1
+                    'id_block': el.dataset.idblock, 
+                    'position': $(el).index() - 1 
                 }]
 
                 var ids = $('.droppable div').map(function(i) {

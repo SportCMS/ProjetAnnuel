@@ -20,7 +20,7 @@
 		if(file_exists($class)){
 			include $class;//On utilise include car plus rapide, et on a déjà vérifier son existance
 		}else{
-			echo "CLASS EXISTE PAS";
+			echo "CLASS EXISTE PAS " . $class;
 			abort(500);
 		}
 	} 

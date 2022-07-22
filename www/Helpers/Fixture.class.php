@@ -91,7 +91,7 @@ class Fixture extends Sql
         }
 
         $userManager = new User();
-        $userManager->truncate('user');
+        $userManager->truncate('user'); 
 
         $articles = $articleManager->getAll();
         $users = $userManager->getAll();

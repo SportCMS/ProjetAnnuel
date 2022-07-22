@@ -12,25 +12,32 @@
     use App\core\Mail;
     use App\core\Router;
 
+    //QUERY utilisé
+    use App\querys\QueryUser;
+    use App\querys\QueryPassword_reset as qpr;
+
     class User {
         /* Session test*/
         public function login()
         {
             $user = new UserModel();
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        
+                // on instancie la class query user
+                $qu = new QueryUser();
+
                 $errors = Verificator::checkForm($user->getLoginForm(), $_POST);
                 if(count($errors) > 0){
                     Router::render('front/security/login.view.php',["user" => $user, 'errors' => $errors]);
                     return;
                 }
-                if(!isset($user->getOneBy(['email' => $_POST['email']])[0])){
+                $qu = $qu->getBy(['email' => $_POST['email']]);
+                if(!isset($qu[0])){
                     $errors = [];
                     $errors[] = "Email ou mot de passe incorrect";
                     Router::render('front/security/login.view.php',["user" => $user, 'errors' => $errors]);
                     return;
                 }
-                $user = $user->getOneBy(['email' => $_POST['email']])[0];
+                $user = $qu[0];
 
                 if(!password_verify($_POST['password'], $user->getPassword())){
                     Router::render('front/security/login.view.php',["user" => $user,'errors' => $errors]);
@@ -108,12 +115,13 @@
             if(!empty($result)){
                 return Router::render('front/security/forgetpswd.view.php',["user" => $user, "errors" => ["Champ mal renseigné"]]);
             }
-            $user = $user->getOneBy(["email" => $_POST['email']]);
-            if(empty($user)){
+            $qu = new QueryUser();
+            $qu = $qu->getBy(['email' => $_POST['email']]);
+            if(empty($qu)){
                 $user = new UserModel();
                 return Router::render('front/security/forgetpswd.view.php',["user" => $user, "errors" => ["Email introuvable"]]);
             }
-            $user = $user[0]; 
+            $user = $qu[0]; 
             $pswdRst = new PswdRst();
             $pswdRst->generateToken();
             $pswdRst->generateTokenExpiry();
@@ -129,11 +137,11 @@
             <div>
                 Changez de mot de passe en cliquant <a href="http://127.0.0.1:81/changePassword?token=' . $pswdRst->getToken() . '">ici</a>
             </div>');
+            $pswdRst->save();
             if(!$mail->send()){
                 abort(500);
             }
             
-            $pswdRst->save();
             $_SESSION['success'] = "Vous allez recevoir un mail pour modifier votre mot de passe !";
             Router::render('front/security/forgetpswd.view.php',["user" => $user]);
         }
@@ -146,10 +154,13 @@
             }
             $token = $_GET["token"];
             $pswdRst = new PswdRst();
-            if(empty($pswdRst->getOneBy(["token" => $token])[0])){
+            //Query builder\\
+            $qpr = new qpr();
+            $qpr = $qpr->getBy(["token" => $token]);
+            if(empty($qpr)){
                 return Router::render('front/security/changepswd.view.php',["user" => $user, "token" => $token, "errors" => ["Une erreur est survenue"]]);
             }
-            $pswdRst = $pswdRst->getOneBy(["token" => $token])[0];
+            $pswdRst = $qpr[0];
             if($pswdRst->getTokenExpiry() < time()){
                 return Router::render('front/security/changepswd.view.php',["user" => $user, "token" => $token, "errors" => ["Votre récupération de mot de passe a expiré"]]);
             }
@@ -224,9 +235,9 @@
         public function register(){
             $user = new UserModel();
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                $errors = Verificator::checkForm($user->getRegisterForm(), $_POST);
+                $errors = Verificator::checkForm($user->getRegisterForm(), $_POST); //on vérifie le formulaire
                 
-                if(count($errors) > 0){
+                if(count($errors) > 0){ //si il y a des erreurs on renvoie sur la vue avec les erreurs
                     return Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
                 }
                 
@@ -236,7 +247,7 @@
                 
                 
                 
-                if(isset($user->getOneBy(['email' => $_POST['email']])[0])){
+                if(isset($user->getOneBy(['email' => $_POST['email']])[0])){ //si l'email est déjà utilisé on renvoie sur la vue avec une erreur
                     $errors = [];
                     $errors[] = "L'utilisateur existe déjà"; 
                     return Router::render('front/security/register.view.php',["user" => $user, "errors" => $errors]);
@@ -270,8 +281,7 @@
                         Cordialement,<br> <a href=''>L'Equipe de SportCMS</a>";
                 }
 
-                // if admin register assign admin role and create admin email template
-                if ($_SERVER['REQUEST_URI'] == '/admin-inscription') {
+                if ($_SERVER['REQUEST_URI'] == '/admin-inscription') { // si l'utilisateur est admin, on lui assigne le role admin
                 
                 $user->setRole('admin');
                 
@@ -283,8 +293,7 @@
                         Cordialement,<br> <a href=''>L'Equipe de SportCMS</a>";
                 }
 
-                // send email
-                $mail = new Mail();
+                $mail = new Mail(); 
                 $mail->sendTo($_POST['email']);
                 $mail->subject("Confirmation inscription SportCMS");
                 $mail->message($mailBody);
@@ -304,12 +313,12 @@
         public function confirmaccount() {
             $user = new UserModel();
             
-            if(!isset($user->getOneBy(['token' => $_GET['token']])[0])){
+            if(!isset($user->getOneBy(['token' => $_GET['token']])[0])){ //si le token n'existe pas on renvoie sur la vue avec une erreur
                 redirect("/login", ["error" => "Une erreur est survenue lors de la vérification de votre compte !"]);
             }
-            $user = $user->getOneBy(['token' => $_GET['token']])[0];
+            $user = $user->getOneBy(['token' => $_GET['token']])[0]; //on récupère l'utilisateur grâce au token
 
-            if($user->getStatus() == 0){
+            if($user->getStatus() == 0){ //si l'utilisateur n'est pas validé on le valide
                 $user->setStatus(1);
                 $user->save();
             }
@@ -341,7 +350,7 @@
                 $password = htmlspecialchars($_POST['password']);
                 $passwordConfirm = htmlspecialchars($_POST['passwordConfirm']);
                 $oldPassword = htmlspecialchars($_POST['oldPassword']);
-                if(!password_verify($oldPassword, $user->getPassword()) && $status == 1){
+                if(!password_verify($oldPassword, $user->getPassword()) ){
                     $errors=[];
                     $errors[] = "Ancien mot de passe n'est pas bon";
                     Router::render('front/security/user_profilPwd.view.php', ["user" => $user, "errors" => $errors]);
