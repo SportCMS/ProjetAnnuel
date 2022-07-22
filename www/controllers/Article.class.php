@@ -6,16 +6,20 @@ use App\models\Article as ArticleModel;
 use App\models\Categorie as CategorieModel;
 use App\models\Comment as CommentModel;
 use App\models\Like as LikeModel;
+use App\models\User;
 
 use App\core\verificator\VerificatorArticle;
 use App\core\Router;
 
 use App\core\Sql;
 
-use App\helpers\Slugger;
+use App\Helpers\Slugger;
 
 // Query builder \\
 use App\querys\QueryLike;
+
+// observer
+use App\core\ArticleNotification;
 
 class Article extends Sql
 {
@@ -50,13 +54,29 @@ class Article extends Sql
                 return;
             }
 
+            $users = new User();
+            $users = $users->getAllModel();
+
+            $slug = Slugger::sluggify($_POST['title']);
+
             $article->setTitle($title);
-            $article->setSlug(Slugger::sluggify($_POST['title']));
+            $article->setSlug($slug);
             $article->setContent($content);
             $article->setCategoryId($category_id);
             $article->setCreatedAt((new \DateTime('now'))->format('Y-m-d H:i:s'));
             //$article->setPosition($_POST['position']);
             $article->save();
+
+            $articleNotify = new ArticleNotification();
+            $message = "Un super artcile viens d'être créer 
+                retrouvez le en cliquant <a href=\"http://127.0.0.1:81/article?slug=" . $slug . "\">ici</a>
+            ";
+
+
+
+            foreach($users as $user){
+                $user->update($articleNotify, $message);
+            }
 
             header('Location: /gerer-mes-articles');
         }

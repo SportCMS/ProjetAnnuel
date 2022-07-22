@@ -34,7 +34,7 @@
 
         public function send(){
             if(!$this->mail->Send()){
-                return false;
+                abort(500);
             }
             $this->mail->smtpClose();
             return true;

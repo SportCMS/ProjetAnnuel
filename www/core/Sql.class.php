@@ -148,6 +148,32 @@ abstract class Sql extends Db
     }
 
 
+    public function getAllModel()
+    {
+        $sql = 'SELECT * FROM ' . $this->table;
+        $queryPrp = $this->pdo->prp($sql);
+
+        $val = [];
+        while($row = $queryPrp->fetchObject(get_called_class())){
+            array_push($val, $row); 
+        }
+
+        return $val;
+    }
+
+    public function getAllAdmin()
+    {
+        $sql = 'SELECT * FROM ' . $this->table . 'WHERE role="admin"';
+        $queryPrp = $this->pdo->prp($sql);
+
+        $val = [];
+        while($row = $queryPrp->fetchObject(get_called_class())){
+            array_push($val, $row); 
+        }
+
+        return $val;
+    }
+
     /**
      * récupère les données d'un modele selon un range definit en parametres, pour realiser une pagination
      *

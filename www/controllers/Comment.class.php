@@ -10,6 +10,9 @@ use App\core\verificator\VerificatorReport;
 use App\core\Sql;
 use App\core\Router;
 
+// observer
+use App\core\ReportNotification;
+
 class Comment extends Sql
 {
 	public function commentCreate()
@@ -113,6 +116,14 @@ class Comment extends Sql
                 return;
             }
 
+			$users = new UserModel();
+			$users = $users->getAllAdmin();
+
+			$reportNotify = new ReportNotification();
+
+
+			$comment = "Un report viens d'etre fait avec le message " . $message;
+			dd($users);
             $report = new ReportModel();
             $report->setCommentId($_GET['id']);
             $report->setEmail($email);
@@ -120,6 +131,10 @@ class Comment extends Sql
 	    	$report->setHasRead(0);
             $report->setCreatedAt((new \Datetime('now'))->format('Y-m-d H:i:s'));
             $report->save();
+
+			foreach($users as $user){
+				$user->update($reportNotify, $comment);
+			}
 
             header('Location:/articles');
         }
