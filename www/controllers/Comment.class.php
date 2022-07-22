@@ -123,7 +123,6 @@ class Comment extends Sql
 
 
 			$comment = "Un report viens d'etre fait avec le message " . $message;
-			dd($users);
             $report = new ReportModel();
             $report->setCommentId($_GET['id']);
             $report->setEmail($email);
