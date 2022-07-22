@@ -18,6 +18,12 @@ use App\models\Report;
 use App\models\Article;
 use App\models\MenuItem;
 
+/*  DESIGN PATTERN FACTORY */
+use App\models\factories\BlockContentFactory;
+use App\models\factories\ContentText;
+use App\models\factories\ContentForm;
+
+
 //Query builder
 use App\querys\QueryUser;
 
@@ -223,11 +229,14 @@ class Admin extends Sql
         $block->setTitle('Text');
         $block->save();
 
+
+        /* ------------------------------------ DESIGN PATTERN FACTORY */ 
         // on crée un nouveau module texte
-        $text = new Text();
-        $text->setBlockId($_POST['block']);
-        $text->setContent($_POST['content']);
-        $text->save();
+        (new BlockContentFactory)
+                ->create('text')
+                ->setBlockId($_POST['block'])
+                ->setContent($_POST['content'])
+                ->save();
 
         // envoi de la reponse au client
         echo json_encode(['success' => 'Bloc de texte enregistré', 'content' => $_POST['content']]);
@@ -267,7 +276,8 @@ class Admin extends Sql
             return;
         }
         // create a new Form
-        $formManager = new Form();
+         /* ------------------------------------ DESIGN PATTERN FACTORY */ 
+        $formManager = (new BlockContentFactory)->create('form');
         $exist = $formManager->getOneBy(['block_id' => $_POST['block']])[0] ?? null;
 
         // foreach ($formManager->getAll() as $formCheck) {
@@ -280,9 +290,12 @@ class Admin extends Sql
         // on verifie la presence d'un formulaire de meme nom en base
         if ($exist == null) {
             // creation du form
-            $formManager->setBlockId($_POST['block']);
-            $formManager->setTitle($_POST['form']);
-            $formManager->save();
+
+         /* ------------------------------------ DESIGN PATTERN FACTORY */ 
+            $formManager
+                ->setBlockId($_POST['block'])
+                ->setTitle($_POST['form'])
+                ->save();
         }
 
         $form = $formManager->getOneBy(['title' => $_POST['form']])[0];
